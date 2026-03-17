@@ -313,6 +313,205 @@
     .stats-row { grid-template-columns: repeat(2, 1fr); }
     .meta-grid { grid-template-columns: 1fr; }
   }
+
+  /* ── TRACKER STYLES ── */
+  .tracker-hero {
+    background: linear-gradient(135deg, rgba(240,192,64,0.08), rgba(96,200,160,0.06));
+    border: 1px solid rgba(240,192,64,0.2);
+    border-radius: 20px;
+    padding: 20px;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  .tracker-hero-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--muted);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .tracker-day-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 42px;
+    font-weight: 800;
+    color: var(--accent);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .tracker-day-label { font-size: 13px; color: var(--muted); margin-bottom: 16px; }
+  .overall-bar-wrap { background: var(--surface2); border-radius: 99px; height: 8px; overflow: hidden; margin-bottom: 8px; }
+  .overall-bar-fill { height: 100%; border-radius: 99px; background: linear-gradient(90deg, var(--accent2), var(--accent3)); transition: width 0.5s ease; }
+  .overall-pct { font-size: 12px; color: var(--muted); }
+  .overall-pct span { color: var(--accent3); font-weight: 700; }
+
+  .phase-block { margin-bottom: 24px; }
+  .phase-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    user-select: none;
+  }
+  .phase-icon { font-size: 20px; }
+  .phase-info { flex: 1; }
+  .phase-title { font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 800; }
+  .phase-range { font-size: 11px; color: var(--muted); }
+  .phase-progress-pill {
+    font-family: 'Syne', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 99px;
+    background: var(--surface2);
+    color: var(--muted);
+    white-space: nowrap;
+  }
+  .phase-progress-pill.done { background: rgba(96,200,160,0.15); color: var(--accent3); }
+  .phase-chevron { color: var(--muted); font-size: 14px; transition: transform 0.3s; }
+  .phase-block.collapsed .phase-chevron { transform: rotate(-90deg); }
+  .phase-days { }
+  .phase-block.collapsed .phase-days { display: none; }
+
+  .day-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px 14px;
+    border-radius: 12px;
+    margin-bottom: 8px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+    position: relative;
+  }
+  .day-row:active { opacity: 0.85; }
+  .day-row.today {
+    border-color: rgba(240,192,64,0.5);
+    background: rgba(240,192,64,0.04);
+  }
+  .day-row.today::before {
+    content: 'TODAY';
+    position: absolute;
+    top: -1px; right: 10px;
+    font-family: 'Syne', sans-serif;
+    font-size: 8px;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    color: var(--accent);
+    background: var(--bg);
+    padding: 0 4px;
+  }
+  .day-row.completed {
+    border-color: rgba(96,200,160,0.25);
+    background: rgba(96,200,160,0.04);
+    opacity: 0.75;
+  }
+  .day-check {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: 2px solid var(--muted);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 1px;
+    transition: all 0.2s;
+    font-size: 13px;
+  }
+  .day-row.completed .day-check {
+    background: var(--accent3);
+    border-color: var(--accent3);
+    color: #0a0a0f;
+  }
+  .day-row.today:not(.completed) .day-check {
+    border-color: var(--accent);
+  }
+  .day-content { flex: 1; min-width: 0; }
+  .day-num-label {
+    font-family: 'Syne', sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-bottom: 2px;
+  }
+  .day-row.today:not(.completed) .day-num-label { color: var(--accent); }
+  .day-task {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text);
+    margin-bottom: 2px;
+    line-height: 1.4;
+  }
+  .day-row.completed .day-task { text-decoration: line-through; color: var(--muted); }
+  .day-detail { font-size: 11px; color: var(--muted); line-height: 1.4; }
+  .day-tag {
+    display: inline-block;
+    margin-top: 5px;
+    padding: 2px 8px;
+    border-radius: 99px;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+  }
+  .dt-python { background: rgba(60,120,255,0.15); color: #6090ff; border: 1px solid rgba(60,120,255,0.2); }
+  .dt-llm { background: rgba(240,192,64,0.12); color: var(--accent); border: 1px solid rgba(240,192,64,0.2); }
+  .dt-rag { background: rgba(224,120,48,0.12); color: var(--accent2); border: 1px solid rgba(224,120,48,0.2); }
+  .dt-agents { background: rgba(160,96,255,0.12); color: #a060ff; border: 1px solid rgba(160,96,255,0.2); }
+  .dt-cloud { background: rgba(96,200,160,0.12); color: var(--accent3); border: 1px solid rgba(96,200,160,0.2); }
+  .dt-project { background: rgba(255,80,100,0.12); color: #ff8090; border: 1px solid rgba(255,80,100,0.2); }
+  .dt-rest { background: rgba(136,136,170,0.12); color: var(--muted); border: 1px solid rgba(136,136,170,0.2); }
+
+  .streak-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  .streak-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 12px;
+    text-align: center;
+  }
+  .streak-num { font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 800; color: var(--accent); }
+  .streak-label { font-size: 10px; color: var(--muted); margin-top: 2px; }
+
+  .reset-btn {
+    width: 100%;
+    padding: 12px;
+    background: transparent;
+    border: 1px solid rgba(224,120,48,0.3);
+    border-radius: 10px;
+    color: var(--accent2);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    cursor: pointer;
+    margin-top: 16px;
+    transition: background 0.2s;
+  }
+  .reset-btn:active { background: rgba(224,120,48,0.08); }
+
+  .confetti-msg {
+    display: none;
+    text-align: center;
+    padding: 16px;
+    background: rgba(96,200,160,0.08);
+    border: 1px solid rgba(96,200,160,0.25);
+    border-radius: 14px;
+    margin-bottom: 16px;
+    font-size: 14px;
+    color: var(--accent3);
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+  }
 </style>
 </head>
 <body>
@@ -701,6 +900,47 @@
       </div>
     </div>
 
+
+    <!-- ══ PAGE: TRACKER ══ -->
+    <div class="page" id="page-tracker">
+      <div style="padding-top:8px">
+        <div class="section-label">AI Learning Journey</div>
+        <div class="section-title">90-Day Tracker</div>
+      </div>
+
+      <div id="confetti-msg" class="confetti-msg">🎉 Amazing! You completed today's task! Keep the streak going!</div>
+
+      <div class="tracker-hero">
+        <div class="tracker-hero-title">Current Day</div>
+        <div class="tracker-day-num" id="t-current-day">1</div>
+        <div class="tracker-day-label" id="t-current-label">Starting tomorrow</div>
+        <div class="overall-bar-wrap">
+          <div class="overall-bar-fill" id="t-overall-bar" style="width:0%"></div>
+        </div>
+        <div class="overall-pct">Overall progress: <span id="t-pct">0%</span></div>
+      </div>
+
+      <div class="streak-row">
+        <div class="streak-card">
+          <div class="streak-num" id="t-streak">0</div>
+          <div class="streak-label">🔥 Day Streak</div>
+        </div>
+        <div class="streak-card">
+          <div class="streak-num" id="t-done">0</div>
+          <div class="streak-label">✅ Completed</div>
+        </div>
+        <div class="streak-card">
+          <div class="streak-num" id="t-left">90</div>
+          <div class="streak-label">📅 Days Left</div>
+        </div>
+      </div>
+
+      <div id="tracker-phases"></div>
+
+      <button class="reset-btn" onclick="confirmReset()">⚠️ Reset All Progress</button>
+      <div style="height:8px"></div>
+    </div>
+
   </div><!-- end scroll-area -->
 
   <!-- Bottom Nav -->
@@ -724,6 +964,11 @@
       <div class="nav-dot"></div>
       <div class="nav-icon">🗓</div>
       <div class="nav-label">5-Yr Plan</div>
+    </button>
+    <button class="nav-btn" id="nav-tracker" onclick="showPage('tracker')">
+      <div class="nav-dot"></div>
+      <div class="nav-icon">✅</div>
+      <div class="nav-label">Tracker</div>
     </button>
   </nav>
 </div>
@@ -833,8 +1078,282 @@ window.addEventListener('online', updateOnlineStatus);
 window.addEventListener('offline', updateOnlineStatus);
 updateOnlineStatus();
 
+
+// ── TRACKER ──
+const CURRICULUM = [
+  // PHASE 1: Python Basics (Days 1–21)
+  { phase:1, day:1,  task:"Install Python & VS Code", detail:"Download Python 3.11+, install VS Code, run 'print(Hello World)'. Set up your workspace.", tag:"python" },
+  { phase:1, day:2,  task:"Python variables & data types", detail:"Strings, integers, floats, booleans. Play in the Python REPL. freeCodeCamp Python intro.", tag:"python" },
+  { phase:1, day:3,  task:"Lists, tuples & dictionaries", detail:"Python's core data structures. Practice: create a dict of your learning goals.", tag:"python" },
+  { phase:1, day:4,  task:"If/else & for loops", detail:"Control flow in Python vs Java. Write a simple number guessing game.", tag:"python" },
+  { phase:1, day:5,  task:"Functions & modules", detail:"def keyword, arguments, return values. import statements. How Python modules work.", tag:"python" },
+  { phase:1, day:6,  task:"File I/O & error handling", detail:"Read/write files, try/except blocks. Practice: read a .txt file and process its lines.", tag:"python" },
+  { phase:1, day:7,  task:"🎉 REST DAY — review week 1", detail:"Review your notes. Re-do any exercises that felt unclear. No new content today.", tag:"rest" },
+  { phase:1, day:8,  task:"Python classes & OOP", detail:"Classes in Python vs Java. self keyword, __init__, inheritance. Build a simple Dog class!", tag:"python" },
+  { phase:1, day:9,  task:"pip & virtual environments", detail:"pip install, requirements.txt, venv. This is how Python projects are managed.", tag:"python" },
+  { phase:1, day:10, task:"Working with JSON", detail:"json.loads, json.dumps. Practice: parse a JSON API response. Essential for AI work.", tag:"python" },
+  { phase:1, day:11, task:"HTTP requests with 'requests' library", detail:"pip install requests. GET/POST calls. Fetch data from a public API (e.g. dog facts API!).", tag:"python" },
+  { phase:1, day:12, task:"List comprehensions & lambdas", detail:"Pythonic shortcuts. [x for x in list if condition]. map(), filter(). Very common in AI code.", tag:"python" },
+  { phase:1, day:13, task:"Practice project: Python CLI tool", detail:"Build a command-line tool that reads a text file and counts word frequency. Combine all week 2 skills.", tag:"python" },
+  { phase:1, day:14, task:"🎉 REST DAY — review week 2", detail:"Review OOP, JSON, requests. Read: 'Python for Java Developers' blog on Real Python.", tag:"rest" },
+  { phase:1, day:15, task:"Intro to Jupyter Notebooks", detail:"pip install jupyter. Run notebooks. This is how most AI/ML tutorials are written.", tag:"python" },
+  { phase:1, day:16, task:"NumPy basics", detail:"Arrays, array math, indexing. Used everywhere in AI. Do the NumPy quickstart tutorial.", tag:"python" },
+  { phase:1, day:17, task:"Pandas basics", detail:"DataFrames, read_csv, basic filtering. The Excel of Python. Do 10 exercises on kaggle.com.", tag:"python" },
+  { phase:1, day:18, task:"Mini project: data analysis", detail:"Download a CSV dataset (e.g. dog breeds data). Load with pandas, filter, summarize. Post to GitHub.", tag:"python" },
+  { phase:1, day:19, task:"Python review & speed drills", detail:"Do 10 Python problems on Exercism.io. Focus on writing idiomatic Python, not Java-style Python.", tag:"python" },
+  { phase:1, day:20, task:"Create your GitHub profile & first repo", detail:"Set up GitHub profile. Push your previous projects. Write a good README. This is your portfolio.", tag:"python" },
+  { phase:1, day:21, task:"🎉 REST DAY — Phase 1 complete!", detail:"You now know enough Python to start AI work. Celebrate! Phase 2 starts tomorrow.", tag:"rest" },
+
+  // PHASE 2: LLM APIs (Days 22–42)
+  { phase:2, day:22, task:"What are LLMs? Core concepts", detail:"Read: 'How GPT works' on Andrej Karpathy's blog. Understand tokens, context windows, temperature.", tag:"llm" },
+  { phase:2, day:23, task:"Get your OpenAI API key", detail:"Sign up at platform.openai.com. Add $10 credit. Make your FIRST API call via curl or Python.", tag:"llm" },
+  { phase:2, day:24, task:"OpenAI Python SDK basics", detail:"pip install openai. client.chat.completions.create(). Build 'Hello AI' in Python.", tag:"llm" },
+  { phase:2, day:25, task:"System prompts & roles", detail:"system / user / assistant roles. Experiment: change the system prompt and see how responses change.", tag:"llm" },
+  { phase:2, day:26, task:"Prompt engineering techniques", detail:"Zero-shot, few-shot, chain-of-thought prompting. Test all 3 with the same task. Note the differences.", tag:"llm" },
+  { phase:2, day:27, task:"Temperature, max_tokens & parameters", detail:"How each parameter affects output. Build a creative writing tool that uses high temperature.", tag:"llm" },
+  { phase:2, day:28, task:"🎉 REST DAY — review LLM basics", detail:"Re-read your notes. Watch: 'Prompt Engineering Guide' on YouTube by DAIR.AI.", tag:"rest" },
+  { phase:2, day:29, task:"Build: simple chatbot with memory", detail:"Use a list to store conversation history. Pass the full history in each API call. This is how ChatGPT works.", tag:"llm" },
+  { phase:2, day:30, task:"Streaming responses", detail:"Use stream=True to show responses word-by-word, like ChatGPT. Essential for real apps.", tag:"llm" },
+  { phase:2, day:31, task:"Function calling (tool use)", detail:"Define functions for Claude/GPT to call. E.g. get_weather(city). This unlocks agentic behavior.", tag:"llm" },
+  { phase:2, day:32, task:"Anthropic Claude API", detail:"Get Claude API key at console.anthropic.com. Rebuild your chatbot using Claude instead of GPT.", tag:"llm" },
+  { phase:2, day:33, task:"Compare Claude vs GPT for coding tasks", detail:"Give both models the same 5 coding prompts. Note which handles each better. Build your intuition.", tag:"llm" },
+  { phase:2, day:34, task:"Token counting & cost management", detail:"Use tiktoken to count tokens. Estimate costs for different prompt lengths. Critical for production apps.", tag:"llm" },
+  { phase:2, day:35, task:"🎉 REST DAY — review function calling", detail:"Review function calling docs. This concept will be key for Phase 4 (Agents).", tag:"rest" },
+  { phase:2, day:36, task:"Build: AI writing assistant CLI", detail:"CLI tool that takes a topic and generates a structured blog post outline. Add tone parameter.", tag:"llm" },
+  { phase:2, day:37, task:"Handling errors & retries", detail:"API rate limits, error codes, exponential backoff. Build a robust API wrapper. Production must-know.", tag:"llm" },
+  { phase:2, day:38, task:"Environment variables & secrets", detail:"Use python-dotenv. Never hardcode API keys. Set up .env file. Critical security practice.", tag:"llm" },
+  { phase:2, day:39, task:"Build: e-commerce product description generator", detail:"Takes product name + specs → generates 5 marketing descriptions. Uses your Hybris domain knowledge!", tag:"llm" },
+  { phase:2, day:40, task:"Push Phase 2 projects to GitHub", detail:"Clean up your chatbot and product generator. Write READMEs. These are portfolio pieces.", tag:"llm" },
+  { phase:2, day:41, task:"Read: LLM best practices guide", detail:"Read Anthropic's prompt engineering guide at docs.anthropic.com. Take notes on what surprises you.", tag:"llm" },
+  { phase:2, day:42, task:"🎉 REST DAY — Phase 2 complete!", detail:"You can now build real AI apps. You're ahead of most developers. Phase 3 is the big one.", tag:"rest" },
+
+  // PHASE 3: RAG (Days 43–63)
+  { phase:3, day:43, task:"What is RAG? Core concept", detail:"Read: 'Retrieval Augmented Generation explained' on Pinecone's blog. Understand the problem it solves.", tag:"rag" },
+  { phase:3, day:44, task:"What are vector embeddings?", detail:"Watch: 'Word2Vec explained' YouTube. Understand semantic similarity. This is the math behind RAG.", tag:"rag" },
+  { phase:3, day:45, task:"OpenAI / Voyage embeddings API", detail:"Generate embeddings for text using the API. Calculate cosine similarity between two sentences.", tag:"rag" },
+  { phase:3, day:46, task:"Install & learn ChromaDB", detail:"pip install chromadb. Create a local vector store. Add documents, query them. Your first RAG component.", tag:"rag" },
+  { phase:3, day:47, task:"Install LangChain & basics", detail:"pip install langchain. Understand chains, prompts, and document loaders. LangChain is the glue of RAG.", tag:"rag" },
+  { phase:3, day:48, task:"LangChain document loaders", detail:"Load PDFs, .txt files, web pages. TextSplitter to chunk documents. The input stage of RAG.", tag:"rag" },
+  { phase:3, day:49, task:"🎉 REST DAY — review RAG components", detail:"Draw a diagram of the full RAG pipeline from memory: load → chunk → embed → store → retrieve → generate.", tag:"rest" },
+  { phase:3, day:50, task:"Build your first RAG pipeline", detail:"Load a PDF → chunk → embed → store in Chroma → query with a question → get answer. End-to-end!", tag:"rag" },
+  { phase:3, day:51, task:"Add conversational memory to RAG", detail:"Use ConversationBufferMemory in LangChain. Allow follow-up questions that reference previous answers.", tag:"rag" },
+  { phase:3, day:52, task:"Improve retrieval: reranking", detail:"Use a cross-encoder reranker to improve result quality. Understand why naive top-k retrieval fails.", tag:"rag" },
+  { phase:3, day:53, task:"Pinecone cloud vector DB", detail:"Sign up at pinecone.io (free tier). Move your ChromaDB to Pinecone. Now your RAG scales to production.", tag:"rag" },
+  { phase:3, day:54, task:"Build: RAG over product documentation", detail:"Take Hybris/SAP Commerce docs (or any product manual). Build a chatbot that answers questions about it.", tag:"rag" },
+  { phase:3, day:55, task:"Evaluation: how to measure RAG quality", detail:"RAGAS framework. Faithfulness, relevance, context recall. You must be able to measure what you build.", tag:"rag" },
+  { phase:3, day:56, task:"🎉 REST DAY — review & test your RAG", detail:"Test your product docs chatbot with 20 hard questions. Fix the 5 worst answers. Iterate.", tag:"rest" },
+  { phase:3, day:57, task:"Hybrid search: BM25 + vector search", detail:"Combine keyword search with semantic search. Often outperforms pure vector search. Use langchain-community.", tag:"rag" },
+  { phase:3, day:58, task:"Build a simple web UI with Streamlit", detail:"pip install streamlit. Wrap your RAG chatbot in a web UI in under 50 lines of code. Show it to people!", tag:"rag" },
+  { phase:3, day:59, task:"Deploy to Streamlit Cloud (free)", detail:"Push to GitHub → deploy at share.streamlit.io. You now have a live AI app on the internet. Portfolio gold.", tag:"rag" },
+  { phase:3, day:60, task:"Build: e-commerce AI assistant", detail:"RAG over a product catalog (invent one). User asks 'do you have red shoes under $50?' → real answers.", tag:"rag" },
+  { phase:3, day:61, task:"LlamaIndex as alternative to LangChain", detail:"Build the same RAG pipeline with LlamaIndex. Understand the tradeoffs. Many jobs use one or the other.", tag:"rag" },
+  { phase:3, day:62, task:"Polish & document your Phase 3 projects", detail:"Write READMEs, add screenshots, record a 60-second demo video. LinkedIn post incoming.", tag:"rag" },
+  { phase:3, day:63, task:"🎉 REST DAY — Phase 3 complete! You're hireable.", detail:"You now know RAG. This alone puts you in the top 5% of job applicants. Start applying this week.", tag:"rest" },
+
+  // PHASE 4: AI Agents (Days 64–77)
+  { phase:4, day:64, task:"What are AI Agents? Mental model", detail:"Read: 'The Rise of AI Agents' on LangChain blog. Understand: agents = LLM + tools + memory + planning.", tag:"agents" },
+  { phase:4, day:65, task:"ReAct pattern (Reason + Act)", detail:"The core loop of most agents: think → act → observe → repeat. Implement a simple ReAct agent from scratch.", tag:"agents" },
+  { phase:4, day:66, task:"LangChain agents & tools", detail:"Use pre-built tools (search, calculator, Python REPL). Build an agent that can answer multi-step questions.", tag:"agents" },
+  { phase:4, day:67, task:"Custom tools for your agent", detail:"Define custom @tool functions. Build an agent with a fake e-commerce DB tool. Uses your Hybris expertise.", tag:"agents" },
+  { phase:4, day:68, task:"Multi-agent with CrewAI", detail:"pip install crewai. Define a 'Researcher' and 'Writer' agent that work together to produce a blog post.", tag:"agents" },
+  { phase:4, day:69, task:"LangGraph: stateful agent workflows", detail:"LangGraph builds on LangChain with graph-based state. Model a multi-step checkout process as an AI workflow.", tag:"agents" },
+  { phase:4, day:70, task:"🎉 REST DAY — review agent patterns", detail:"Compare ReAct vs CrewAI vs LangGraph. When would you use each? Write a 1-page comparison doc.", tag:"rest" },
+  { phase:4, day:71, task:"Build: AI customer service agent", detail:"An agent that can check order status, process returns, and escalate to human. Uses tool calling.", tag:"agents" },
+  { phase:4, day:72, task:"Agent memory: short vs long-term", detail:"Session memory vs. persistent memory with a DB. Use SQLite to store agent memories between sessions.", tag:"agents" },
+  { phase:4, day:73, task:"Guardrails & safety for agents", detail:"How to prevent agents from doing harmful things. Input/output filtering, scope limiting. Critical for production.", tag:"agents" },
+  { phase:4, day:74, task:"Build: AI research agent", detail:"Agent that takes a topic → searches the web → reads pages → summarizes findings → writes a report.", tag:"agents" },
+  { phase:4, day:75, task:"Deploy your agent as a REST API", detail:"Wrap your agent with FastAPI. Create POST /chat endpoint. Test with Postman. This is production-ready.", tag:"agents" },
+  { phase:4, day:76, task:"Document & push Phase 4 projects", detail:"GitHub READMEs, architecture diagrams, demo videos. These are your most impressive portfolio pieces.", tag:"agents" },
+  { phase:4, day:77, task:"🎉 REST DAY — Phase 4 complete!", detail:"You can now build AI agents. This is genuinely advanced. You're ready for senior-level AI job applications.", tag:"rest" },
+
+  // PHASE 5: Cloud & Job Prep (Days 78–90)
+  { phase:5, day:78, task:"AWS or Azure for AI — pick one", detail:"AWS Bedrock vs Azure OpenAI. If you know AWS already, use Bedrock. If not, Azure is more beginner-friendly.", tag:"cloud" },
+  { phase:5, day:79, task:"Deploy your RAG app on AWS/Azure", detail:"Containerize with Docker. Deploy to AWS ECS or Azure Container Apps. Your first cloud AI deployment.", tag:"cloud" },
+  { phase:5, day:80, task:"Docker basics for AI apps", detail:"Write a Dockerfile for your chatbot. docker build, docker run. Essential for any modern job.", tag:"cloud" },
+  { phase:5, day:81, task:"CI/CD basics: GitHub Actions", detail:"Auto-deploy your app when you push to main. Basic GitHub Actions YAML. Shows you know DevOps.", tag:"cloud" },
+  { phase:5, day:82, task:"Polish your LinkedIn profile", detail:"AI Engineer headline, featured projects, about section. Get peer review. Start connecting with AI engineers.", tag:"project" },
+  { phase:5, day:83, task:"Write your portfolio README", detail:"A master README linking all your projects. Explain what each does, what you learned, tech stack used.", tag:"project" },
+  { phase:5, day:84, task:"🎉 REST DAY — review all projects", detail:"List all 6+ projects you've built. For each: what problem does it solve? What would you improve?", tag:"rest" },
+  { phase:5, day:85, task:"Mock interview: LLM concepts", detail:"Ask Claude: 'Give me 10 AI engineer interview questions.' Answer them out loud. Record yourself.", tag:"project" },
+  { phase:5, day:86, task:"Mock interview: RAG & system design", detail:"Practice: 'Design a RAG system for a 10M document enterprise.' Draw the architecture. Time yourself.", tag:"project" },
+  { phase:5, day:87, task:"Apply to 5 AI Engineer jobs", detail:"LinkedIn + Wellfound + Indeed. Target e-commerce companies first (your Hybris advantage). Personalize each cover.", tag:"project" },
+  { phase:5, day:88, task:"Apply to 5 more + reach out to 3 recruiters", detail:"DM AI recruiters on LinkedIn. Reference your GitHub projects. Short message, specific ask.", tag:"project" },
+  { phase:5, day:89, task:"Spring AI: build one project in Java", detail:"Build your RAG chatbot using Spring AI + Java. This speaks directly to enterprise Java hiring managers.", tag:"project" },
+  { phase:5, day:90, task:"🏆 DAY 90 — YOU DID IT!", detail:"90 days of consistent learning. You are now an AI Engineer. Review everything you've built. You should be proud. Now go get that job.", tag:"project" },
+];
+
+const PHASES = [
+  { id:1, icon:'🐍', title:'Phase 1: Python Foundations', range:'Days 1–21' },
+  { id:2, icon:'🤖', title:'Phase 2: LLM APIs', range:'Days 22–42' },
+  { id:3, icon:'📚', title:'Phase 3: RAG Systems', range:'Days 43–63' },
+  { id:4, icon:'🕵️', title:'Phase 4: AI Agents', range:'Days 64–77' },
+  { id:5, icon:'☁️', title:'Phase 5: Cloud & Job Prep', range:'Days 78–90' },
+];
+
+const TAG_MAP = {
+  python: ['Python', 'dt-python'],
+  llm: ['LLM APIs', 'dt-llm'],
+  rag: ['RAG', 'dt-rag'],
+  agents: ['Agents', 'dt-agents'],
+  cloud: ['Cloud', 'dt-cloud'],
+  project: ['Career', 'dt-project'],
+  rest: ['Rest Day', 'dt-rest'],
+};
+
+// Storage helpers (localStorage)
+function getCompleted() {
+  try { return JSON.parse(localStorage.getItem('tracker_completed') || '{}'); } catch { return {}; }
+}
+function saveCompleted(obj) {
+  try { localStorage.setItem('tracker_completed', JSON.stringify(obj)); } catch {}
+}
+function getStartDate() {
+  try {
+    let d = localStorage.getItem('tracker_start');
+    if (!d) {
+      // Start date = tomorrow
+      const tomorrow = new Date();
+      tomorrow.setDate(tomorrow.getDate() + 1);
+      d = tomorrow.toISOString().split('T')[0];
+      localStorage.setItem('tracker_start', d);
+    }
+    return d;
+  } catch { return new Date().toISOString().split('T')[0]; }
+}
+
+function getTodayDayNum() {
+  const start = new Date(getStartDate());
+  const today = new Date();
+  today.setHours(0,0,0,0);
+  start.setHours(0,0,0,0);
+  const diff = Math.floor((today - start) / 86400000) + 1;
+  return Math.max(1, Math.min(diff, 90));
+}
+
+function renderTracker() {
+  const completed = getCompleted();
+  const todayDay = getTodayDayNum();
+  const doneCount = Object.values(completed).filter(Boolean).length;
+  const pct = Math.round((doneCount / 90) * 100);
+
+  // Update hero
+  document.getElementById('t-current-day').textContent = todayDay;
+  const todayItem = CURRICULUM.find(d => d.day === todayDay);
+  document.getElementById('t-current-label').textContent = todayItem ? todayItem.task : 'All 90 days complete!';
+  document.getElementById('t-overall-bar').style.width = pct + '%';
+  document.getElementById('t-pct').textContent = pct + '%';
+  document.getElementById('t-done').textContent = doneCount;
+  document.getElementById('t-left').textContent = Math.max(0, 90 - doneCount);
+
+  // Streak
+  let streak = 0;
+  for (let i = todayDay; i >= 1; i--) {
+    const item = CURRICULUM[i-1];
+    if (item.tag === 'rest' || completed[i]) streak++;
+    else break;
+  }
+  document.getElementById('t-streak').textContent = streak;
+
+  // Render phases
+  const container = document.getElementById('tracker-phases');
+  container.innerHTML = '';
+
+  PHASES.forEach(phase => {
+    const days = CURRICULUM.filter(d => d.phase === phase.id);
+    const phaseDone = days.filter(d => d.tag === 'rest' || completed[d.day]).length;
+    const phaseTotal = days.length;
+    const allDone = phaseDone === phaseTotal;
+
+    const block = document.createElement('div');
+    block.className = 'phase-block';
+    // Auto-collapse completed phases
+    if (allDone && phase.id < 5) block.classList.add('collapsed');
+
+    const pillClass = allDone ? 'phase-progress-pill done' : 'phase-progress-pill';
+    const pillText = allDone ? '✓ Done' : `${phaseDone}/${phaseTotal}`;
+
+    block.innerHTML = `
+      <div class="phase-header" onclick="togglePhase(this)">
+        <div class="phase-icon">${phase.icon}</div>
+        <div class="phase-info">
+          <div class="phase-title">${phase.title}</div>
+          <div class="phase-range">${phase.range}</div>
+        </div>
+        <div class="${pillClass}">${pillText}</div>
+        <div class="phase-chevron">▼</div>
+      </div>
+      <div class="phase-days" id="phase-days-${phase.id}"></div>
+    `;
+    container.appendChild(block);
+
+    const daysContainer = block.querySelector('.phase-days');
+    days.forEach(item => {
+      const isDone = item.tag === 'rest' || !!completed[item.day];
+      const isToday = item.day === todayDay;
+      const [tagLabel, tagClass] = TAG_MAP[item.tag] || ['', ''];
+
+      const row = document.createElement('div');
+      row.className = 'day-row' + (isDone ? ' completed' : '') + (isToday ? ' today' : '');
+      row.dataset.day = item.day;
+      row.onclick = () => toggleDay(item.day);
+
+      row.innerHTML = `
+        <div class="day-check">${isDone ? '✓' : ''}</div>
+        <div class="day-content">
+          <div class="day-num-label">Day ${item.day}</div>
+          <div class="day-task">${item.task}</div>
+          <div class="day-detail">${item.detail}</div>
+          ${tagLabel ? `<span class="day-tag ${tagClass}">${tagLabel}</span>` : ''}
+        </div>
+      `;
+      daysContainer.appendChild(row);
+    });
+  });
+}
+
+function toggleDay(dayNum) {
+  const completed = getCompleted();
+  const item = CURRICULUM[dayNum - 1];
+  if (item && item.tag === 'rest') return; // rest days auto-complete
+  const wasDone = !!completed[dayNum];
+  completed[dayNum] = !wasDone;
+  saveCompleted(completed);
+
+  if (!wasDone) {
+    // Show confetti message briefly
+    const msg = document.getElementById('confetti-msg');
+    msg.style.display = 'block';
+    setTimeout(() => msg.style.display = 'none', 3000);
+  }
+  renderTracker();
+}
+
+function togglePhase(header) {
+  const block = header.closest('.phase-block');
+  block.classList.toggle('collapsed');
+}
+
+function confirmReset() {
+  if (confirm('Reset all your progress? This cannot be undone.')) {
+    try { localStorage.removeItem('tracker_completed'); localStorage.removeItem('tracker_start'); } catch {}
+    renderTracker();
+  }
+}
+
+// Render tracker when page loads or tab switches
+const _origShowPage = showPage;
+function showPage(id, ...args) {
+  _origShowPage(id, ...args);
+  if (id === 'tracker') renderTracker();
+}
+
+// Initial render if on tracker tab
+window.addEventListener('DOMContentLoaded', () => {
+  renderTracker();
+});
+
 // ── Hash routing ──
-const hashMap = { '#tech':'tech', '#sidehustles':'hustles', '#dog':'dog', '#plan':'plan' };
+const hashMap = { '#tech':'tech', '#sidehustles':'hustles', '#dog':'dog', '#plan':'plan', '#tracker':'tracker' };
 if (hashMap[location.hash]) showPage(hashMap[location.hash]);
 </script>
 </body>
