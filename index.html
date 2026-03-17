@@ -28,14 +28,14 @@ body::before { content: ''; position: fixed; inset: 0; background-image: linear-
 .topbar-title { font-family: 'Syne', sans-serif; font-size: 17px; font-weight: 800; }
 .topbar-title span { color: var(--accent); }
 .topbar-badge { background: rgba(240,192,64,0.15); border: 1px solid rgba(240,192,64,0.3); border-radius: 99px; padding: 3px 10px; font-size: 11px; font-weight: 600; color: var(--accent); }
-.scroll-area { flex: 1; overflow-y: auto; overflow-x: hidden; -webkit-overflow-scrolling: touch; scroll-behavior: smooth; }
+.scroll-area { flex: 1; overflow-y: auto; overflow-x: hidden; -webkit-overflow-scrolling: touch; scroll-behavior: smooth; position: relative; }
 .scroll-area::-webkit-scrollbar { display: none; }
-.page { display: none; padding: 16px 16px 20px; min-height: 100%; }
-.page.active { display: block; animation: slideUp 0.25s ease; }
+.page { display: none; padding: 16px 16px calc(var(--nav-h) + var(--safe-bottom) + 20px); pointer-events: none; }
+.page.active { display: block; pointer-events: auto; animation: slideUp 0.25s ease; }
 @keyframes slideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
 /* BOTTOM NAV */
-.bottom-nav { flex-shrink: 0; height: calc(var(--nav-h) + var(--safe-bottom)); padding-bottom: var(--safe-bottom); background: rgba(13,13,20,0.97); backdrop-filter: blur(20px); border-top: 1px solid var(--border); display: flex; align-items: center; z-index: 999; }
+.bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; height: calc(var(--nav-h) + var(--safe-bottom)); padding-bottom: var(--safe-bottom); background: rgba(13,13,20,0.97); backdrop-filter: blur(20px); border-top: 1px solid var(--border); display: flex; align-items: center; z-index: 999; }
 .nav-btn { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; padding: 8px 4px; border: none; background: transparent; cursor: pointer; color: var(--muted); transition: color 0.2s; position: relative; }
 .nav-btn.active { color: var(--accent); }
 .nav-icon { font-size: 20px; line-height: 1; transition: transform 0.2s; }
@@ -55,7 +55,7 @@ body::before { content: ''; position: fixed; inset: 0; background-image: linear-
 .install-actions { display: flex; gap: 8px; margin-top: 12px; }
 .btn-install { flex: 1; padding: 9px; border: none; border-radius: 10px; background: var(--accent); color: #0a0a0f; font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 700; cursor: pointer; }
 .btn-dismiss { padding: 9px 14px; border: 1px solid var(--border); border-radius: 10px; background: transparent; color: var(--muted); font-family: 'DM Sans', sans-serif; font-size: 13px; cursor: pointer; }
-#offline-toast { display: none; position: fixed; bottom: calc(var(--nav-h) + var(--safe-bottom) + 12px); left: 50%; transform: translateX(-50%); background: var(--surface2); border: 1px solid var(--border); border-radius: 99px; padding: 8px 18px; font-size: 13px; color: var(--muted); white-space: nowrap; z-index: 1000; pointer-events: none; }
+#offline-toast { display: none; position: fixed; bottom: calc(var(--nav-h) + var(--safe-bottom) + 12px); left: 50%; transform: translateX(-50%); background: var(--surface2); border: 1px solid var(--border); border-radius: 99px; padding: 8px 18px; font-size: 13px; color: var(--muted); white-space: nowrap; z-index: 500; pointer-events: none; }
 
 /* COMMON COMPONENTS */
 .section-label { font-family: 'Syne', sans-serif; font-size: 10px; letter-spacing: 4px; text-transform: uppercase; color: var(--accent); margin-bottom: 6px; opacity: 0.8; }
@@ -224,10 +224,10 @@ body::before { content: ''; position: fixed; inset: 0; background-image: linear-
       <div class="step-item"><div class="step-num">5</div><div><div class="step-title">Cloud Deployment — AWS / Azure (ongoing)</div><div class="step-body">Deploy AI apps on AWS Bedrock or Azure OpenAI. Java backend knowledge applies directly.</div></div></div>
       <div class="tip-box"><strong>💡 Java Shortcut:</strong> Spring AI lets you build AI-powered apps in Java right now — bridge the gap while learning Python.</div>
       <div class="section-label" style="margin-top:20px">FAQs</div>
-      <div class="accordion-item"><button class="accordion-btn">Do I need a degree or master's? <span class="accordion-icon">+</span></button><div class="accordion-content">No. Only ~17% of AI engineers have a master's. What matters is a strong GitHub portfolio. 3–4 real projects beats any certificate.</div></div>
-      <div class="accordion-item"><button class="accordion-btn">How long until job-ready? <span class="accordion-icon">+</span></button><div class="accordion-content">6–9 months of 1–2 hrs/day. Python clicks fast from Java. Start applying at month 4–5 — you don't need to know everything to get interviews.</div></div>
-      <div class="accordion-item"><button class="accordion-btn">Can I find remote roles? <span class="accordion-icon">+</span></button><div class="accordion-content">Absolutely. AI engineering is one of the most remote-friendly categories. LinkedIn + Wellfound + Indeed. Filter: "remote" + "AI engineer" + "LLM". Target e-commerce companies first.</div></div>
-      <div class="accordion-item"><button class="accordion-btn">What specialty pays most? <span class="accordion-icon">+</span></button><div class="accordion-content">LLM Fine-tuning and MLOps — keeping AI reliable in production. Companies can't find people who maintain AI apps, not just build demos. Adds $15K–$30K to base salary.</div></div>
+      <div class="accordion-item"><button class="accordion-btn" onclick="toggleAcc(this)">Do I need a degree or master's? <span class="accordion-icon">+</span></button><div class="accordion-content">No. Only ~17% of AI engineers have a master's. What matters is a strong GitHub portfolio. 3–4 real projects beats any certificate.</div></div>
+      <div class="accordion-item"><button class="accordion-btn" onclick="toggleAcc(this)">How long until job-ready? <span class="accordion-icon">+</span></button><div class="accordion-content">6–9 months of 1–2 hrs/day. Python clicks fast from Java. Start applying at month 4–5 — you don't need to know everything to get interviews.</div></div>
+      <div class="accordion-item"><button class="accordion-btn" onclick="toggleAcc(this)">Can I find remote roles? <span class="accordion-icon">+</span></button><div class="accordion-content">Absolutely. AI engineering is one of the most remote-friendly categories. LinkedIn + Wellfound + Indeed. Filter: "remote" + "AI engineer" + "LLM". Target e-commerce companies first.</div></div>
+      <div class="accordion-item"><button class="accordion-btn" onclick="toggleAcc(this)">What specialty pays most? <span class="accordion-icon">+</span></button><div class="accordion-content">LLM Fine-tuning and MLOps — keeping AI reliable in production. Companies can't find people who maintain AI apps, not just build demos. Adds $15K–$30K to base salary.</div></div>
     </div>
 
     <!-- ══ HUSTLES ══ -->
@@ -301,7 +301,7 @@ body::before { content: ''; position: fixed; inset: 0; background-image: linear-
 
       <div id="tracker-phases"></div>
 
-      <button class="reset-btn" id="btn-reset">⚠️ Reset All Progress</button>
+      <button class="reset-btn" onclick="confirmReset()">⚠️ Reset All Progress</button>
       <div style="height:12px"></div>
     </div>
 
@@ -309,19 +309,19 @@ body::before { content: ''; position: fixed; inset: 0; background-image: linear-
 
   <!-- Bottom Nav -->
   <nav class="bottom-nav">
-    <button class="nav-btn active" id="nav-tech" data-page="tech">
+    <button class="nav-btn active" id="nav-tech" onclick="showPage('tech')">
       <div class="nav-dot"></div><div class="nav-icon">🧠</div><div class="nav-label">Tech</div>
     </button>
-    <button class="nav-btn" id="nav-hustles" data-page="hustles">
+    <button class="nav-btn" id="nav-hustles" onclick="showPage('hustles')">
       <div class="nav-dot"></div><div class="nav-icon">💰</div><div class="nav-label">Hustles</div>
     </button>
-    <button class="nav-btn" id="nav-dog" data-page="dog">
+    <button class="nav-btn" id="nav-dog" onclick="showPage('dog')">
       <div class="nav-dot"></div><div class="nav-icon">🐾</div><div class="nav-label">Dog Page</div>
     </button>
-    <button class="nav-btn" id="nav-plan" data-page="plan">
+    <button class="nav-btn" id="nav-plan" onclick="showPage('plan')">
       <div class="nav-dot"></div><div class="nav-icon">🗓</div><div class="nav-label">5-Yr Plan</div>
     </button>
-    <button class="nav-btn" id="nav-tracker" data-page="tracker">
+    <button class="nav-btn" id="nav-tracker" onclick="showPage('tracker')">
       <div class="nav-dot"></div><div class="nav-icon">✅</div><div class="nav-label">Tracker</div>
     </button>
   </nav>
@@ -335,7 +335,7 @@ body::before { content: ''; position: fixed; inset: 0; background-image: linear-
   </div>
   <div class="install-actions">
     <button class="btn-install" id="btn-install-confirm">Install App</button>
-    <button class="btn-dismiss" id="btn-dismiss-install">Not now</button>
+    <button class="btn-dismiss" onclick="dismissInstall()">Not now</button>
   </div>
 </div>
 <div id="offline-toast">📵 Offline — app still works!</div>
@@ -357,11 +357,6 @@ function showPage(id) {
   if (id === 'tracker') renderTracker();
 }
 
-// Attach nav button listeners
-document.querySelectorAll('.nav-btn[data-page]').forEach(btn => {
-  btn.addEventListener('click', () => showPage(btn.dataset.page));
-});
-
 // ── Salary Bars ──
 function animateBars() {
   [['bar1','40%'],['bar2','65%'],['bar3','90%']].forEach(([id, w]) => {
@@ -378,12 +373,6 @@ function toggleAcc(btn) {
   document.querySelectorAll('.accordion-btn').forEach(b => { b.classList.remove('open'); if (b.nextElementSibling) b.nextElementSibling.classList.remove('open'); });
   if (!isOpen) { btn.classList.add('open'); content.classList.add('open'); }
 }
-document.querySelectorAll('.accordion-btn').forEach(btn => {
-  btn.addEventListener('click', () => toggleAcc(btn));
-});
-
-// ── Reset Button ──
-document.getElementById('btn-reset').addEventListener('click', confirmReset);
 
 // ── PWA Install ──
 let deferredPrompt = null;
@@ -398,7 +387,6 @@ document.getElementById('btn-install-confirm').addEventListener('click', async (
   deferredPrompt = null; dismissInstall();
 });
 function dismissInstall() { document.getElementById('install-banner').classList.remove('visible'); }
-document.getElementById('btn-dismiss-install').addEventListener('click', dismissInstall);
 window.addEventListener('appinstalled', dismissInstall);
 
 // ── Online/Offline ──
@@ -599,7 +587,7 @@ function renderTracker() {
     const pillText = allDone ? '✓ Done' : `${phaseDone}/${days.length}`;
 
     block.innerHTML = `
-      <div class="phase-header">
+      <div class="phase-header" onclick="this.closest('.phase-block').classList.toggle('open')">
         <div class="phase-icon">${phase.icon}</div>
         <div class="phase-info"><div class="phase-title">${phase.title}</div><div class="phase-range">${phase.range}</div></div>
         <div class="${pillClass}">${pillText}</div>
@@ -607,10 +595,6 @@ function renderTracker() {
       </div>
       <div class="phase-days"></div>
     `;
-
-    block.querySelector('.phase-header').addEventListener('click', () => {
-      block.classList.toggle('open');
-    });
 
     const daysContainer = block.querySelector('.phase-days');
     days.forEach(item => {
@@ -630,7 +614,7 @@ function renderTracker() {
         </div>
       `;
       if (item.tag !== 'rest') {
-        row.addEventListener('click', () => toggleDay(item.day));
+        row.onclick = () => toggleDay(item.day);
       }
       daysContainer.appendChild(row);
     });
