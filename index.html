@@ -28,14 +28,14 @@ body::before { content: ''; position: fixed; inset: 0; background-image: linear-
 .topbar-title { font-family: 'Syne', sans-serif; font-size: 17px; font-weight: 800; }
 .topbar-title span { color: var(--accent); }
 .topbar-badge { background: rgba(240,192,64,0.15); border: 1px solid rgba(240,192,64,0.3); border-radius: 99px; padding: 3px 10px; font-size: 11px; font-weight: 600; color: var(--accent); }
-.scroll-area { flex: 1; overflow-y: auto; overflow-x: hidden; -webkit-overflow-scrolling: touch; scroll-behavior: smooth; position: relative; }
+.scroll-area { flex: 1; overflow-y: auto; overflow-x: hidden; -webkit-overflow-scrolling: touch; scroll-behavior: smooth; }
 .scroll-area::-webkit-scrollbar { display: none; }
-.page { display: none; padding: 16px 16px calc(var(--nav-h) + var(--safe-bottom) + 20px); pointer-events: none; }
-.page.active { display: block; pointer-events: auto; animation: slideUp 0.25s ease; }
+.page { display: none; padding: 16px 16px 24px; }
+.page.active { display: block; animation: slideUp 0.25s ease; }
 @keyframes slideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
 /* BOTTOM NAV */
-.bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; height: calc(var(--nav-h) + var(--safe-bottom)); padding-bottom: var(--safe-bottom); background: rgba(13,13,20,0.97); backdrop-filter: blur(20px); border-top: 1px solid var(--border); display: flex; align-items: center; z-index: 999; }
+.bottom-nav { flex-shrink: 0; height: calc(var(--nav-h) + var(--safe-bottom)); padding-bottom: var(--safe-bottom); background: rgba(13,13,20,0.97); backdrop-filter: blur(20px); border-top: 1px solid var(--border); display: flex; align-items: center; z-index: 999; }
 .nav-btn { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; padding: 8px 4px; border: none; background: transparent; cursor: pointer; color: var(--muted); transition: color 0.2s; position: relative; }
 .nav-btn.active { color: var(--accent); }
 .nav-icon { font-size: 20px; line-height: 1; transition: transform 0.2s; }
