@@ -13,932 +13,295 @@
 <title>5-Year Freedom Plan</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --bg: #0a0a0f;
-    --surface: #13131a;
-    --surface2: #1c1c27;
-    --accent: #f0c040;
-    --accent2: #e07830;
-    --accent3: #60c8a0;
-    --text: #e8e8f0;
-    --muted: #8888aa;
-    --border: rgba(240,192,64,0.15);
-    --nav-h: 64px;
-    --safe-bottom: env(safe-area-inset-bottom, 0px);
-  }
-  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+:root {
+  --bg: #0a0a0f; --surface: #13131a; --surface2: #1c1c27;
+  --accent: #f0c040; --accent2: #e07830; --accent3: #60c8a0;
+  --text: #e8e8f0; --muted: #8888aa; --border: rgba(240,192,64,0.15);
+  --nav-h: 64px; --safe-bottom: env(safe-area-inset-bottom, 0px);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+html, body { height: 100%; overflow: hidden; }
+body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); overscroll-behavior: none; }
+body::before { content: ''; position: fixed; inset: 0; background-image: linear-gradient(rgba(240,192,64,0.025) 1px, transparent 1px), linear-gradient(90deg, rgba(240,192,64,0.025) 1px, transparent 1px); background-size: 48px 48px; pointer-events: none; z-index: 0; }
+#app { position: fixed; inset: 0; display: flex; flex-direction: column; z-index: 1; }
+.topbar { flex-shrink: 0; display: flex; align-items: center; justify-content: space-between; padding: 12px 20px; padding-top: calc(12px + env(safe-area-inset-top, 0px)); background: rgba(10,10,15,0.92); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); }
+.topbar-title { font-family: 'Syne', sans-serif; font-size: 17px; font-weight: 800; }
+.topbar-title span { color: var(--accent); }
+.topbar-badge { background: rgba(240,192,64,0.15); border: 1px solid rgba(240,192,64,0.3); border-radius: 99px; padding: 3px 10px; font-size: 11px; font-weight: 600; color: var(--accent); }
+.scroll-area { flex: 1; overflow-y: auto; overflow-x: hidden; -webkit-overflow-scrolling: touch; scroll-behavior: smooth; }
+.scroll-area::-webkit-scrollbar { display: none; }
+.page { display: none; padding: 16px 16px calc(var(--nav-h) + var(--safe-bottom) + 20px); min-height: 100%; animation: slideUp 0.25s ease; }
+.page.active { display: block; }
+@keyframes slideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-  html, body {
-    height: 100%;
-    overflow: hidden;
-  }
+/* BOTTOM NAV */
+.bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; height: calc(var(--nav-h) + var(--safe-bottom)); padding-bottom: var(--safe-bottom); background: rgba(13,13,20,0.97); backdrop-filter: blur(20px); border-top: 1px solid var(--border); display: flex; align-items: center; z-index: 100; }
+.nav-btn { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; padding: 8px 4px; border: none; background: transparent; cursor: pointer; color: var(--muted); transition: color 0.2s; position: relative; }
+.nav-btn.active { color: var(--accent); }
+.nav-icon { font-size: 20px; line-height: 1; transition: transform 0.2s; }
+.nav-btn.active .nav-icon { transform: scale(1.15); }
+.nav-label { font-family: 'DM Sans', sans-serif; font-size: 9px; font-weight: 600; letter-spacing: 0.3px; text-transform: uppercase; }
+.nav-dot { position: absolute; top: 5px; width: 5px; height: 5px; border-radius: 50%; background: var(--accent); opacity: 0; transition: opacity 0.2s; }
+.nav-btn.active .nav-dot { opacity: 1; }
 
-  body {
-    font-family: 'DM Sans', sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    overscroll-behavior: none;
-  }
+/* INSTALL BANNER */
+#install-banner { display: none; position: fixed; top: calc(env(safe-area-inset-top, 0px) + 62px); left: 12px; right: 12px; background: linear-gradient(135deg, #1c1c27, #13131a); border: 1px solid var(--accent); border-radius: 16px; padding: 16px 18px; z-index: 200; box-shadow: 0 8px 32px rgba(0,0,0,0.5); animation: dropIn 0.4s cubic-bezier(0.34,1.56,0.64,1); }
+@keyframes dropIn { from { opacity: 0; transform: translateY(-20px) scale(0.95); } to { opacity: 1; transform: translateY(0) scale(1); } }
+.install-banner-inner { display: flex; align-items: center; gap: 14px; }
+.install-icon { font-size: 30px; flex-shrink: 0; }
+.install-title { font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 700; margin-bottom: 2px; }
+.install-sub { font-size: 12px; color: var(--muted); }
+.install-actions { display: flex; gap: 8px; margin-top: 12px; }
+.btn-install { flex: 1; padding: 9px; border: none; border-radius: 10px; background: var(--accent); color: #0a0a0f; font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 700; cursor: pointer; }
+.btn-dismiss { padding: 9px 14px; border: 1px solid var(--border); border-radius: 10px; background: transparent; color: var(--muted); font-family: 'DM Sans', sans-serif; font-size: 13px; cursor: pointer; }
+#offline-toast { display: none; position: fixed; bottom: calc(var(--nav-h) + var(--safe-bottom) + 12px); left: 50%; transform: translateX(-50%); background: var(--surface2); border: 1px solid var(--border); border-radius: 99px; padding: 8px 18px; font-size: 13px; color: var(--muted); white-space: nowrap; z-index: 300; }
 
-  /* Grid bg */
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image:
-      linear-gradient(rgba(240,192,64,0.025) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(240,192,64,0.025) 1px, transparent 1px);
-    background-size: 48px 48px;
-    pointer-events: none;
-    z-index: 0;
-  }
+/* COMMON COMPONENTS */
+.section-label { font-family: 'Syne', sans-serif; font-size: 10px; letter-spacing: 4px; text-transform: uppercase; color: var(--accent); margin-bottom: 6px; opacity: 0.8; }
+.section-title { font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 800; margin-bottom: 6px; }
+.section-desc { font-size: 13px; color: var(--muted); line-height: 1.6; margin-bottom: 18px; }
+.hero { text-align: center; padding: 20px 0 16px; }
+.hero-eyebrow { font-family: 'Syne', sans-serif; font-size: 10px; letter-spacing: 4px; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; opacity: 0.8; }
+.hero h1 { font-family: 'Syne', sans-serif; font-size: clamp(30px, 8vw, 50px); font-weight: 800; line-height: 1.05; margin-bottom: 10px; }
+.hero h1 span { color: var(--accent); }
+.hero-sub { font-size: 14px; color: var(--muted); line-height: 1.6; }
+.stats-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 18px 0; }
+.stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 14px 10px; text-align: center; }
+.stat-num { font-family: 'Syne', sans-serif; font-size: 21px; font-weight: 800; color: var(--accent); margin-bottom: 4px; }
+.stat-desc { font-size: 11px; color: var(--muted); line-height: 1.4; }
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 18px; margin-bottom: 12px; }
+.card:active { border-color: rgba(240,192,64,0.3); }
+.card-title { font-family: 'Syne', sans-serif; font-size: 16px; font-weight: 700; margin-bottom: 4px; }
+.card-subtitle { font-size: 12px; color: var(--muted); margin-bottom: 10px; }
+.card-body { font-size: 13px; line-height: 1.7; color: #c0c0d8; }
+.tags { display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0; }
+.tag { padding: 3px 10px; border-radius: 20px; font-size: 10px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; }
+.tag-yellow { background: rgba(240,192,64,0.15); color: var(--accent); border: 1px solid rgba(240,192,64,0.25); }
+.tag-orange { background: rgba(224,120,48,0.15); color: var(--accent2); border: 1px solid rgba(224,120,48,0.25); }
+.tag-green { background: rgba(96,200,160,0.15); color: var(--accent3); border: 1px solid rgba(96,200,160,0.25); }
+.tag-purple { background: rgba(160,96,255,0.15); color: #a060ff; border: 1px solid rgba(160,96,255,0.25); }
+.salary-label { display: flex; justify-content: space-between; font-size: 11px; margin-bottom: 5px; color: var(--muted); }
+.salary-bar { height: 7px; background: var(--surface2); border-radius: 99px; overflow: hidden; margin-bottom: 12px; }
+.salary-fill { height: 100%; border-radius: 99px; background: linear-gradient(90deg, var(--accent2), var(--accent)); transition: width 1.2s ease; }
+.meta-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 12px; }
+.meta-item { background: var(--surface2); border-radius: 10px; padding: 10px 14px; }
+.meta-label { font-size: 9px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--muted); margin-bottom: 3px; }
+.meta-value { font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 700; }
+.meta-value.green { color: var(--accent3); } .meta-value.yellow { color: var(--accent); } .meta-value.orange { color: var(--accent2); }
+.accordion-item { margin-bottom: 8px; }
+.accordion-btn { width: 100%; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 14px 16px; text-align: left; cursor: pointer; display: flex; justify-content: space-between; align-items: center; color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 500; transition: all 0.2s; }
+.accordion-btn.open { border-color: var(--accent); border-radius: 12px 12px 0 0; border-bottom-color: transparent; }
+.accordion-icon { font-size: 18px; transition: transform 0.3s; color: var(--accent); }
+.accordion-btn.open .accordion-icon { transform: rotate(45deg); }
+.accordion-content { display: none; background: var(--surface); border: 1px solid var(--accent); border-top: none; border-radius: 0 0 12px 12px; padding: 14px 16px; font-size: 13px; color: #c0c0d8; line-height: 1.7; }
+.accordion-content.open { display: block; }
+.step-item { display: flex; gap: 14px; margin-bottom: 16px; align-items: flex-start; }
+.step-num { width: 30px; height: 30px; border-radius: 50%; background: var(--accent); color: #0a0a0f; display: flex; align-items: center; justify-content: center; font-family: 'Syne', sans-serif; font-weight: 800; font-size: 13px; flex-shrink: 0; }
+.step-title { font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 700; margin-bottom: 3px; }
+.step-body { font-size: 13px; color: #c0c0d8; line-height: 1.6; }
+.timeline { position: relative; padding-left: 26px; }
+.timeline::before { content: ''; position: absolute; left: 7px; top: 0; bottom: 0; width: 2px; background: linear-gradient(to bottom, var(--accent), transparent); opacity: 0.3; }
+.timeline-item { position: relative; margin-bottom: 24px; }
+.timeline-item::before { content: ''; position: absolute; left: -22px; top: 5px; width: 11px; height: 11px; border-radius: 50%; background: var(--accent); border: 2px solid var(--bg); box-shadow: 0 0 10px rgba(240,192,64,0.4); }
+.timeline-period { font-family: 'Syne', sans-serif; font-size: 10px; letter-spacing: 2px; color: var(--accent); text-transform: uppercase; margin-bottom: 3px; }
+.timeline-title { font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 700; margin-bottom: 5px; }
+.timeline-body { font-size: 13px; color: #c0c0d8; line-height: 1.6; }
+.note-box { background: rgba(224,120,48,0.08); border: 1px solid rgba(224,120,48,0.25); border-radius: 10px; padding: 12px 14px; font-size: 12px; color: #d8a878; line-height: 1.6; margin-top: 10px; }
+.note-box strong { color: var(--accent2); }
+.tip-box { background: rgba(96,200,160,0.08); border: 1px solid rgba(96,200,160,0.2); border-radius: 10px; padding: 12px 14px; font-size: 12px; color: #90d8b8; line-height: 1.6; margin-top: 10px; }
+.tip-box strong { color: var(--accent3); }
+.progress-row { margin: 12px 0; }
+.prog-label { font-size: 11px; color: var(--muted); margin-bottom: 4px; display: flex; justify-content: space-between; }
+.prog-bar { height: 5px; background: var(--surface2); border-radius: 99px; overflow: hidden; }
+.prog-fill { height: 100%; border-radius: 99px; }
+.highlight-card { background: rgba(240,192,64,0.06); border: 1px solid rgba(240,192,64,0.3); border-radius: 16px; padding: 18px; margin-bottom: 12px; }
 
-  /* ── LAYOUT ── */
-  #app {
-    position: fixed;
-    inset: 0;
-    display: flex;
-    flex-direction: column;
-    z-index: 1;
-  }
+/* TRACKER STYLES */
+.tracker-hero { background: linear-gradient(135deg, rgba(240,192,64,0.08), rgba(96,200,160,0.06)); border: 1px solid rgba(240,192,64,0.2); border-radius: 20px; padding: 20px; margin-bottom: 16px; text-align: center; }
+.tracker-hero-title { font-family: 'Syne', sans-serif; font-size: 11px; font-weight: 700; color: var(--muted); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 4px; }
+.tracker-day-num { font-family: 'Syne', sans-serif; font-size: 48px; font-weight: 800; color: var(--accent); line-height: 1; margin-bottom: 4px; }
+.tracker-day-label { font-size: 13px; color: var(--text); margin-bottom: 16px; font-weight: 500; }
+.overall-bar-wrap { background: var(--surface2); border-radius: 99px; height: 8px; overflow: hidden; margin-bottom: 8px; }
+.overall-bar-fill { height: 100%; border-radius: 99px; background: linear-gradient(90deg, var(--accent2), var(--accent3)); transition: width 0.6s ease; }
+.overall-pct { font-size: 12px; color: var(--muted); }
+.overall-pct span { color: var(--accent3); font-weight: 700; }
+.streak-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 20px; }
+.streak-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 12px 8px; text-align: center; }
+.streak-num { font-family: 'Syne', sans-serif; font-size: 24px; font-weight: 800; color: var(--accent); }
+.streak-label { font-size: 10px; color: var(--muted); margin-top: 3px; }
+.phase-block { margin-bottom: 20px; }
+.phase-header { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; cursor: pointer; user-select: none; padding: 14px 16px; background: var(--surface); border: 1px solid var(--border); border-radius: 14px; transition: border-color 0.2s; }
+.phase-header:active { border-color: rgba(240,192,64,0.3); }
+.phase-block.open .phase-header { border-radius: 14px 14px 0 0; border-color: rgba(240,192,64,0.3); border-bottom-color: transparent; }
+.phase-icon { font-size: 20px; }
+.phase-info { flex: 1; }
+.phase-title { font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 800; }
+.phase-range { font-size: 11px; color: var(--muted); }
+.phase-pill { font-family: 'Syne', sans-serif; font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 99px; background: var(--surface2); color: var(--muted); white-space: nowrap; }
+.phase-pill.done { background: rgba(96,200,160,0.15); color: var(--accent3); }
+.phase-chevron { color: var(--muted); font-size: 12px; transition: transform 0.3s; }
+.phase-block.open .phase-chevron { transform: rotate(180deg); }
+.phase-days { display: none; background: var(--surface); border: 1px solid rgba(240,192,64,0.25); border-top: none; border-radius: 0 0 14px 14px; overflow: hidden; }
+.phase-block.open .phase-days { display: block; }
+.day-row { display: flex; align-items: flex-start; gap: 12px; padding: 12px 14px; border-bottom: 1px solid rgba(255,255,255,0.04); cursor: pointer; transition: background 0.15s; position: relative; }
+.day-row:last-child { border-bottom: none; }
+.day-row:active { background: rgba(255,255,255,0.03); }
+.day-row.today { background: rgba(240,192,64,0.04); }
+.day-row.today::after { content: 'TODAY'; position: absolute; top: 8px; right: 10px; font-family: 'Syne', sans-serif; font-size: 8px; font-weight: 800; letter-spacing: 1.5px; color: var(--accent); background: rgba(240,192,64,0.12); border-radius: 4px; padding: 2px 5px; }
+.day-row.completed { opacity: 0.6; }
+.day-check { width: 24px; height: 24px; border-radius: 50%; border: 2px solid rgba(136,136,170,0.4); display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px; transition: all 0.2s; font-size: 12px; color: transparent; }
+.day-row.completed .day-check { background: var(--accent3); border-color: var(--accent3); color: #0a0a0f; }
+.day-row.today:not(.completed) .day-check { border-color: var(--accent); }
+.day-content { flex: 1; min-width: 0; }
+.day-num-label { font-family: 'Syne', sans-serif; font-size: 9px; font-weight: 700; letter-spacing: 1.5px; color: var(--muted); text-transform: uppercase; margin-bottom: 2px; }
+.day-row.today:not(.completed) .day-num-label { color: var(--accent); }
+.day-task { font-size: 13px; font-weight: 500; color: var(--text); margin-bottom: 2px; line-height: 1.4; }
+.day-row.completed .day-task { text-decoration: line-through; color: var(--muted); }
+.day-detail { font-size: 11px; color: var(--muted); line-height: 1.5; }
+.day-tag { display: inline-block; margin-top: 5px; padding: 2px 8px; border-radius: 99px; font-size: 10px; font-weight: 600; }
+.dt-python { background: rgba(60,120,255,0.12); color: #6090ff; border: 1px solid rgba(60,120,255,0.2); }
+.dt-llm { background: rgba(240,192,64,0.12); color: var(--accent); border: 1px solid rgba(240,192,64,0.2); }
+.dt-rag { background: rgba(224,120,48,0.12); color: var(--accent2); border: 1px solid rgba(224,120,48,0.2); }
+.dt-agents { background: rgba(160,96,255,0.12); color: #a060ff; border: 1px solid rgba(160,96,255,0.2); }
+.dt-cloud { background: rgba(96,200,160,0.12); color: var(--accent3); border: 1px solid rgba(96,200,160,0.2); }
+.dt-project { background: rgba(255,80,100,0.12); color: #ff8090; border: 1px solid rgba(255,80,100,0.2); }
+.dt-rest { background: rgba(136,136,170,0.1); color: var(--muted); border: 1px solid rgba(136,136,170,0.2); }
+.confetti-msg { display: none; text-align: center; padding: 14px 16px; background: rgba(96,200,160,0.08); border: 1px solid rgba(96,200,160,0.3); border-radius: 14px; margin-bottom: 14px; font-size: 14px; color: var(--accent3); font-family: 'Syne', sans-serif; font-weight: 700; }
+.reset-btn { width: 100%; padding: 12px; background: transparent; border: 1px solid rgba(224,120,48,0.3); border-radius: 10px; color: var(--accent2); font-family: 'DM Sans', sans-serif; font-size: 13px; cursor: pointer; margin-top: 8px; }
+.reset-btn:active { background: rgba(224,120,48,0.08); }
 
-  /* Top bar */
-  .topbar {
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 12px 20px;
-    padding-top: calc(12px + env(safe-area-inset-top, 0px));
-    background: rgba(10,10,15,0.9);
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid var(--border);
-  }
-  .topbar-title {
-    font-family: 'Syne', sans-serif;
-    font-size: 17px;
-    font-weight: 800;
-    color: var(--text);
-  }
-  .topbar-title span { color: var(--accent); }
-  .topbar-badge {
-    background: rgba(240,192,64,0.15);
-    border: 1px solid rgba(240,192,64,0.3);
-    border-radius: 99px;
-    padding: 3px 10px;
-    font-size: 11px;
-    font-weight: 600;
-    color: var(--accent);
-    letter-spacing: 0.5px;
-  }
-
-  /* Scroll area */
-  .scroll-area {
-    flex: 1;
-    overflow-y: auto;
-    overflow-x: hidden;
-    -webkit-overflow-scrolling: touch;
-    scroll-behavior: smooth;
-  }
-  .scroll-area::-webkit-scrollbar { display: none; }
-
-  /* Inner content */
-  .page {
-    display: none;
-    padding: 20px 16px calc(var(--nav-h) + var(--safe-bottom) + 20px);
-    min-height: 100%;
-    animation: slideUp 0.25s ease;
-  }
-  .page.active { display: block; }
-  @keyframes slideUp {
-    from { opacity: 0; transform: translateY(12px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  /* ── BOTTOM NAV ── */
-  .bottom-nav {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: calc(var(--nav-h) + var(--safe-bottom));
-    padding-bottom: var(--safe-bottom);
-    background: rgba(13,13,20,0.97);
-    backdrop-filter: blur(20px);
-    border-top: 1px solid var(--border);
-    display: flex;
-    align-items: center;
-    z-index: 100;
-  }
-  .nav-btn {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 4px;
-    padding: 8px 4px;
-    border: none;
-    background: transparent;
-    cursor: pointer;
-    color: var(--muted);
-    transition: color 0.2s;
-    position: relative;
-  }
-  .nav-btn.active { color: var(--accent); }
-  .nav-icon { font-size: 22px; line-height: 1; transition: transform 0.2s; }
-  .nav-btn.active .nav-icon { transform: scale(1.15); }
-  .nav-label {
-    font-family: 'DM Sans', sans-serif;
-    font-size: 10px;
-    font-weight: 600;
-    letter-spacing: 0.3px;
-    text-transform: uppercase;
-  }
-  .nav-dot {
-    position: absolute;
-    top: 6px;
-    width: 5px; height: 5px;
-    border-radius: 50%;
-    background: var(--accent);
-    opacity: 0;
-    transition: opacity 0.2s;
-  }
-  .nav-btn.active .nav-dot { opacity: 1; }
-
-  /* ── INSTALL BANNER ── */
-  #install-banner {
-    display: none;
-    position: fixed;
-    top: calc(env(safe-area-inset-top, 0px) + 60px);
-    left: 12px; right: 12px;
-    background: linear-gradient(135deg, #1c1c27, #13131a);
-    border: 1px solid var(--accent);
-    border-radius: 16px;
-    padding: 16px 18px;
-    z-index: 200;
-    box-shadow: 0 8px 32px rgba(0,0,0,0.5), 0 0 0 1px rgba(240,192,64,0.1);
-    animation: dropIn 0.4s cubic-bezier(0.34,1.56,0.64,1);
-  }
-  @keyframes dropIn {
-    from { opacity: 0; transform: translateY(-20px) scale(0.95); }
-    to { opacity: 1; transform: translateY(0) scale(1); }
-  }
-  .install-banner-inner { display: flex; align-items: center; gap: 14px; }
-  .install-icon { font-size: 32px; flex-shrink: 0; }
-  .install-text { flex: 1; }
-  .install-title { font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 700; margin-bottom: 2px; }
-  .install-sub { font-size: 12px; color: var(--muted); }
-  .install-actions { display: flex; gap: 8px; margin-top: 12px; }
-  .btn-install {
-    flex: 1; padding: 9px; border: none; border-radius: 10px;
-    background: var(--accent); color: #0a0a0f;
-    font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 700;
-    cursor: pointer; transition: opacity 0.2s;
-  }
-  .btn-install:hover { opacity: 0.9; }
-  .btn-dismiss {
-    padding: 9px 14px; border: 1px solid var(--border); border-radius: 10px;
-    background: transparent; color: var(--muted);
-    font-family: 'DM Sans', sans-serif; font-size: 13px;
-    cursor: pointer;
-  }
-
-  /* ── OFFLINE TOAST ── */
-  #offline-toast {
-    display: none;
-    position: fixed;
-    bottom: calc(var(--nav-h) + var(--safe-bottom) + 12px);
-    left: 50%; transform: translateX(-50%);
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: 99px;
-    padding: 8px 18px;
-    font-size: 13px;
-    color: var(--muted);
-    white-space: nowrap;
-    z-index: 300;
-  }
-
-  /* ── COMPONENTS ── */
-  .hero { text-align: center; padding: 24px 0 20px; }
-  .hero-eyebrow { font-family: 'Syne', sans-serif; font-size: 10px; letter-spacing: 4px; text-transform: uppercase; color: var(--accent); margin-bottom: 12px; opacity: 0.8; }
-  .hero h1 { font-family: 'Syne', sans-serif; font-size: clamp(32px, 8vw, 52px); font-weight: 800; line-height: 1.05; margin-bottom: 12px; }
-  .hero h1 span { color: var(--accent); }
-  .hero-sub { font-size: 14px; color: var(--muted); line-height: 1.6; }
-
-  .section-label { font-family: 'Syne', sans-serif; font-size: 10px; letter-spacing: 4px; text-transform: uppercase; color: var(--accent); margin-bottom: 6px; opacity: 0.8; }
-  .section-title { font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 800; margin-bottom: 6px; }
-  .section-desc { font-size: 13px; color: var(--muted); line-height: 1.6; margin-bottom: 20px; }
-
-  .stats-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 20px 0; }
-  .stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 16px 12px; text-align: center; }
-  .stat-num { font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 800; color: var(--accent); margin-bottom: 4px; }
-  .stat-desc { font-size: 11px; color: var(--muted); line-height: 1.4; }
-
-  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 20px; margin-bottom: 14px; transition: border-color 0.2s; }
-  .card:active { border-color: rgba(240,192,64,0.35); }
-  .card-title { font-family: 'Syne', sans-serif; font-size: 16px; font-weight: 700; margin-bottom: 4px; }
-  .card-subtitle { font-size: 12px; color: var(--muted); margin-bottom: 12px; }
-  .card-body { font-size: 13px; line-height: 1.7; color: #c0c0d8; }
-
-  .tags { display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0; }
-  .tag { padding: 3px 10px; border-radius: 20px; font-size: 10px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; }
-  .tag-yellow { background: rgba(240,192,64,0.15); color: var(--accent); border: 1px solid rgba(240,192,64,0.25); }
-  .tag-orange { background: rgba(224,120,48,0.15); color: var(--accent2); border: 1px solid rgba(224,120,48,0.25); }
-  .tag-green { background: rgba(96,200,160,0.15); color: var(--accent3); border: 1px solid rgba(96,200,160,0.25); }
-  .tag-purple { background: rgba(160,96,255,0.15); color: #a060ff; border: 1px solid rgba(160,96,255,0.25); }
-
-  .salary-label { display: flex; justify-content: space-between; font-size: 11px; margin-bottom: 5px; color: var(--muted); }
-  .salary-bar { height: 7px; background: var(--surface2); border-radius: 99px; overflow: hidden; margin-bottom: 12px; }
-  .salary-fill { height: 100%; border-radius: 99px; background: linear-gradient(90deg, var(--accent2), var(--accent)); transition: width 1.2s ease; }
-
-  .meta-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 14px; }
-  .meta-item { background: var(--surface2); border-radius: 10px; padding: 10px 14px; }
-  .meta-label { font-size: 9px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--muted); margin-bottom: 3px; }
-  .meta-value { font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 700; }
-  .meta-value.green { color: var(--accent3); }
-  .meta-value.yellow { color: var(--accent); }
-  .meta-value.orange { color: var(--accent2); }
-
-  .accordion-item { margin-bottom: 8px; }
-  .accordion-btn {
-    width: 100%; background: var(--surface); border: 1px solid var(--border);
-    border-radius: 12px; padding: 14px 16px; text-align: left; cursor: pointer;
-    display: flex; justify-content: space-between; align-items: center;
-    color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 500;
-    transition: all 0.2s;
-  }
-  .accordion-btn.open { border-color: var(--accent); border-radius: 12px 12px 0 0; border-bottom-color: transparent; }
-  .accordion-icon { font-size: 18px; transition: transform 0.3s; color: var(--accent); }
-  .accordion-btn.open .accordion-icon { transform: rotate(45deg); }
-  .accordion-content { display: none; background: var(--surface); border: 1px solid var(--accent); border-top: none; border-radius: 0 0 12px 12px; padding: 14px 16px; font-size: 13px; color: #c0c0d8; line-height: 1.7; }
-  .accordion-content.open { display: block; }
-
-  .steps {}
-  .step-item { display: flex; gap: 14px; margin-bottom: 18px; align-items: flex-start; }
-  .step-num { width: 30px; height: 30px; border-radius: 50%; background: var(--accent); color: #0a0a0f; display: flex; align-items: center; justify-content: center; font-family: 'Syne', sans-serif; font-weight: 800; font-size: 13px; flex-shrink: 0; }
-  .step-content { flex: 1; }
-  .step-title { font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 700; margin-bottom: 3px; }
-  .step-body { font-size: 13px; color: #c0c0d8; line-height: 1.6; }
-
-  .timeline { position: relative; padding-left: 26px; }
-  .timeline::before { content: ''; position: absolute; left: 7px; top: 0; bottom: 0; width: 2px; background: linear-gradient(to bottom, var(--accent), transparent); opacity: 0.3; }
-  .timeline-item { position: relative; margin-bottom: 26px; }
-  .timeline-item::before { content: ''; position: absolute; left: -22px; top: 5px; width: 11px; height: 11px; border-radius: 50%; background: var(--accent); border: 2px solid var(--bg); box-shadow: 0 0 10px rgba(240,192,64,0.4); }
-  .timeline-period { font-family: 'Syne', sans-serif; font-size: 10px; letter-spacing: 2px; color: var(--accent); text-transform: uppercase; margin-bottom: 3px; }
-  .timeline-title { font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 700; margin-bottom: 5px; }
-  .timeline-body { font-size: 13px; color: #c0c0d8; line-height: 1.6; }
-
-  .note-box { background: rgba(224,120,48,0.08); border: 1px solid rgba(224,120,48,0.25); border-radius: 10px; padding: 12px 14px; font-size: 12px; color: #d8a878; line-height: 1.6; margin-top: 10px; }
-  .note-box strong { color: var(--accent2); }
-  .tip-box { background: rgba(96,200,160,0.08); border: 1px solid rgba(96,200,160,0.2); border-radius: 10px; padding: 12px 14px; font-size: 12px; color: #90d8b8; line-height: 1.6; margin-top: 10px; }
-  .tip-box strong { color: var(--accent3); }
-
-  .progress-row { margin: 12px 0; }
-  .prog-label { font-size: 11px; color: var(--muted); margin-bottom: 4px; display: flex; justify-content: space-between; gap: 8px; }
-  .prog-label span:last-child { text-align: right; color: var(--text); opacity: 0.7; }
-  .prog-bar { height: 5px; background: var(--surface2); border-radius: 99px; overflow: hidden; }
-  .prog-fill { height: 100%; border-radius: 99px; }
-
-  .highlight-card {
-    background: rgba(240,192,64,0.06);
-    border: 1px solid rgba(240,192,64,0.3);
-    border-radius: 16px;
-    padding: 20px;
-    margin-bottom: 14px;
-  }
-
-  @media (max-width: 380px) {
-    .stats-row { grid-template-columns: repeat(2, 1fr); }
-    .meta-grid { grid-template-columns: 1fr; }
-  }
-
-  /* ── TRACKER STYLES ── */
-  .tracker-hero {
-    background: linear-gradient(135deg, rgba(240,192,64,0.08), rgba(96,200,160,0.06));
-    border: 1px solid rgba(240,192,64,0.2);
-    border-radius: 20px;
-    padding: 20px;
-    margin-bottom: 20px;
-    text-align: center;
-  }
-  .tracker-hero-title {
-    font-family: 'Syne', sans-serif;
-    font-size: 13px;
-    font-weight: 700;
-    color: var(--muted);
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    margin-bottom: 6px;
-  }
-  .tracker-day-num {
-    font-family: 'Syne', sans-serif;
-    font-size: 42px;
-    font-weight: 800;
-    color: var(--accent);
-    line-height: 1;
-    margin-bottom: 4px;
-  }
-  .tracker-day-label { font-size: 13px; color: var(--muted); margin-bottom: 16px; }
-  .overall-bar-wrap { background: var(--surface2); border-radius: 99px; height: 8px; overflow: hidden; margin-bottom: 8px; }
-  .overall-bar-fill { height: 100%; border-radius: 99px; background: linear-gradient(90deg, var(--accent2), var(--accent3)); transition: width 0.5s ease; }
-  .overall-pct { font-size: 12px; color: var(--muted); }
-  .overall-pct span { color: var(--accent3); font-weight: 700; }
-
-  .phase-block { margin-bottom: 24px; }
-  .phase-header {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 12px;
-    cursor: pointer;
-    user-select: none;
-  }
-  .phase-icon { font-size: 20px; }
-  .phase-info { flex: 1; }
-  .phase-title { font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 800; }
-  .phase-range { font-size: 11px; color: var(--muted); }
-  .phase-progress-pill {
-    font-family: 'Syne', sans-serif;
-    font-size: 11px;
-    font-weight: 700;
-    padding: 3px 10px;
-    border-radius: 99px;
-    background: var(--surface2);
-    color: var(--muted);
-    white-space: nowrap;
-  }
-  .phase-progress-pill.done { background: rgba(96,200,160,0.15); color: var(--accent3); }
-  .phase-chevron { color: var(--muted); font-size: 14px; transition: transform 0.3s; }
-  .phase-block.collapsed .phase-chevron { transform: rotate(-90deg); }
-  .phase-days { }
-  .phase-block.collapsed .phase-days { display: none; }
-
-  .day-row {
-    display: flex;
-    align-items: flex-start;
-    gap: 12px;
-    padding: 12px 14px;
-    border-radius: 12px;
-    margin-bottom: 8px;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    cursor: pointer;
-    transition: border-color 0.2s, background 0.2s;
-    position: relative;
-  }
-  .day-row:active { opacity: 0.85; }
-  .day-row.today {
-    border-color: rgba(240,192,64,0.5);
-    background: rgba(240,192,64,0.04);
-  }
-  .day-row.today::before {
-    content: 'TODAY';
-    position: absolute;
-    top: -1px; right: 10px;
-    font-family: 'Syne', sans-serif;
-    font-size: 8px;
-    font-weight: 800;
-    letter-spacing: 1.5px;
-    color: var(--accent);
-    background: var(--bg);
-    padding: 0 4px;
-  }
-  .day-row.completed {
-    border-color: rgba(96,200,160,0.25);
-    background: rgba(96,200,160,0.04);
-    opacity: 0.75;
-  }
-  .day-check {
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
-    border: 2px solid var(--muted);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    margin-top: 1px;
-    transition: all 0.2s;
-    font-size: 13px;
-  }
-  .day-row.completed .day-check {
-    background: var(--accent3);
-    border-color: var(--accent3);
-    color: #0a0a0f;
-  }
-  .day-row.today:not(.completed) .day-check {
-    border-color: var(--accent);
-  }
-  .day-content { flex: 1; min-width: 0; }
-  .day-num-label {
-    font-family: 'Syne', sans-serif;
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 1.5px;
-    color: var(--muted);
-    text-transform: uppercase;
-    margin-bottom: 2px;
-  }
-  .day-row.today:not(.completed) .day-num-label { color: var(--accent); }
-  .day-task {
-    font-size: 13px;
-    font-weight: 500;
-    color: var(--text);
-    margin-bottom: 2px;
-    line-height: 1.4;
-  }
-  .day-row.completed .day-task { text-decoration: line-through; color: var(--muted); }
-  .day-detail { font-size: 11px; color: var(--muted); line-height: 1.4; }
-  .day-tag {
-    display: inline-block;
-    margin-top: 5px;
-    padding: 2px 8px;
-    border-radius: 99px;
-    font-size: 10px;
-    font-weight: 600;
-    letter-spacing: 0.3px;
-  }
-  .dt-python { background: rgba(60,120,255,0.15); color: #6090ff; border: 1px solid rgba(60,120,255,0.2); }
-  .dt-llm { background: rgba(240,192,64,0.12); color: var(--accent); border: 1px solid rgba(240,192,64,0.2); }
-  .dt-rag { background: rgba(224,120,48,0.12); color: var(--accent2); border: 1px solid rgba(224,120,48,0.2); }
-  .dt-agents { background: rgba(160,96,255,0.12); color: #a060ff; border: 1px solid rgba(160,96,255,0.2); }
-  .dt-cloud { background: rgba(96,200,160,0.12); color: var(--accent3); border: 1px solid rgba(96,200,160,0.2); }
-  .dt-project { background: rgba(255,80,100,0.12); color: #ff8090; border: 1px solid rgba(255,80,100,0.2); }
-  .dt-rest { background: rgba(136,136,170,0.12); color: var(--muted); border: 1px solid rgba(136,136,170,0.2); }
-
-  .streak-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 10px;
-    margin-bottom: 20px;
-  }
-  .streak-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 12px;
-    text-align: center;
-  }
-  .streak-num { font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 800; color: var(--accent); }
-  .streak-label { font-size: 10px; color: var(--muted); margin-top: 2px; }
-
-  .reset-btn {
-    width: 100%;
-    padding: 12px;
-    background: transparent;
-    border: 1px solid rgba(224,120,48,0.3);
-    border-radius: 10px;
-    color: var(--accent2);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 13px;
-    cursor: pointer;
-    margin-top: 16px;
-    transition: background 0.2s;
-  }
-  .reset-btn:active { background: rgba(224,120,48,0.08); }
-
-  .confetti-msg {
-    display: none;
-    text-align: center;
-    padding: 16px;
-    background: rgba(96,200,160,0.08);
-    border: 1px solid rgba(96,200,160,0.25);
-    border-radius: 14px;
-    margin-bottom: 16px;
-    font-size: 14px;
-    color: var(--accent3);
-    font-family: 'Syne', sans-serif;
-    font-weight: 700;
-  }
+@media (max-width: 380px) {
+  .stats-row { grid-template-columns: repeat(2, 1fr); }
+  .meta-grid { grid-template-columns: 1fr; }
+  .nav-label { font-size: 8px; }
+}
 </style>
 </head>
 <body>
-
 <div id="app">
-  <!-- Top Bar -->
   <div class="topbar">
     <div class="topbar-title">Your <span>Freedom</span> Plan</div>
     <div class="topbar-badge" id="online-badge">● LIVE</div>
   </div>
 
-  <!-- Scrollable content area -->
   <div class="scroll-area" id="scroll-area">
 
-    <!-- ══ PAGE: TECH ══ -->
+    <!-- ══ TECH ══ -->
     <div class="page active" id="page-tech">
       <div class="hero">
         <div class="hero-eyebrow">Career Pivot</div>
         <h1>AI Engineering<br><span>Your Best Bet</span></h1>
         <p class="hero-sub">The hottest role in tech. Your Java/Hybris background is a secret weapon.</p>
       </div>
-
       <div class="stats-row">
-        <div class="stat-card">
-          <div class="stat-num">$141K</div>
-          <div class="stat-desc">Average AI Engineer salary, US 2026</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-num">26%</div>
-          <div class="stat-desc">Projected job growth through 2033</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-num">#1</div>
-          <div class="stat-desc">Fastest-growing LinkedIn job category</div>
-        </div>
+        <div class="stat-card"><div class="stat-num">$141K</div><div class="stat-desc">Avg AI Engineer salary US 2026</div></div>
+        <div class="stat-card"><div class="stat-num">26%</div><div class="stat-desc">Projected job growth through 2033</div></div>
+        <div class="stat-card"><div class="stat-num">#1</div><div class="stat-desc">Fastest-growing LinkedIn job category</div></div>
       </div>
-
       <div class="section-label">Salary Bands</div>
-      <div style="background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:16px; margin-bottom:16px">
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:16px;margin-bottom:14px">
         <div class="salary-label"><span>Entry level (&lt;1yr)</span><span>$80K–$120K</span></div>
         <div class="salary-bar"><div class="salary-fill" id="bar1" style="width:0%"></div></div>
-        <div class="salary-label"><span>Mid-level — you, 1–2 yrs</span><span>$140K–$180K</span></div>
+        <div class="salary-label"><span>Mid-level — you, after 1–2 yrs</span><span>$140K–$180K</span></div>
         <div class="salary-bar"><div class="salary-fill" id="bar2" style="width:0%"></div></div>
         <div class="salary-label"><span>Senior / LLM fine-tuning</span><span>$200K–$300K+</span></div>
         <div class="salary-bar"><div class="salary-fill" id="bar3" style="width:0%"></div></div>
       </div>
-
       <div class="card">
         <div class="card-title">🎯 Your Secret Weapon</div>
         <div class="card-subtitle">Why your Hybris background is gold</div>
-        <div class="card-body">5 years of Hybris (SAP Commerce) means you understand <strong>e-commerce architecture, B2B/B2C flows, product catalogs, and enterprise integration</strong>. AI tools for e-commerce are exploding. Very few people have both commerce domain knowledge AND AI skills. That combo = premium pay and faster hiring.</div>
+        <div class="card-body">5 years of Hybris (SAP Commerce) means you understand <strong>e-commerce architecture, B2B/B2C flows, product catalogs, and enterprise integration</strong>. AI tools for e-commerce are exploding. Very few people have both domain knowledge AND AI skills. That combo = premium pay and faster hiring.</div>
         <div class="tags" style="margin-top:12px">
-          <span class="tag tag-yellow">E-commerce AI</span>
-          <span class="tag tag-orange">Hybris Advantage</span>
-          <span class="tag tag-green">Remote Friendly</span>
-          <span class="tag tag-purple">High Demand</span>
+          <span class="tag tag-yellow">E-commerce AI</span><span class="tag tag-orange">Hybris Advantage</span><span class="tag tag-green">Remote Friendly</span><span class="tag tag-purple">High Demand</span>
         </div>
       </div>
-
-      <div class="section-label" style="margin-top:20px">What to Learn — In Order</div>
-      <div class="steps">
-        <div class="step-item">
-          <div class="step-num">1</div>
-          <div class="step-content">
-            <div class="step-title">Python Basics (3–4 weeks)</div>
-            <div class="step-body">Easy coming from Java. Focus on syntax, list comprehensions, and API calls. Free: freeCodeCamp YouTube, Python.org docs.</div>
-          </div>
-        </div>
-        <div class="step-item">
-          <div class="step-num">2</div>
-          <div class="step-content">
-            <div class="step-title">LLM APIs — OpenAI / Claude (2–3 weeks)</div>
-            <div class="step-body">Call AI models via API, write system prompts, build a chatbot. This is the core skill employers want most right now.</div>
-          </div>
-        </div>
-        <div class="step-item">
-          <div class="step-num">3</div>
-          <div class="step-content">
-            <div class="step-title">RAG — Retrieval Augmented Generation (3–4 weeks)</div>
-            <div class="step-body">Let AI "know" your business data. Use LangChain or LlamaIndex. Build a doc-search chatbot. This alone makes you hireable.</div>
-          </div>
-        </div>
-        <div class="step-item">
-          <div class="step-num">4</div>
-          <div class="step-content">
-            <div class="step-title">AI Agents & Workflows (4–6 weeks)</div>
-            <div class="step-body">Multi-step flows, function calling, tool use. Connect AI to databases and APIs. Use LangGraph or CrewAI. This commands $200K+.</div>
-          </div>
-        </div>
-        <div class="step-item">
-          <div class="step-num">5</div>
-          <div class="step-content">
-            <div class="step-title">Cloud Deployment — AWS or Azure (ongoing)</div>
-            <div class="step-body">Deploy AI apps on AWS Bedrock or Azure OpenAI. Your Java backend knowledge applies directly here.</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="tip-box">
-        <strong>💡 Java Shortcut:</strong> Spring AI lets you build AI-powered apps in Java right now — build portfolio projects without switching languages yet.
-      </div>
-
-      <div class="section-label" style="margin-top:22px">FAQs</div>
-      <div class="accordion-item">
-        <button class="accordion-btn" onclick="toggleAcc(this)">Do I need a CS degree or master's? <span class="accordion-icon">+</span></button>
-        <div class="accordion-content">No. Only ~17% of AI engineers have a master's degree. What matters is a strong portfolio on GitHub. 3–4 real AI projects beats any certificate.</div>
-      </div>
-      <div class="accordion-item">
-        <button class="accordion-btn" onclick="toggleAcc(this)">How long until job-ready? <span class="accordion-icon">+</span></button>
-        <div class="accordion-content">6–9 months of 1–2 hrs/day consistent learning. Python clicks fast coming from Java. Start applying at month 4–5 — you don't need to know everything to get interviews.</div>
-      </div>
-      <div class="accordion-item">
-        <button class="accordion-btn" onclick="toggleAcc(this)">Can I find remote jobs? <span class="accordion-icon">+</span></button>
-        <div class="accordion-content">Absolutely. AI engineering is one of the most remote-friendly categories. Look on LinkedIn, Wellfound (startups), and Indeed. Filter: "remote" + "AI engineer" + "LLM". Target e-commerce companies for your Hybris advantage.</div>
-      </div>
-      <div class="accordion-item">
-        <button class="accordion-btn" onclick="toggleAcc(this)">What specialty pays the most? <span class="accordion-icon">+</span></button>
-        <div class="accordion-content">LLM Fine-tuning and MLOps — making AI work reliably in production. Companies struggle to find people who can keep AI apps running, not just build demos. This adds $15K–$30K to your base salary.</div>
-      </div>
-      <div class="accordion-item">
-        <button class="accordion-btn" onclick="toggleAcc(this)">Is the AI job market actually good? <span class="accordion-icon">+</span></button>
-        <div class="accordion-content">Yes. AI/ML share of tech job market grew from 10% to 50% between 2023–2025. 78% of IT job postings now require AI expertise. Even while general software engineering hiring slowed, AI-specific roles are surging.</div>
-      </div>
+      <div class="section-label" style="margin-top:18px">What to Learn — In Order</div>
+      <div class="step-item"><div class="step-num">1</div><div><div class="step-title">Python Basics (3–4 weeks)</div><div class="step-body">Easy from Java. Focus on syntax, list comprehensions, API calls. Free: freeCodeCamp YouTube.</div></div></div>
+      <div class="step-item"><div class="step-num">2</div><div><div class="step-title">LLM APIs — OpenAI / Claude (2–3 weeks)</div><div class="step-body">Call AI models via API, write system prompts, build a chatbot. Most in-demand skill right now.</div></div></div>
+      <div class="step-item"><div class="step-num">3</div><div><div class="step-title">RAG — Retrieval Augmented Generation (3–4 weeks)</div><div class="step-body">Let AI "know" your business data. LangChain or LlamaIndex. This alone makes you hireable.</div></div></div>
+      <div class="step-item"><div class="step-num">4</div><div><div class="step-title">AI Agents & Workflows (4–6 weeks)</div><div class="step-body">Multi-step flows, function calling. LangGraph or CrewAI. This is the $200K+ skill.</div></div></div>
+      <div class="step-item"><div class="step-num">5</div><div><div class="step-title">Cloud Deployment — AWS / Azure (ongoing)</div><div class="step-body">Deploy AI apps on AWS Bedrock or Azure OpenAI. Java backend knowledge applies directly.</div></div></div>
+      <div class="tip-box"><strong>💡 Java Shortcut:</strong> Spring AI lets you build AI-powered apps in Java right now — bridge the gap while learning Python.</div>
+      <div class="section-label" style="margin-top:20px">FAQs</div>
+      <div class="accordion-item"><button class="accordion-btn" onclick="toggleAcc(this)">Do I need a degree or master's? <span class="accordion-icon">+</span></button><div class="accordion-content">No. Only ~17% of AI engineers have a master's. What matters is a strong GitHub portfolio. 3–4 real projects beats any certificate.</div></div>
+      <div class="accordion-item"><button class="accordion-btn" onclick="toggleAcc(this)">How long until job-ready? <span class="accordion-icon">+</span></button><div class="accordion-content">6–9 months of 1–2 hrs/day. Python clicks fast from Java. Start applying at month 4–5 — you don't need to know everything to get interviews.</div></div>
+      <div class="accordion-item"><button class="accordion-btn" onclick="toggleAcc(this)">Can I find remote roles? <span class="accordion-icon">+</span></button><div class="accordion-content">Absolutely. AI engineering is one of the most remote-friendly categories. LinkedIn + Wellfound + Indeed. Filter: "remote" + "AI engineer" + "LLM". Target e-commerce companies first.</div></div>
+      <div class="accordion-item"><button class="accordion-btn" onclick="toggleAcc(this)">What specialty pays most? <span class="accordion-icon">+</span></button><div class="accordion-content">LLM Fine-tuning and MLOps — keeping AI reliable in production. Companies can't find people who maintain AI apps, not just build demos. Adds $15K–$30K to base salary.</div></div>
     </div>
 
-    <!-- ══ PAGE: HUSTLES ══ -->
+    <!-- ══ HUSTLES ══ -->
     <div class="page" id="page-hustles">
-      <div style="padding-top:8px">
-        <div class="section-label">Beyond the Job</div>
-        <div class="section-title">Side Income Streams</div>
-        <div class="section-desc">Real data. Start with 1–2 that fit your life now, add more as you settle in.</div>
-      </div>
-
-      <div class="card">
-        <div class="card-title">⚡ AI Automation Freelancing</div>
-        <div class="card-subtitle">Your tech skills → cash, fast</div>
-        <div class="card-body">Small businesses pay $500–$5,000 per project for chatbots, automated emails, and AI integrations. AI freelancers charge <strong>$60–$150/hr</strong>. Fastest path from "learning AI" to earning. Platforms: Upwork, Toptal, Fiverr.</div>
-        <div class="meta-grid">
-          <div class="meta-item"><div class="meta-label">Startup Cost</div><div class="meta-value green">$0</div></div>
-          <div class="meta-item"><div class="meta-label">Monthly Potential</div><div class="meta-value yellow">$1K–$8K+</div></div>
-          <div class="meta-item"><div class="meta-label">Time to First $</div><div class="meta-value orange">3–6 months</div></div>
-          <div class="meta-item"><div class="meta-label">Effort Level</div><div class="meta-value orange">Medium</div></div>
-        </div>
-        <div class="tip-box">💡 First client: build a free AI chatbot for a local Indian restaurant. Get a testimonial. Use it to land $1K–$3K paid projects.</div>
-      </div>
-
-      <div class="card">
-        <div class="card-title">🏡 Airbnb / Short-Term Rental</div>
-        <div class="card-subtitle">Let your space earn while you sleep</div>
-        <div class="card-body">US Airbnb hosts earn a <strong>median ~$14,000/year</strong>. Active hosts in good markets earn $3,300–$6,000/month. Even renting a spare room adds $800–$2,000/month depending on your city.</div>
-        <div class="meta-grid">
-          <div class="meta-item"><div class="meta-label">Startup Cost</div><div class="meta-value orange">$3K–$10K</div></div>
-          <div class="meta-item"><div class="meta-label">Monthly Potential</div><div class="meta-value yellow">$800–$4,000+</div></div>
-          <div class="meta-item"><div class="meta-label">Passive Level</div><div class="meta-value green">Medium–High</div></div>
-          <div class="meta-item"><div class="meta-label">Best For</div><div class="meta-value green">Own/Rent space</div></div>
-        </div>
-        <div class="note-box"><strong>⚠️ H4/EAD note:</strong> Consult an immigration attorney before hosting. Post-EAD, you're fully clear.</div>
-      </div>
-
-      <div class="card">
-        <div class="card-title">🎰 Vending Machine Business</div>
-        <div class="card-subtitle">The real-world passive income robot</div>
-        <div class="card-body">5–10 well-placed machines earns <strong>$2,000–$6,000/month net</strong>. Each machine earns $500–$2,000/month. A single used machine starts at $1,500–$3,000. Best locations: offices, gyms, apartment complexes, hospitals.</div>
-        <div class="meta-grid">
-          <div class="meta-item"><div class="meta-label">Per Machine Cost</div><div class="meta-value orange">$1.5K–$5K used</div></div>
-          <div class="meta-item"><div class="meta-label">Per Machine/Month</div><div class="meta-value yellow">$300–$2,000</div></div>
-          <div class="meta-item"><div class="meta-label">Passive Level</div><div class="meta-value green">High after setup</div></div>
-          <div class="meta-item"><div class="meta-label">Break Even</div><div class="meta-value green">6–12 months</div></div>
-        </div>
-        <div class="tip-box">💡 Start with ONE machine. Learn the business, find what sells. Then scale to 5–10.</div>
-      </div>
-
-      <div class="card">
-        <div class="card-title">📚 Digital Products & Mini Course</div>
-        <div class="card-subtitle">Build once, earn forever</div>
-        <div class="card-body">Write: <em>"Java Dev's Practical Switch to AI Engineering."</em> Senior devs wanting to move to AI will pay $29–$97. Sell on Gumroad, Teachable, or Udemy. Authors report $80K+ lifetime from single technical ebooks.</div>
-        <div class="meta-grid">
-          <div class="meta-item"><div class="meta-label">Startup Cost</div><div class="meta-value green">~$0</div></div>
-          <div class="meta-item"><div class="meta-label">Monthly Potential</div><div class="meta-value yellow">$300–$3,000+</div></div>
-          <div class="meta-item"><div class="meta-label">Passive Level</div><div class="meta-value green">Very High</div></div>
-          <div class="meta-item"><div class="meta-label">Time to Build</div><div class="meta-value orange">4–8 weeks</div></div>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="card-title">🛍️ Print-on-Demand Store</div>
-        <div class="card-subtitle">Dog brand + e-commerce = natural fit</div>
-        <div class="card-body">Zero inventory. Printful + Shopify or Etsy. Sell dog-themed t-shirts, mugs, totes, stickers. Cross-promote with your Instagram. Your Hybris background means you deeply understand e-commerce.</div>
-        <div class="meta-grid">
-          <div class="meta-item"><div class="meta-label">Startup Cost</div><div class="meta-value green">$0–$50</div></div>
-          <div class="meta-item"><div class="meta-label">Monthly Potential</div><div class="meta-value yellow">$200–$2,000+</div></div>
-          <div class="meta-item"><div class="meta-label">Passive Level</div><div class="meta-value green">High</div></div>
-          <div class="meta-item"><div class="meta-label">Ties To</div><div class="meta-value green">Dog page!</div></div>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="card-title">🧁 Baking / Cottage Food Business</div>
-        <div class="card-subtitle">Local, fun, and very viable</div>
-        <div class="card-body">Most US states allow cottage food laws — sell home-baked goods without a commercial kitchen license. Indian sweets/mithai have strong demand in South Asian communities. <strong>Dog treats are a booming niche</strong> — handmade treats sell for $8–$18/pack on Etsy.</div>
-        <div class="meta-grid">
-          <div class="meta-item"><div class="meta-label">Startup Cost</div><div class="meta-value green">$50–$300</div></div>
-          <div class="meta-item"><div class="meta-label">Monthly Potential</div><div class="meta-value yellow">$300–$2,000</div></div>
-          <div class="meta-item"><div class="meta-label">Effort Level</div><div class="meta-value orange">Medium–High</div></div>
-          <div class="meta-item"><div class="meta-label">Fun Factor</div><div class="meta-value green">High ✨</div></div>
-        </div>
-        <div class="tip-box">💡 Dog treat baking bridges worlds — your dog page audience will literally buy your products. Film the baking process as Reels = content AND sales.</div>
-      </div>
-
-      <div class="card">
-        <div class="card-title">🎬 UGC Creator</div>
-        <div class="card-subtitle">No big following needed</div>
-        <div class="card-body">Brands pay $50–$500 per short video. You film it, they run it as an ad. No followers required — just authentic content skills. Start on Billo, JoinBrands, or DM pet product brands directly.</div>
-        <div class="meta-grid">
-          <div class="meta-item"><div class="meta-label">Startup Cost</div><div class="meta-value green">$0</div></div>
-          <div class="meta-item"><div class="meta-label">Monthly Potential</div><div class="meta-value yellow">$300–$2,000</div></div>
-          <div class="meta-item"><div class="meta-label">Effort</div><div class="meta-value green">Low–Medium</div></div>
-          <div class="meta-item"><div class="meta-label">Can Start</div><div class="meta-value green">Right now</div></div>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="card-title">📈 Index Fund Investing</div>
-        <div class="card-subtitle">Slow and steady wealth building</div>
-        <div class="card-body">Once earning well, automate investing into low-fee index funds (VOO, VTI). Even $500/month invested consistently compounds significantly. Not a quick win, but the most reliable long-term wealth builder.</div>
-        <div class="meta-grid">
-          <div class="meta-item"><div class="meta-label">Starting Amount</div><div class="meta-value green">$100+/mo</div></div>
-          <div class="meta-item"><div class="meta-label">Effort</div><div class="meta-value green">Very Low</div></div>
-          <div class="meta-item"><div class="meta-label">5-Year Return</div><div class="meta-value yellow">7–10% avg</div></div>
-          <div class="meta-item"><div class="meta-label">Passive Level</div><div class="meta-value green">Maximum</div></div>
-        </div>
-      </div>
+      <div style="padding-top:6px"><div class="section-label">Beyond the Job</div><div class="section-title">Side Income Streams</div><div class="section-desc">Start with 1–2 that fit your life now, add more as you settle in.</div></div>
+      <div class="card"><div class="card-title">⚡ AI Automation Freelancing</div><div class="card-subtitle">Your tech skills → cash, fast</div><div class="card-body">Small businesses pay $500–$5,000/project for chatbots and AI integrations. AI freelancers charge <strong>$60–$150/hr</strong>. Fastest path from "learning AI" to earning. Platforms: Upwork, Toptal, Fiverr.</div><div class="meta-grid"><div class="meta-item"><div class="meta-label">Startup Cost</div><div class="meta-value green">$0</div></div><div class="meta-item"><div class="meta-label">Monthly Potential</div><div class="meta-value yellow">$1K–$8K+</div></div><div class="meta-item"><div class="meta-label">Time to First $</div><div class="meta-value orange">3–6 months</div></div><div class="meta-item"><div class="meta-label">Effort</div><div class="meta-value orange">Medium</div></div></div><div class="tip-box">💡 First client: build a free AI chatbot for a local small business. Get a testimonial. Use it to land $1–3K paid projects.</div></div>
+      <div class="card"><div class="card-title">🏡 Airbnb / Short-Term Rental</div><div class="card-subtitle">Let your space earn while you sleep</div><div class="card-body">US Airbnb hosts earn median ~$14,000/year. Active hosts in good markets earn $3,300–$6,000/month. Even a spare room adds $800–$2,000/month.</div><div class="meta-grid"><div class="meta-item"><div class="meta-label">Startup Cost</div><div class="meta-value orange">$3K–$10K</div></div><div class="meta-item"><div class="meta-label">Monthly Potential</div><div class="meta-value yellow">$800–$4,000+</div></div><div class="meta-item"><div class="meta-label">Passive Level</div><div class="meta-value green">Medium–High</div></div><div class="meta-item"><div class="meta-label">Best For</div><div class="meta-value green">Own/Rent space</div></div></div><div class="note-box"><strong>⚠️ H4/EAD note:</strong> Consult an immigration attorney before hosting. Post-EAD, you're fully clear.</div></div>
+      <div class="card"><div class="card-title">🎰 Vending Machine Business</div><div class="card-subtitle">Real-world passive income robot</div><div class="card-body">5–10 machines earns <strong>$2,000–$6,000/month net</strong>. Each machine: $500–$2,000/month. A used machine starts at $1,500–$3,000. Best locations: offices, gyms, apartment complexes, hospitals.</div><div class="meta-grid"><div class="meta-item"><div class="meta-label">Per Machine Cost</div><div class="meta-value orange">$1.5K–$5K used</div></div><div class="meta-item"><div class="meta-label">Per Machine/Month</div><div class="meta-value yellow">$300–$2,000</div></div><div class="meta-item"><div class="meta-label">Passive Level</div><div class="meta-value green">High after setup</div></div><div class="meta-item"><div class="meta-label">Break Even</div><div class="meta-value green">6–12 months</div></div></div><div class="tip-box">💡 Start with ONE machine. Learn the business. Then scale to 5–10.</div></div>
+      <div class="card"><div class="card-title">📚 Digital Products & Mini Course</div><div class="card-subtitle">Build once, earn forever</div><div class="card-body">Write: "Java Dev's Practical Switch to AI Engineering." Senior devs pay $29–$97 for this. Sell on Gumroad, Teachable, or Udemy. Authors report $80K+ lifetime from single technical ebooks.</div><div class="meta-grid"><div class="meta-item"><div class="meta-label">Startup Cost</div><div class="meta-value green">~$0</div></div><div class="meta-item"><div class="meta-label">Monthly Potential</div><div class="meta-value yellow">$300–$3,000+</div></div><div class="meta-item"><div class="meta-label">Passive Level</div><div class="meta-value green">Very High</div></div><div class="meta-item"><div class="meta-label">Time to Build</div><div class="meta-value orange">4–8 weeks</div></div></div></div>
+      <div class="card"><div class="card-title">🛍️ Print-on-Demand Store</div><div class="card-subtitle">Dog brand + e-commerce = natural fit</div><div class="card-body">Zero inventory. Printful + Shopify or Etsy. Dog-themed t-shirts, mugs, totes, stickers. Cross-promote with your Instagram. Your Hybris background means you understand e-commerce deeply.</div><div class="meta-grid"><div class="meta-item"><div class="meta-label">Startup Cost</div><div class="meta-value green">$0–$50</div></div><div class="meta-item"><div class="meta-label">Monthly Potential</div><div class="meta-value yellow">$200–$2,000+</div></div><div class="meta-item"><div class="meta-label">Passive Level</div><div class="meta-value green">High</div></div><div class="meta-item"><div class="meta-label">Ties To</div><div class="meta-value green">Dog page!</div></div></div></div>
+      <div class="card"><div class="card-title">🧁 Baking / Cottage Food Business</div><div class="card-subtitle">Local, fun, and very viable</div><div class="card-body">Most US states allow cottage food laws — sell home-baked goods without a commercial kitchen. <strong>Dog treats are a booming niche</strong> — handmade treats sell for $8–$18/pack on Etsy.</div><div class="meta-grid"><div class="meta-item"><div class="meta-label">Startup Cost</div><div class="meta-value green">$50–$300</div></div><div class="meta-item"><div class="meta-label">Monthly Potential</div><div class="meta-value yellow">$300–$2,000</div></div><div class="meta-item"><div class="meta-label">Effort</div><div class="meta-value orange">Medium–High</div></div><div class="meta-item"><div class="meta-label">Fun Factor</div><div class="meta-value green">High ✨</div></div></div><div class="tip-box">💡 Dog treat baking bridges worlds — your dog page audience will literally buy your products.</div></div>
+      <div class="card"><div class="card-title">🎬 UGC Creator</div><div class="card-subtitle">No big following needed</div><div class="card-body">Brands pay $50–$500 per short video of you using their product. No followers required. Start on Billo, JoinBrands, or DM pet brands directly on Instagram.</div><div class="meta-grid"><div class="meta-item"><div class="meta-label">Startup Cost</div><div class="meta-value green">$0</div></div><div class="meta-item"><div class="meta-label">Monthly Potential</div><div class="meta-value yellow">$300–$2,000</div></div><div class="meta-item"><div class="meta-label">Effort</div><div class="meta-value green">Low–Medium</div></div><div class="meta-item"><div class="meta-label">Can Start</div><div class="meta-value green">Right now</div></div></div></div>
+      <div class="card"><div class="card-title">📈 Index Fund Investing</div><div class="card-subtitle">Slow and steady wealth building</div><div class="card-body">Automate investing into low-fee index funds (VOO, VTI). Even $500/month compounds significantly over 5 years. The most reliable long-term wealth builder.</div><div class="meta-grid"><div class="meta-item"><div class="meta-label">Starting Amount</div><div class="meta-value green">$100+/mo</div></div><div class="meta-item"><div class="meta-label">Effort</div><div class="meta-value green">Very Low</div></div><div class="meta-item"><div class="meta-label">5-Year Return</div><div class="meta-value yellow">7–10% avg</div></div><div class="meta-item"><div class="meta-label">Passive Level</div><div class="meta-value green">Maximum</div></div></div></div>
     </div>
 
-    <!-- ══ PAGE: DOG ══ -->
+    <!-- ══ DOG PAGE ══ -->
     <div class="page" id="page-dog">
-      <div style="padding-top:8px">
-        <div class="section-label">Content Strategy</div>
-        <div class="section-title">Reviving Your Dog Page 🐾</div>
-        <div class="section-desc">Not dead — just needs a niche and a story. Here's exactly how.</div>
+      <div style="padding-top:6px"><div class="section-label">Content Strategy</div><div class="section-title">Reviving Your Dog Page 🐾</div><div class="section-desc">Not dead — just needs a niche and a story.</div></div>
+      <div class="card"><div class="card-title">🔍 The Problem Right Now</div><div class="card-body" style="margin-top:8px">Millions of generic dog pages exist. The algorithm rewards <em>specific stories</em> that make people feel something. You have a unique angle you haven't used yet.</div></div>
+      <div class="card"><div class="card-title">✨ Your Winning Angle</div><div class="card-body" style="margin-top:8px"><strong>"Dog life as an immigrant family adjusting to the US"</strong> — relatable, emotional, underrepresented. Posts like: "Things we had to learn about owning a dog here," "First time at a dog park," "Home-cooked meals my dog loves" go viral because they're specific and real.</div><div class="tags" style="margin-top:10px"><span class="tag tag-yellow">Immigrant Dog Life</span><span class="tag tag-orange">Relatable Culture</span><span class="tag tag-green">Underrepresented</span></div></div>
+      <div class="section-label" style="margin-top:18px">Income by Follower Count</div>
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:16px;margin-bottom:14px">
+        <div class="progress-row"><div class="prog-label"><span>Under 5K</span><span>Free products + affiliate ($0–$100)</span></div><div class="prog-bar"><div class="prog-fill" style="width:12%;background:#555580"></div></div></div>
+        <div class="progress-row"><div class="prog-label"><span>5K–20K</span><span>$100–$500/post + commissions</span></div><div class="prog-bar"><div class="prog-fill" style="width:35%;background:var(--accent2)"></div></div></div>
+        <div class="progress-row"><div class="prog-label"><span>20K–100K</span><span>$500–$2,000/post + brand deals</span></div><div class="prog-bar"><div class="prog-fill" style="width:65%;background:var(--accent)"></div></div></div>
+        <div class="progress-row"><div class="prog-label"><span>100K+</span><span>$2,000–$10,000+/post</span></div><div class="prog-bar"><div class="prog-fill" style="width:90%;background:var(--accent3)"></div></div></div>
       </div>
-
-      <div class="card">
-        <div class="card-title">🔍 The Problem Right Now</div>
-        <div class="card-body" style="margin-top:8px">Millions of generic dog pages exist. The algorithm rewards <em>specific stories</em> that make people feel something. You have a unique angle you haven't used yet.</div>
-      </div>
-
-      <div class="card">
-        <div class="card-title">✨ Your Winning Angle</div>
-        <div class="card-body" style="margin-top:8px"><strong>"Dog life as a South Asian immigrant family in the US"</strong> — relatable, emotional, culturally specific, almost nobody is doing it. Posts like: "Things my Indian family had to learn about owning a dog," "First time at a dog park," "Desi meals my dog loves" — these go viral because they're specific and real.</div>
-        <div class="tags" style="margin-top:10px">
-          <span class="tag tag-yellow">Immigrant Dog Life</span>
-          <span class="tag tag-orange">Desi + Dogs</span>
-          <span class="tag tag-green">Underrepresented</span>
-        </div>
-      </div>
-
-      <div class="section-label" style="margin-top:20px">Income by Follower Count</div>
-      <div style="background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:16px; margin-bottom:16px">
-        <div class="progress-row">
-          <div class="prog-label"><span>Under 5K followers</span><span>Free products + affiliate ($0–$100)</span></div>
-          <div class="prog-bar"><div class="prog-fill" style="width:12%; background:#555580;"></div></div>
-        </div>
-        <div class="progress-row">
-          <div class="prog-label"><span>5K–20K followers</span><span>$100–$500/post + commissions</span></div>
-          <div class="prog-bar"><div class="prog-fill" style="width:35%; background:var(--accent2);"></div></div>
-        </div>
-        <div class="progress-row">
-          <div class="prog-label"><span>20K–100K followers</span><span>$500–$2,000/post + brand deals</span></div>
-          <div class="prog-bar"><div class="prog-fill" style="width:65%; background:var(--accent);"></div></div>
-        </div>
-        <div class="progress-row">
-          <div class="prog-label"><span>100K+ followers</span><span>$2,000–$10,000+/post</span></div>
-          <div class="prog-bar"><div class="prog-fill" style="width:90%; background:var(--accent3);"></div></div>
-        </div>
-      </div>
-
       <div class="section-label">5 Actions This Week</div>
-      <div class="steps">
-        <div class="step-item">
-          <div class="step-num">1</div>
-          <div class="step-content">
-            <div class="step-title">Rewrite your bio with the new niche</div>
-            <div class="step-body">"🐕 South Asian family's US dog adventures | first-time dog owners | desi dog life" — signals your identity to new visitors and the algorithm.</div>
-          </div>
-        </div>
-        <div class="step-item">
-          <div class="step-num">2</div>
-          <div class="step-content">
-            <div class="step-title">Post 3 Reels using your story</div>
-            <div class="step-body">Reels get 10–40x more reach than photos. 15–30s vertical clips with text overlays. "My family's reaction to my dog" always performs.</div>
-          </div>
-        </div>
-        <div class="step-item">
-          <div class="step-num">3</div>
-          <div class="step-content">
-            <div class="step-title">Set up Amazon Associates</div>
-            <div class="step-body">Free to join. Link dog products in bio and story highlights. Passive commissions from any size audience.</div>
-          </div>
-        </div>
-        <div class="step-item">
-          <div class="step-num">4</div>
-          <div class="step-content">
-            <div class="step-title">Batch your captions with AI</div>
-            <div class="step-body">Use Claude or ChatGPT to generate 2 weeks of captions in one hour. You're a developer — automate your content workflow.</div>
-          </div>
-        </div>
-        <div class="step-item">
-          <div class="step-num">5</div>
-          <div class="step-content">
-            <div class="step-title">DM 5 small pet brands this week</div>
-            <div class="step-body">Small brands say yes at 1K–2K followers if engagement is authentic. Short pitch: "I love your product, I'd like to create genuine content."</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="card-title">🔗 Tech + Content Crossover</div>
-        <div class="card-body" style="margin-top:8px">Build a simple tool that generates dog Instagram captions, then post about it: "How I use AI to run my dog's Instagram" goes viral in both tech AND pet communities. You become a bridge between two massive audiences.</div>
-      </div>
+      <div class="step-item"><div class="step-num">1</div><div><div class="step-title">Rewrite your bio with your niche</div><div class="step-body">Pick one clear angle and write it in your bio. This signals your identity to new visitors and the algorithm.</div></div></div>
+      <div class="step-item"><div class="step-num">2</div><div><div class="step-title">Post 3 Reels using your story</div><div class="step-body">Reels get 10–40x more reach than photos. 15–30s vertical clips. "Our family's reaction to our dog" always performs.</div></div></div>
+      <div class="step-item"><div class="step-num">3</div><div><div class="step-title">Set up Amazon Associates</div><div class="step-body">Free to join. Link dog products you use in your bio. Passive commissions from any audience size.</div></div></div>
+      <div class="step-item"><div class="step-num">4</div><div><div class="step-title">Batch captions with AI</div><div class="step-body">Generate 2 weeks of captions in one hour. You're a developer — automate your content workflow.</div></div></div>
+      <div class="step-item"><div class="step-num">5</div><div><div class="step-title">DM 5 small pet brands</div><div class="step-body">Small brands say yes at 1K–2K followers if your engagement is authentic. Short, specific pitch.</div></div></div>
+      <div class="card"><div class="card-title">🔗 Tech + Content Crossover</div><div class="card-body" style="margin-top:8px">Build a tool that generates dog Instagram captions, then post about it: "How I use AI to run my dog's page" goes viral in BOTH tech and pet communities. You bridge two massive audiences.</div></div>
     </div>
 
-    <!-- ══ PAGE: PLAN ══ -->
+    <!-- ══ 5-YR PLAN ══ -->
     <div class="page" id="page-plan">
-      <div style="padding-top:8px">
-        <div class="section-label">The Big Picture</div>
-        <div class="section-title">5-Year Freedom Roadmap</div>
-        <div class="section-desc">Realistic. Achievable. Built around your life.</div>
-      </div>
-
+      <div style="padding-top:6px"><div class="section-label">The Big Picture</div><div class="section-title">5-Year Freedom Roadmap</div><div class="section-desc">Realistic. Achievable. Built around your life.</div></div>
       <div class="timeline">
-        <div class="timeline-item">
-          <div class="timeline-period">Right Now → Month 3</div>
-          <div class="timeline-title">🌱 The Learning Sprint</div>
-          <div class="timeline-body">Start Python + LLM API basics (1–2 hrs/day). Revive dog page with clear niche. Join LangChain Discord. Build first chatbot. Set up Amazon affiliate. Start Spring AI Java projects.</div>
-          <div class="tags" style="margin-top:8px"><span class="tag tag-yellow">Python</span><span class="tag tag-yellow">LLM APIs</span><span class="tag tag-green">Dog Niche</span></div>
-        </div>
-        <div class="timeline-item">
-          <div class="timeline-period">Month 3–6</div>
-          <div class="timeline-title">🛠 Portfolio & First Money</div>
-          <div class="timeline-body">Build 3 AI projects: RAG chatbot, AI automation for a local e-commerce business, AI agent. All on GitHub. Start Upwork profile. Dog page at 2K–5K. First affiliate commissions. Possibly first UGC deal.</div>
-          <div class="tags" style="margin-top:8px"><span class="tag tag-yellow">Portfolio</span><span class="tag tag-orange">RAG Projects</span><span class="tag tag-purple">First $</span></div>
-        </div>
-        <div class="timeline-item">
-          <div class="timeline-period">Month 6–12 — EAD Time</div>
-          <div class="timeline-title">🚀 Enter the Job Market</div>
-          <div class="timeline-body">Apply aggressively — 5 applications/day for 3 weeks. Target e-commerce companies (Hybris advantage). Aim $120K–$160K. Launch 1–2 side hustles. Start digital product (AI guide for Java devs).</div>
-          <div class="meta-grid" style="margin-top:10px">
-            <div class="meta-item"><div class="meta-label">Target Salary</div><div class="meta-value yellow">$120K–$160K</div></div>
-            <div class="meta-item"><div class="meta-label">Side Income</div><div class="meta-value green">$500–$2K/mo</div></div>
-          </div>
-        </div>
-        <div class="timeline-item">
-          <div class="timeline-period">Year 1–2</div>
-          <div class="timeline-title">💰 Stack the Streams</div>
-          <div class="timeline-body">AI job + freelancing ($1K–$3K/mo) + dog page ($200–$800/mo) + digital product + possibly Airbnb room. Total household income could hit $160K–$200K. Build emergency fund, start index fund investing.</div>
-          <div class="meta-grid" style="margin-top:10px">
-            <div class="meta-item"><div class="meta-label">Job Income</div><div class="meta-value yellow">$140K+</div></div>
-            <div class="meta-item"><div class="meta-label">Side Streams</div><div class="meta-value green">$2K–$5K/mo</div></div>
-          </div>
-        </div>
-        <div class="timeline-item">
-          <div class="timeline-period">Year 2–3</div>
-          <div class="timeline-title">🏗 Build Something of Your Own</div>
-          <div class="timeline-body">Launch small AI SaaS in e-commerce or pet space. Even $500–$2,000/month recurring changes everything. Scale vending machines to 5+ units. Dog page brand deals becoming real income.</div>
-          <div class="tags" style="margin-top:8px"><span class="tag tag-yellow">Micro SaaS</span><span class="tag tag-orange">Vending Scale</span><span class="tag tag-green">Brand Deals</span></div>
-        </div>
-        <div class="timeline-item">
-          <div class="timeline-period">Year 3–5</div>
-          <div class="timeline-title">🌟 The Freedom Phase</div>
-          <div class="timeline-body">4–5 income streams running simultaneously. AI job/consulting + SaaS + Airbnb/vending + dog page + digital products. Monthly income $15K–$25K+. You now choose: stay employed with massive security, or go full entrepreneur. You're settled.</div>
-          <div class="meta-grid" style="margin-top:10px">
-            <div class="meta-item"><div class="meta-label">Target Monthly</div><div class="meta-value yellow">$15K–$25K</div></div>
-            <div class="meta-item"><div class="meta-label">Active Streams</div><div class="meta-value green">4–5</div></div>
-          </div>
-        </div>
+        <div class="timeline-item"><div class="timeline-period">Now → Month 3</div><div class="timeline-title">🌱 The Learning Sprint</div><div class="timeline-body">Python + LLM APIs (1–2 hrs/day). Revive dog page with clear niche. Join LangChain Discord. Build first chatbot. Set up Amazon affiliate.</div><div class="tags" style="margin-top:8px"><span class="tag tag-yellow">Python</span><span class="tag tag-yellow">LLM APIs</span><span class="tag tag-green">Dog Niche</span></div></div>
+        <div class="timeline-item"><div class="timeline-period">Month 3–6</div><div class="timeline-title">🛠 Portfolio & First Money</div><div class="timeline-body">Build 3 AI projects: RAG chatbot, AI automation for a local business, AI agent. All on GitHub. Start Upwork profile. Dog page 2K–5K followers.</div><div class="tags" style="margin-top:8px"><span class="tag tag-yellow">Portfolio</span><span class="tag tag-orange">RAG Projects</span><span class="tag tag-purple">First $</span></div></div>
+        <div class="timeline-item"><div class="timeline-period">Month 6–12 — EAD Time</div><div class="timeline-title">🚀 Enter the Job Market</div><div class="timeline-body">Apply aggressively — 5 jobs/day for 3 weeks. Target e-commerce companies. Aim $120K–$160K. Launch 1–2 side hustles.</div><div class="meta-grid" style="margin-top:10px"><div class="meta-item"><div class="meta-label">Target Salary</div><div class="meta-value yellow">$120K–$160K</div></div><div class="meta-item"><div class="meta-label">Side Income</div><div class="meta-value green">$500–$2K/mo</div></div></div></div>
+        <div class="timeline-item"><div class="timeline-period">Year 1–2</div><div class="timeline-title">💰 Stack the Streams</div><div class="timeline-body">AI job + freelancing ($1K–$3K/mo) + dog page ($200–$800/mo) + digital product. Build emergency fund. Start index fund investing.</div><div class="meta-grid" style="margin-top:10px"><div class="meta-item"><div class="meta-label">Job Income</div><div class="meta-value yellow">$140K+</div></div><div class="meta-item"><div class="meta-label">Side Streams</div><div class="meta-value green">$2K–$5K/mo</div></div></div></div>
+        <div class="timeline-item"><div class="timeline-period">Year 2–3</div><div class="timeline-title">🏗 Build Something of Your Own</div><div class="timeline-body">Launch small AI SaaS in e-commerce or pet space. Even $500–$2,000/month recurring changes everything. Scale vending machines to 5+ units.</div><div class="tags" style="margin-top:8px"><span class="tag tag-yellow">Micro SaaS</span><span class="tag tag-orange">Vending Scale</span><span class="tag tag-green">Brand Deals</span></div></div>
+        <div class="timeline-item"><div class="timeline-period">Year 3–5</div><div class="timeline-title">🌟 The Freedom Phase</div><div class="timeline-body">4–5 income streams simultaneously. AI job + SaaS + Airbnb/vending + dog page + digital products. Monthly income $15K–$25K+. You choose your life.</div><div class="meta-grid" style="margin-top:10px"><div class="meta-item"><div class="meta-label">Target Monthly</div><div class="meta-value yellow">$15K–$25K</div></div><div class="meta-item"><div class="meta-label">Active Streams</div><div class="meta-value green">4–5</div></div></div></div>
       </div>
-
-      <div class="highlight-card">
-        <div class="card-title">🎯 Your #1 Action Today</div>
-        <div class="card-body" style="margin-top:8px">Go to <strong>roadmap.sh/ai-engineer</strong> and spend 30 minutes reading. Then pick ONE thing from this app to start this week. You've already waited 1.5 years — use this time to come back stronger than ever. That's your real advantage.</div>
-      </div>
-
-      <div class="note-box">
-        <strong>📋 Immigration reminder:</strong> While on H4, consult an immigration attorney about which income activities are permitted. Once EAD arrives — full speed ahead on everything here. You're building the foundation now.
-      </div>
+      <div class="highlight-card"><div class="card-title">🎯 Your #1 Action Today</div><div class="card-body" style="margin-top:8px">Go to <strong>roadmap.sh/ai-engineer</strong> and spend 30 minutes reading the roadmap. Then open the Tracker tab and mark Day 1 as your start. The plan only works when you begin.</div></div>
+      <div class="note-box"><strong>📋 Immigration reminder:</strong> While on H4, consult an attorney about which income activities are permitted. Once EAD arrives — full speed ahead on everything here.</div>
     </div>
 
-
-    <!-- ══ PAGE: TRACKER ══ -->
+    <!-- ══ TRACKER ══ -->
     <div class="page" id="page-tracker">
-      <div style="padding-top:8px">
-        <div class="section-label">AI Learning Journey</div>
-        <div class="section-title">90-Day Tracker</div>
-      </div>
+      <div style="padding-top:6px"><div class="section-label">AI Learning Journey</div><div class="section-title">90-Day Tracker</div></div>
 
-      <div id="confetti-msg" class="confetti-msg">🎉 Amazing! You completed today's task! Keep the streak going!</div>
+      <div id="confetti-msg" class="confetti-msg">🎉 Task complete! Keep the streak going!</div>
 
       <div class="tracker-hero">
         <div class="tracker-hero-title">Current Day</div>
         <div class="tracker-day-num" id="t-current-day">1</div>
-        <div class="tracker-day-label" id="t-current-label">Starting tomorrow</div>
-        <div class="overall-bar-wrap">
-          <div class="overall-bar-fill" id="t-overall-bar" style="width:0%"></div>
-        </div>
+        <div class="tracker-day-label" id="t-current-label">Loading...</div>
+        <div class="overall-bar-wrap"><div class="overall-bar-fill" id="t-overall-bar" style="width:0%"></div></div>
         <div class="overall-pct">Overall progress: <span id="t-pct">0%</span></div>
       </div>
 
       <div class="streak-row">
-        <div class="streak-card">
-          <div class="streak-num" id="t-streak">0</div>
-          <div class="streak-label">🔥 Day Streak</div>
-        </div>
-        <div class="streak-card">
-          <div class="streak-num" id="t-done">0</div>
-          <div class="streak-label">✅ Completed</div>
-        </div>
-        <div class="streak-card">
-          <div class="streak-num" id="t-left">90</div>
-          <div class="streak-label">📅 Days Left</div>
-        </div>
+        <div class="streak-card"><div class="streak-num" id="t-streak">0</div><div class="streak-label">🔥 Day Streak</div></div>
+        <div class="streak-card"><div class="streak-num" id="t-done">0</div><div class="streak-label">✅ Completed</div></div>
+        <div class="streak-card"><div class="streak-num" id="t-left">90</div><div class="streak-label">📅 Days Left</div></div>
       </div>
 
       <div id="tracker-phases"></div>
 
       <button class="reset-btn" onclick="confirmReset()">⚠️ Reset All Progress</button>
-      <div style="height:8px"></div>
+      <div style="height:12px"></div>
     </div>
 
   </div><!-- end scroll-area -->
@@ -946,29 +309,19 @@
   <!-- Bottom Nav -->
   <nav class="bottom-nav">
     <button class="nav-btn active" id="nav-tech" onclick="showPage('tech')">
-      <div class="nav-dot"></div>
-      <div class="nav-icon">🧠</div>
-      <div class="nav-label">Tech</div>
+      <div class="nav-dot"></div><div class="nav-icon">🧠</div><div class="nav-label">Tech</div>
     </button>
     <button class="nav-btn" id="nav-hustles" onclick="showPage('hustles')">
-      <div class="nav-dot"></div>
-      <div class="nav-icon">💰</div>
-      <div class="nav-label">Hustles</div>
+      <div class="nav-dot"></div><div class="nav-icon">💰</div><div class="nav-label">Hustles</div>
     </button>
     <button class="nav-btn" id="nav-dog" onclick="showPage('dog')">
-      <div class="nav-dot"></div>
-      <div class="nav-icon">🐾</div>
-      <div class="nav-label">Dog Page</div>
+      <div class="nav-dot"></div><div class="nav-icon">🐾</div><div class="nav-label">Dog Page</div>
     </button>
     <button class="nav-btn" id="nav-plan" onclick="showPage('plan')">
-      <div class="nav-dot"></div>
-      <div class="nav-icon">🗓</div>
-      <div class="nav-label">5-Yr Plan</div>
+      <div class="nav-dot"></div><div class="nav-icon">🗓</div><div class="nav-label">5-Yr Plan</div>
     </button>
     <button class="nav-btn" id="nav-tracker" onclick="showPage('tracker')">
-      <div class="nav-dot"></div>
-      <div class="nav-icon">✅</div>
-      <div class="nav-label">Tracker</div>
+      <div class="nav-dot"></div><div class="nav-icon">✅</div><div class="nav-label">Tracker</div>
     </button>
   </nav>
 </div>
@@ -977,44 +330,35 @@
 <div id="install-banner">
   <div class="install-banner-inner">
     <div class="install-icon">🚀</div>
-    <div class="install-text">
-      <div class="install-title">Add to Home Screen</div>
-      <div class="install-sub">Use offline, like a real app</div>
-    </div>
+    <div><div class="install-title">Add to Home Screen</div><div class="install-sub">Use offline, like a real app</div></div>
   </div>
   <div class="install-actions">
     <button class="btn-install" id="btn-install-confirm">Install App</button>
     <button class="btn-dismiss" onclick="dismissInstall()">Not now</button>
   </div>
 </div>
-
-<!-- Offline Toast -->
-<div id="offline-toast">📵 You're offline — app still works!</div>
+<div id="offline-toast">📵 Offline — app still works!</div>
 
 <script>
 // ── Service Worker ──
 if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('./sw.js').catch(() => {});
-  });
+  window.addEventListener('load', () => { navigator.serviceWorker.register('./sw.js').catch(() => {}); });
 }
 
-// ── Page Navigation ──
-let currentPage = 'tech';
+// ── Navigation ──
 function showPage(id) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
   document.getElementById('page-' + id).classList.add('active');
   document.getElementById('nav-' + id).classList.add('active');
   document.getElementById('scroll-area').scrollTo({ top: 0, behavior: 'smooth' });
-  currentPage = id;
   if (id === 'tech') setTimeout(animateBars, 200);
+  if (id === 'tracker') renderTracker();
 }
 
 // ── Salary Bars ──
 function animateBars() {
-  const targets = { bar1: '40%', bar2: '65%', bar3: '90%' };
-  Object.entries(targets).forEach(([id, w]) => {
+  [['bar1','40%'],['bar2','65%'],['bar3','90%']].forEach(([id, w]) => {
     const el = document.getElementById(id);
     if (el) { el.style.width = '0%'; setTimeout(() => el.style.width = w, 80); }
   });
@@ -1025,207 +369,176 @@ setTimeout(animateBars, 400);
 function toggleAcc(btn) {
   const content = btn.nextElementSibling;
   const isOpen = btn.classList.contains('open');
-  document.querySelectorAll('.accordion-btn').forEach(b => {
-    b.classList.remove('open');
-    if (b.nextElementSibling) b.nextElementSibling.classList.remove('open');
-  });
+  document.querySelectorAll('.accordion-btn').forEach(b => { b.classList.remove('open'); if (b.nextElementSibling) b.nextElementSibling.classList.remove('open'); });
   if (!isOpen) { btn.classList.add('open'); content.classList.add('open'); }
 }
 
 // ── PWA Install ──
 let deferredPrompt = null;
 window.addEventListener('beforeinstallprompt', e => {
-  e.preventDefault();
-  deferredPrompt = e;
-  setTimeout(() => {
-    const banner = document.getElementById('install-banner');
-    banner.style.display = 'block';
-  }, 3000);
+  e.preventDefault(); deferredPrompt = e;
+  setTimeout(() => { document.getElementById('install-banner').style.display = 'block'; }, 3000);
 });
-
 document.getElementById('btn-install-confirm').addEventListener('click', async () => {
   if (!deferredPrompt) return;
   deferredPrompt.prompt();
-  const { outcome } = await deferredPrompt.userChoice;
-  deferredPrompt = null;
-  dismissInstall();
+  await deferredPrompt.userChoice;
+  deferredPrompt = null; dismissInstall();
 });
-
-function dismissInstall() {
-  document.getElementById('install-banner').style.display = 'none';
-}
-
-window.addEventListener('appinstalled', () => {
-  dismissInstall();
-  deferredPrompt = null;
-});
+function dismissInstall() { document.getElementById('install-banner').style.display = 'none'; }
+window.addEventListener('appinstalled', dismissInstall);
 
 // ── Online/Offline ──
 function updateOnlineStatus() {
   const badge = document.getElementById('online-badge');
   const toast = document.getElementById('offline-toast');
-  if (navigator.onLine) {
-    badge.textContent = '● LIVE';
-    badge.style.color = '';
-    toast.style.display = 'none';
-  } else {
-    badge.textContent = '● OFFLINE';
-    badge.style.color = 'var(--accent2)';
-    toast.style.display = 'block';
-  }
+  if (navigator.onLine) { badge.textContent = '● LIVE'; badge.style.color = ''; toast.style.display = 'none'; }
+  else { badge.textContent = '● OFFLINE'; badge.style.color = 'var(--accent2)'; toast.style.display = 'block'; }
 }
 window.addEventListener('online', updateOnlineStatus);
 window.addEventListener('offline', updateOnlineStatus);
 updateOnlineStatus();
 
-
-// ── TRACKER ──
+// ════════════════════════════════════
+// ── 90-DAY TRACKER ──
+// ════════════════════════════════════
 const CURRICULUM = [
-  // PHASE 1: Python Basics (Days 1–21)
-  { phase:1, day:1,  task:"Install Python & VS Code", detail:"Download Python 3.11+, install VS Code, run 'print(Hello World)'. Set up your workspace.", tag:"python" },
-  { phase:1, day:2,  task:"Python variables & data types", detail:"Strings, integers, floats, booleans. Play in the Python REPL. freeCodeCamp Python intro.", tag:"python" },
-  { phase:1, day:3,  task:"Lists, tuples & dictionaries", detail:"Python's core data structures. Practice: create a dict of your learning goals.", tag:"python" },
-  { phase:1, day:4,  task:"If/else & for loops", detail:"Control flow in Python vs Java. Write a simple number guessing game.", tag:"python" },
-  { phase:1, day:5,  task:"Functions & modules", detail:"def keyword, arguments, return values. import statements. How Python modules work.", tag:"python" },
-  { phase:1, day:6,  task:"File I/O & error handling", detail:"Read/write files, try/except blocks. Practice: read a .txt file and process its lines.", tag:"python" },
-  { phase:1, day:7,  task:"🎉 REST DAY — review week 1", detail:"Review your notes. Re-do any exercises that felt unclear. No new content today.", tag:"rest" },
-  { phase:1, day:8,  task:"Python classes & OOP", detail:"Classes in Python vs Java. self keyword, __init__, inheritance. Build a simple Dog class!", tag:"python" },
-  { phase:1, day:9,  task:"pip & virtual environments", detail:"pip install, requirements.txt, venv. This is how Python projects are managed.", tag:"python" },
-  { phase:1, day:10, task:"Working with JSON", detail:"json.loads, json.dumps. Practice: parse a JSON API response. Essential for AI work.", tag:"python" },
-  { phase:1, day:11, task:"HTTP requests with 'requests' library", detail:"pip install requests. GET/POST calls. Fetch data from a public API (e.g. dog facts API!).", tag:"python" },
-  { phase:1, day:12, task:"List comprehensions & lambdas", detail:"Pythonic shortcuts. [x for x in list if condition]. map(), filter(). Very common in AI code.", tag:"python" },
-  { phase:1, day:13, task:"Practice project: Python CLI tool", detail:"Build a command-line tool that reads a text file and counts word frequency. Combine all week 2 skills.", tag:"python" },
-  { phase:1, day:14, task:"🎉 REST DAY — review week 2", detail:"Review OOP, JSON, requests. Read: 'Python for Java Developers' blog on Real Python.", tag:"rest" },
-  { phase:1, day:15, task:"Intro to Jupyter Notebooks", detail:"pip install jupyter. Run notebooks. This is how most AI/ML tutorials are written.", tag:"python" },
-  { phase:1, day:16, task:"NumPy basics", detail:"Arrays, array math, indexing. Used everywhere in AI. Do the NumPy quickstart tutorial.", tag:"python" },
-  { phase:1, day:17, task:"Pandas basics", detail:"DataFrames, read_csv, basic filtering. The Excel of Python. Do 10 exercises on kaggle.com.", tag:"python" },
-  { phase:1, day:18, task:"Mini project: data analysis", detail:"Download a CSV dataset (e.g. dog breeds data). Load with pandas, filter, summarize. Post to GitHub.", tag:"python" },
-  { phase:1, day:19, task:"Python review & speed drills", detail:"Do 10 Python problems on Exercism.io. Focus on writing idiomatic Python, not Java-style Python.", tag:"python" },
-  { phase:1, day:20, task:"Create your GitHub profile & first repo", detail:"Set up GitHub profile. Push your previous projects. Write a good README. This is your portfolio.", tag:"python" },
-  { phase:1, day:21, task:"🎉 REST DAY — Phase 1 complete!", detail:"You now know enough Python to start AI work. Celebrate! Phase 2 starts tomorrow.", tag:"rest" },
+  // PHASE 1: Python Foundations (Days 1–21)
+  {phase:1,day:1,task:"Install Python & VS Code",detail:"Download Python 3.11+, install VS Code, run your first print() statement. Set up your workspace.",tag:"python"},
+  {phase:1,day:2,task:"Variables & data types",detail:"Strings, integers, floats, booleans. Play in the Python REPL. Easy transition from Java.",tag:"python"},
+  {phase:1,day:3,task:"Lists, tuples & dictionaries",detail:"Python's core data structures. Create a dict of your learning goals as practice.",tag:"python"},
+  {phase:1,day:4,task:"If/else & for loops",detail:"Control flow in Python vs Java. Write a simple number guessing game in the REPL.",tag:"python"},
+  {phase:1,day:5,task:"Functions & modules",detail:"def keyword, arguments, return values. import statements. How Python modules work.",tag:"python"},
+  {phase:1,day:6,task:"File I/O & error handling",detail:"Read/write files, try/except blocks. Practice: read a .txt file and process its lines.",tag:"python"},
+  {phase:1,day:7,task:"🎉 REST DAY — review Week 1",detail:"Review your notes. Redo any exercises that felt unclear. No new content today, just consolidate.",tag:"rest"},
+  {phase:1,day:8,task:"Python classes & OOP",detail:"Classes in Python vs Java — self keyword, __init__, inheritance. Build a simple Dog class!",tag:"python"},
+  {phase:1,day:9,task:"pip & virtual environments",detail:"pip install, requirements.txt, venv setup. How Python projects are managed professionally.",tag:"python"},
+  {phase:1,day:10,task:"Working with JSON",detail:"json.loads, json.dumps. Parse a JSON API response. Absolutely essential for AI work.",tag:"python"},
+  {phase:1,day:11,task:"HTTP requests with 'requests' library",detail:"pip install requests. GET/POST calls. Fetch data from a public API — try the dog facts API!",tag:"python"},
+  {phase:1,day:12,task:"List comprehensions & lambdas",detail:"[x for x in list if condition]. map(), filter(). Pythonic shortcuts found everywhere in AI code.",tag:"python"},
+  {phase:1,day:13,task:"Project: Python CLI word-counter",detail:"Build a command-line tool that reads a text file and counts word frequency. Combine all week 2 skills.",tag:"python"},
+  {phase:1,day:14,task:"🎉 REST DAY — review Week 2",detail:"Review OOP, JSON, requests. Read 'Python for Java Developers' on Real Python website.",tag:"rest"},
+  {phase:1,day:15,task:"Intro to Jupyter Notebooks",detail:"pip install jupyter. Run notebooks in VS Code. Most AI tutorials are written in notebooks.",tag:"python"},
+  {phase:1,day:16,task:"NumPy basics",detail:"Arrays, array math, indexing. Used everywhere in AI. Do the NumPy quickstart tutorial.",tag:"python"},
+  {phase:1,day:17,task:"Pandas basics",detail:"DataFrames, read_csv, filtering, groupby. The Excel of Python. Do 10 exercises on Kaggle.",tag:"python"},
+  {phase:1,day:18,task:"Mini project: data analysis",detail:"Download a CSV dataset (dog breeds data). Load with pandas, filter, summarize. Push to GitHub.",tag:"python"},
+  {phase:1,day:19,task:"Python speed drills",detail:"Do 10 Python problems on Exercism.io. Focus on writing idiomatic Python, not Java-style Python.",tag:"python"},
+  {phase:1,day:20,task:"Create your GitHub profile & first repo",detail:"Set up GitHub profile properly. Push your projects. Write a good README. This is your portfolio.",tag:"python"},
+  {phase:1,day:21,task:"🎉 REST DAY — Phase 1 complete!",detail:"You now know enough Python to start AI work. Celebrate this milestone. Phase 2 starts tomorrow.",tag:"rest"},
 
   // PHASE 2: LLM APIs (Days 22–42)
-  { phase:2, day:22, task:"What are LLMs? Core concepts", detail:"Read: 'How GPT works' on Andrej Karpathy's blog. Understand tokens, context windows, temperature.", tag:"llm" },
-  { phase:2, day:23, task:"Get your OpenAI API key", detail:"Sign up at platform.openai.com. Add $10 credit. Make your FIRST API call via curl or Python.", tag:"llm" },
-  { phase:2, day:24, task:"OpenAI Python SDK basics", detail:"pip install openai. client.chat.completions.create(). Build 'Hello AI' in Python.", tag:"llm" },
-  { phase:2, day:25, task:"System prompts & roles", detail:"system / user / assistant roles. Experiment: change the system prompt and see how responses change.", tag:"llm" },
-  { phase:2, day:26, task:"Prompt engineering techniques", detail:"Zero-shot, few-shot, chain-of-thought prompting. Test all 3 with the same task. Note the differences.", tag:"llm" },
-  { phase:2, day:27, task:"Temperature, max_tokens & parameters", detail:"How each parameter affects output. Build a creative writing tool that uses high temperature.", tag:"llm" },
-  { phase:2, day:28, task:"🎉 REST DAY — review LLM basics", detail:"Re-read your notes. Watch: 'Prompt Engineering Guide' on YouTube by DAIR.AI.", tag:"rest" },
-  { phase:2, day:29, task:"Build: simple chatbot with memory", detail:"Use a list to store conversation history. Pass the full history in each API call. This is how ChatGPT works.", tag:"llm" },
-  { phase:2, day:30, task:"Streaming responses", detail:"Use stream=True to show responses word-by-word, like ChatGPT. Essential for real apps.", tag:"llm" },
-  { phase:2, day:31, task:"Function calling (tool use)", detail:"Define functions for Claude/GPT to call. E.g. get_weather(city). This unlocks agentic behavior.", tag:"llm" },
-  { phase:2, day:32, task:"Anthropic Claude API", detail:"Get Claude API key at console.anthropic.com. Rebuild your chatbot using Claude instead of GPT.", tag:"llm" },
-  { phase:2, day:33, task:"Compare Claude vs GPT for coding tasks", detail:"Give both models the same 5 coding prompts. Note which handles each better. Build your intuition.", tag:"llm" },
-  { phase:2, day:34, task:"Token counting & cost management", detail:"Use tiktoken to count tokens. Estimate costs for different prompt lengths. Critical for production apps.", tag:"llm" },
-  { phase:2, day:35, task:"🎉 REST DAY — review function calling", detail:"Review function calling docs. This concept will be key for Phase 4 (Agents).", tag:"rest" },
-  { phase:2, day:36, task:"Build: AI writing assistant CLI", detail:"CLI tool that takes a topic and generates a structured blog post outline. Add tone parameter.", tag:"llm" },
-  { phase:2, day:37, task:"Handling errors & retries", detail:"API rate limits, error codes, exponential backoff. Build a robust API wrapper. Production must-know.", tag:"llm" },
-  { phase:2, day:38, task:"Environment variables & secrets", detail:"Use python-dotenv. Never hardcode API keys. Set up .env file. Critical security practice.", tag:"llm" },
-  { phase:2, day:39, task:"Build: e-commerce product description generator", detail:"Takes product name + specs → generates 5 marketing descriptions. Uses your Hybris domain knowledge!", tag:"llm" },
-  { phase:2, day:40, task:"Push Phase 2 projects to GitHub", detail:"Clean up your chatbot and product generator. Write READMEs. These are portfolio pieces.", tag:"llm" },
-  { phase:2, day:41, task:"Read: LLM best practices guide", detail:"Read Anthropic's prompt engineering guide at docs.anthropic.com. Take notes on what surprises you.", tag:"llm" },
-  { phase:2, day:42, task:"🎉 REST DAY — Phase 2 complete!", detail:"You can now build real AI apps. You're ahead of most developers. Phase 3 is the big one.", tag:"rest" },
+  {phase:2,day:22,task:"What are LLMs? Core concepts",detail:"Read: 'How GPT works' on Andrej Karpathy's blog. Understand tokens, context windows, temperature.",tag:"llm"},
+  {phase:2,day:23,task:"Get your OpenAI API key",detail:"Sign up at platform.openai.com. Add $10 credit. Make your FIRST API call via Python.",tag:"llm"},
+  {phase:2,day:24,task:"OpenAI Python SDK basics",detail:"pip install openai. client.chat.completions.create(). Build your 'Hello AI' in Python.",tag:"llm"},
+  {phase:2,day:25,task:"System prompts & roles",detail:"system / user / assistant roles. Experiment: change the system prompt and observe how responses shift.",tag:"llm"},
+  {phase:2,day:26,task:"Prompt engineering techniques",detail:"Zero-shot, few-shot, chain-of-thought prompting. Test all 3 on the same task. Note the differences.",tag:"llm"},
+  {phase:2,day:27,task:"Temperature & max_tokens",detail:"How each parameter affects output. Build a creative writing tool using high temperature.",tag:"llm"},
+  {phase:2,day:28,task:"🎉 REST DAY — review LLM basics",detail:"Re-read notes. Watch: 'Prompt Engineering Guide' on YouTube by DAIR.AI. Take notes.",tag:"rest"},
+  {phase:2,day:29,task:"Build: chatbot with conversation memory",detail:"Use a list to store conversation history. Pass full history in each API call. This is how ChatGPT works.",tag:"llm"},
+  {phase:2,day:30,task:"Streaming responses",detail:"Use stream=True to show responses word-by-word like ChatGPT. Essential for real user-facing apps.",tag:"llm"},
+  {phase:2,day:31,task:"Function calling (tool use)",detail:"Define functions for GPT/Claude to call. E.g. get_weather(city). This unlocks agentic behavior.",tag:"llm"},
+  {phase:2,day:32,task:"Anthropic Claude API",detail:"Get Claude API key at console.anthropic.com. Rebuild your chatbot using Claude instead of GPT.",tag:"llm"},
+  {phase:2,day:33,task:"Compare Claude vs GPT",detail:"Give both models 5 identical coding prompts. Note which handles each better. Build your intuition.",tag:"llm"},
+  {phase:2,day:34,task:"Token counting & cost management",detail:"Use tiktoken to count tokens. Estimate costs for different prompt lengths. Critical for production.",tag:"llm"},
+  {phase:2,day:35,task:"🎉 REST DAY — review function calling",detail:"Review function calling docs. This concept is the bridge to Phase 4 (AI Agents).",tag:"rest"},
+  {phase:2,day:36,task:"Build: AI writing assistant CLI",detail:"CLI tool that takes a topic → generates a structured blog post outline. Add a --tone parameter.",tag:"llm"},
+  {phase:2,day:37,task:"Error handling & retries",detail:"Rate limits, error codes, exponential backoff. Build a robust API wrapper. Must-know for production.",tag:"llm"},
+  {phase:2,day:38,task:"Environment variables & secrets",detail:"Use python-dotenv. Never hardcode API keys. Set up .env properly. Critical security practice.",tag:"llm"},
+  {phase:2,day:39,task:"Build: product description generator",detail:"Takes product name + specs → generates 5 marketing descriptions. Uses your Hybris domain knowledge!",tag:"llm"},
+  {phase:2,day:40,task:"Push Phase 2 projects to GitHub",detail:"Clean up chatbot and product generator. Write proper READMEs. These are portfolio pieces.",tag:"llm"},
+  {phase:2,day:41,task:"Read: Anthropic prompt engineering guide",detail:"Read docs.anthropic.com prompt engineering guide. Take notes on what surprises or challenges you.",tag:"llm"},
+  {phase:2,day:42,task:"🎉 REST DAY — Phase 2 complete!",detail:"You can now build real AI apps. You're ahead of most developers. Phase 3 is the big unlock.",tag:"rest"},
 
   // PHASE 3: RAG (Days 43–63)
-  { phase:3, day:43, task:"What is RAG? Core concept", detail:"Read: 'Retrieval Augmented Generation explained' on Pinecone's blog. Understand the problem it solves.", tag:"rag" },
-  { phase:3, day:44, task:"What are vector embeddings?", detail:"Watch: 'Word2Vec explained' YouTube. Understand semantic similarity. This is the math behind RAG.", tag:"rag" },
-  { phase:3, day:45, task:"OpenAI / Voyage embeddings API", detail:"Generate embeddings for text using the API. Calculate cosine similarity between two sentences.", tag:"rag" },
-  { phase:3, day:46, task:"Install & learn ChromaDB", detail:"pip install chromadb. Create a local vector store. Add documents, query them. Your first RAG component.", tag:"rag" },
-  { phase:3, day:47, task:"Install LangChain & basics", detail:"pip install langchain. Understand chains, prompts, and document loaders. LangChain is the glue of RAG.", tag:"rag" },
-  { phase:3, day:48, task:"LangChain document loaders", detail:"Load PDFs, .txt files, web pages. TextSplitter to chunk documents. The input stage of RAG.", tag:"rag" },
-  { phase:3, day:49, task:"🎉 REST DAY — review RAG components", detail:"Draw a diagram of the full RAG pipeline from memory: load → chunk → embed → store → retrieve → generate.", tag:"rest" },
-  { phase:3, day:50, task:"Build your first RAG pipeline", detail:"Load a PDF → chunk → embed → store in Chroma → query with a question → get answer. End-to-end!", tag:"rag" },
-  { phase:3, day:51, task:"Add conversational memory to RAG", detail:"Use ConversationBufferMemory in LangChain. Allow follow-up questions that reference previous answers.", tag:"rag" },
-  { phase:3, day:52, task:"Improve retrieval: reranking", detail:"Use a cross-encoder reranker to improve result quality. Understand why naive top-k retrieval fails.", tag:"rag" },
-  { phase:3, day:53, task:"Pinecone cloud vector DB", detail:"Sign up at pinecone.io (free tier). Move your ChromaDB to Pinecone. Now your RAG scales to production.", tag:"rag" },
-  { phase:3, day:54, task:"Build: RAG over product documentation", detail:"Take Hybris/SAP Commerce docs (or any product manual). Build a chatbot that answers questions about it.", tag:"rag" },
-  { phase:3, day:55, task:"Evaluation: how to measure RAG quality", detail:"RAGAS framework. Faithfulness, relevance, context recall. You must be able to measure what you build.", tag:"rag" },
-  { phase:3, day:56, task:"🎉 REST DAY — review & test your RAG", detail:"Test your product docs chatbot with 20 hard questions. Fix the 5 worst answers. Iterate.", tag:"rest" },
-  { phase:3, day:57, task:"Hybrid search: BM25 + vector search", detail:"Combine keyword search with semantic search. Often outperforms pure vector search. Use langchain-community.", tag:"rag" },
-  { phase:3, day:58, task:"Build a simple web UI with Streamlit", detail:"pip install streamlit. Wrap your RAG chatbot in a web UI in under 50 lines of code. Show it to people!", tag:"rag" },
-  { phase:3, day:59, task:"Deploy to Streamlit Cloud (free)", detail:"Push to GitHub → deploy at share.streamlit.io. You now have a live AI app on the internet. Portfolio gold.", tag:"rag" },
-  { phase:3, day:60, task:"Build: e-commerce AI assistant", detail:"RAG over a product catalog (invent one). User asks 'do you have red shoes under $50?' → real answers.", tag:"rag" },
-  { phase:3, day:61, task:"LlamaIndex as alternative to LangChain", detail:"Build the same RAG pipeline with LlamaIndex. Understand the tradeoffs. Many jobs use one or the other.", tag:"rag" },
-  { phase:3, day:62, task:"Polish & document your Phase 3 projects", detail:"Write READMEs, add screenshots, record a 60-second demo video. LinkedIn post incoming.", tag:"rag" },
-  { phase:3, day:63, task:"🎉 REST DAY — Phase 3 complete! You're hireable.", detail:"You now know RAG. This alone puts you in the top 5% of job applicants. Start applying this week.", tag:"rest" },
+  {phase:3,day:43,task:"What is RAG? Core concept",detail:"Read: 'Retrieval Augmented Generation explained' on Pinecone's blog. Understand the problem it solves.",tag:"rag"},
+  {phase:3,day:44,task:"What are vector embeddings?",detail:"Watch: 'Word2Vec explained' on YouTube. Understand semantic similarity. This is the math behind RAG.",tag:"rag"},
+  {phase:3,day:45,task:"Embeddings API practice",detail:"Generate embeddings via OpenAI or Voyage API. Calculate cosine similarity between sentences. Feel the magic.",tag:"rag"},
+  {phase:3,day:46,task:"Install & learn ChromaDB",detail:"pip install chromadb. Create a local vector store. Add documents, query them. Your first RAG component.",tag:"rag"},
+  {phase:3,day:47,task:"LangChain basics",detail:"pip install langchain. Understand chains, prompts, and document loaders. LangChain is the glue of RAG.",tag:"rag"},
+  {phase:3,day:48,task:"LangChain document loaders",detail:"Load PDFs, .txt files, web pages. TextSplitter to chunk documents. This is the input stage of RAG.",tag:"rag"},
+  {phase:3,day:49,task:"🎉 REST DAY — draw the RAG pipeline",detail:"Draw a diagram from memory: load → chunk → embed → store → retrieve → generate. Understand each step.",tag:"rest"},
+  {phase:3,day:50,task:"Build your first end-to-end RAG pipeline",detail:"PDF → chunk → embed → Chroma → query → answer. Full pipeline. This is the core portfolio project.",tag:"rag"},
+  {phase:3,day:51,task:"Add conversational memory to RAG",detail:"Use ConversationBufferMemory. Allow follow-up questions that reference previous answers.",tag:"rag"},
+  {phase:3,day:52,task:"Improve retrieval: reranking",detail:"Use a cross-encoder reranker to improve quality. Understand why naive top-k retrieval often fails.",tag:"rag"},
+  {phase:3,day:53,task:"Pinecone cloud vector DB",detail:"Sign up at pinecone.io (free tier). Move ChromaDB to Pinecone. Now your RAG scales to production.",tag:"rag"},
+  {phase:3,day:54,task:"Build: RAG over product documentation",detail:"Take any product manual or docs. Build a chatbot that answers questions about it. Hybris expertise bonus!",tag:"rag"},
+  {phase:3,day:55,task:"Evaluate your RAG quality with RAGAS",detail:"Faithfulness, relevance, context recall. You must be able to measure what you build.",tag:"rag"},
+  {phase:3,day:56,task:"🎉 REST DAY — test your RAG chatbot",detail:"Ask your chatbot 20 hard questions. Fix the 5 worst answers. Iteration is the real skill.",tag:"rest"},
+  {phase:3,day:57,task:"Hybrid search: BM25 + vector",detail:"Combine keyword search with semantic search. Often outperforms pure vector. Use langchain-community.",tag:"rag"},
+  {phase:3,day:58,task:"Build a web UI with Streamlit",detail:"pip install streamlit. Wrap your RAG chatbot in a real web UI in under 50 lines of code.",tag:"rag"},
+  {phase:3,day:59,task:"Deploy to Streamlit Cloud (free)",detail:"Push to GitHub → deploy at share.streamlit.io. You now have a live AI app on the internet. 🎉",tag:"rag"},
+  {phase:3,day:60,task:"Build: e-commerce AI shopping assistant",detail:"RAG over a product catalog. User asks 'red shoes under $50?' → real answers from your catalog data.",tag:"rag"},
+  {phase:3,day:61,task:"Explore LlamaIndex",detail:"Build the same RAG pipeline in LlamaIndex. Understand tradeoffs vs LangChain. Both appear in job specs.",tag:"rag"},
+  {phase:3,day:62,task:"Document Phase 3 projects",detail:"READMEs, architecture diagrams, 60-second demo videos. Record and post on LinkedIn.",tag:"rag"},
+  {phase:3,day:63,task:"🎉 REST DAY — Phase 3 complete. You're hireable.",detail:"RAG puts you in the top 5% of job applicants. Start applying this week. Don't wait for 'perfect'.",tag:"rest"},
 
   // PHASE 4: AI Agents (Days 64–77)
-  { phase:4, day:64, task:"What are AI Agents? Mental model", detail:"Read: 'The Rise of AI Agents' on LangChain blog. Understand: agents = LLM + tools + memory + planning.", tag:"agents" },
-  { phase:4, day:65, task:"ReAct pattern (Reason + Act)", detail:"The core loop of most agents: think → act → observe → repeat. Implement a simple ReAct agent from scratch.", tag:"agents" },
-  { phase:4, day:66, task:"LangChain agents & tools", detail:"Use pre-built tools (search, calculator, Python REPL). Build an agent that can answer multi-step questions.", tag:"agents" },
-  { phase:4, day:67, task:"Custom tools for your agent", detail:"Define custom @tool functions. Build an agent with a fake e-commerce DB tool. Uses your Hybris expertise.", tag:"agents" },
-  { phase:4, day:68, task:"Multi-agent with CrewAI", detail:"pip install crewai. Define a 'Researcher' and 'Writer' agent that work together to produce a blog post.", tag:"agents" },
-  { phase:4, day:69, task:"LangGraph: stateful agent workflows", detail:"LangGraph builds on LangChain with graph-based state. Model a multi-step checkout process as an AI workflow.", tag:"agents" },
-  { phase:4, day:70, task:"🎉 REST DAY — review agent patterns", detail:"Compare ReAct vs CrewAI vs LangGraph. When would you use each? Write a 1-page comparison doc.", tag:"rest" },
-  { phase:4, day:71, task:"Build: AI customer service agent", detail:"An agent that can check order status, process returns, and escalate to human. Uses tool calling.", tag:"agents" },
-  { phase:4, day:72, task:"Agent memory: short vs long-term", detail:"Session memory vs. persistent memory with a DB. Use SQLite to store agent memories between sessions.", tag:"agents" },
-  { phase:4, day:73, task:"Guardrails & safety for agents", detail:"How to prevent agents from doing harmful things. Input/output filtering, scope limiting. Critical for production.", tag:"agents" },
-  { phase:4, day:74, task:"Build: AI research agent", detail:"Agent that takes a topic → searches the web → reads pages → summarizes findings → writes a report.", tag:"agents" },
-  { phase:4, day:75, task:"Deploy your agent as a REST API", detail:"Wrap your agent with FastAPI. Create POST /chat endpoint. Test with Postman. This is production-ready.", tag:"agents" },
-  { phase:4, day:76, task:"Document & push Phase 4 projects", detail:"GitHub READMEs, architecture diagrams, demo videos. These are your most impressive portfolio pieces.", tag:"agents" },
-  { phase:4, day:77, task:"🎉 REST DAY — Phase 4 complete!", detail:"You can now build AI agents. This is genuinely advanced. You're ready for senior-level AI job applications.", tag:"rest" },
+  {phase:4,day:64,task:"What are AI Agents? Mental model",detail:"Read: 'The Rise of AI Agents' on LangChain blog. Agents = LLM + tools + memory + planning loop.",tag:"agents"},
+  {phase:4,day:65,task:"ReAct pattern from scratch",detail:"The core agent loop: think → act → observe → repeat. Implement a simple ReAct agent manually.",tag:"agents"},
+  {phase:4,day:66,task:"LangChain agents & pre-built tools",detail:"Use search, calculator, Python REPL tools. Build an agent that answers multi-step math questions.",tag:"agents"},
+  {phase:4,day:67,task:"Custom tools for your agent",detail:"Define custom @tool functions. Build an agent with a fake e-commerce database tool. Hybris expertise shines.",tag:"agents"},
+  {phase:4,day:68,task:"Multi-agent with CrewAI",detail:"pip install crewai. Build a Researcher + Writer agent team that co-produce a blog post.",tag:"agents"},
+  {phase:4,day:69,task:"LangGraph: stateful workflows",detail:"Graph-based state management. Model a multi-step checkout process as an AI workflow.",tag:"agents"},
+  {phase:4,day:70,task:"🎉 REST DAY — compare agent patterns",detail:"ReAct vs CrewAI vs LangGraph — when to use each? Write a 1-page comparison doc for your notes.",tag:"rest"},
+  {phase:4,day:71,task:"Build: AI customer service agent",detail:"Agent that checks order status, processes returns, escalates to human. Uses your e-commerce knowledge.",tag:"agents"},
+  {phase:4,day:72,task:"Agent memory: short vs long-term",detail:"Session memory vs. persistent memory with SQLite. Store agent memories between sessions.",tag:"agents"},
+  {phase:4,day:73,task:"Guardrails & agent safety",detail:"Prevent agents from harmful actions. Input/output filtering, scope limiting. Critical for production use.",tag:"agents"},
+  {phase:4,day:74,task:"Build: AI research agent",detail:"Agent that searches the web → reads pages → summarizes → writes a report. Full autonomous workflow.",tag:"agents"},
+  {phase:4,day:75,task:"Deploy agent as a REST API",detail:"Wrap your agent with FastAPI. POST /chat endpoint. Test with Postman. This is production-ready.",tag:"agents"},
+  {phase:4,day:76,task:"Document Phase 4 projects",detail:"GitHub READMEs, architecture diagrams, demo videos. These are your most impressive portfolio pieces.",tag:"agents"},
+  {phase:4,day:77,task:"🎉 REST DAY — Phase 4 complete!",detail:"You can now build AI agents. This is genuinely advanced. Ready for senior-level AI applications.",tag:"rest"},
 
   // PHASE 5: Cloud & Job Prep (Days 78–90)
-  { phase:5, day:78, task:"AWS or Azure for AI — pick one", detail:"AWS Bedrock vs Azure OpenAI. If you know AWS already, use Bedrock. If not, Azure is more beginner-friendly.", tag:"cloud" },
-  { phase:5, day:79, task:"Deploy your RAG app on AWS/Azure", detail:"Containerize with Docker. Deploy to AWS ECS or Azure Container Apps. Your first cloud AI deployment.", tag:"cloud" },
-  { phase:5, day:80, task:"Docker basics for AI apps", detail:"Write a Dockerfile for your chatbot. docker build, docker run. Essential for any modern job.", tag:"cloud" },
-  { phase:5, day:81, task:"CI/CD basics: GitHub Actions", detail:"Auto-deploy your app when you push to main. Basic GitHub Actions YAML. Shows you know DevOps.", tag:"cloud" },
-  { phase:5, day:82, task:"Polish your LinkedIn profile", detail:"AI Engineer headline, featured projects, about section. Get peer review. Start connecting with AI engineers.", tag:"project" },
-  { phase:5, day:83, task:"Write your portfolio README", detail:"A master README linking all your projects. Explain what each does, what you learned, tech stack used.", tag:"project" },
-  { phase:5, day:84, task:"🎉 REST DAY — review all projects", detail:"List all 6+ projects you've built. For each: what problem does it solve? What would you improve?", tag:"rest" },
-  { phase:5, day:85, task:"Mock interview: LLM concepts", detail:"Ask Claude: 'Give me 10 AI engineer interview questions.' Answer them out loud. Record yourself.", tag:"project" },
-  { phase:5, day:86, task:"Mock interview: RAG & system design", detail:"Practice: 'Design a RAG system for a 10M document enterprise.' Draw the architecture. Time yourself.", tag:"project" },
-  { phase:5, day:87, task:"Apply to 5 AI Engineer jobs", detail:"LinkedIn + Wellfound + Indeed. Target e-commerce companies first (your Hybris advantage). Personalize each cover.", tag:"project" },
-  { phase:5, day:88, task:"Apply to 5 more + reach out to 3 recruiters", detail:"DM AI recruiters on LinkedIn. Reference your GitHub projects. Short message, specific ask.", tag:"project" },
-  { phase:5, day:89, task:"Spring AI: build one project in Java", detail:"Build your RAG chatbot using Spring AI + Java. This speaks directly to enterprise Java hiring managers.", tag:"project" },
-  { phase:5, day:90, task:"🏆 DAY 90 — YOU DID IT!", detail:"90 days of consistent learning. You are now an AI Engineer. Review everything you've built. You should be proud. Now go get that job.", tag:"project" },
+  {phase:5,day:78,task:"AWS or Azure for AI — pick one",detail:"AWS Bedrock vs Azure OpenAI. If you know AWS, use Bedrock. Otherwise Azure is more beginner-friendly.",tag:"cloud"},
+  {phase:5,day:79,task:"Docker basics for AI apps",detail:"Write a Dockerfile for your chatbot. docker build, docker run. Essential for any modern job.",tag:"cloud"},
+  {phase:5,day:80,task:"Deploy your RAG app on cloud",detail:"Containerize with Docker. Deploy to AWS ECS or Azure Container Apps. First cloud AI deployment.",tag:"cloud"},
+  {phase:5,day:81,task:"GitHub Actions CI/CD",detail:"Auto-deploy when you push to main. Basic YAML workflow. Shows hiring managers you know DevOps.",tag:"cloud"},
+  {phase:5,day:82,task:"Polish your LinkedIn profile",detail:"'AI Engineer' headline, featured projects, about section. Get peer review. Connect with AI engineers.",tag:"project"},
+  {phase:5,day:83,task:"Write your master portfolio README",detail:"Link all your projects. For each: what problem it solves, what you learned, tech stack used.",tag:"project"},
+  {phase:5,day:84,task:"🎉 REST DAY — review all your projects",detail:"List all 6+ projects built. For each: what problem does it solve? What would you improve next?",tag:"rest"},
+  {phase:5,day:85,task:"Mock interview: LLM concepts",detail:"Ask Claude: 'Give me 10 AI engineer interview questions.' Answer them out loud. Record yourself.",tag:"project"},
+  {phase:5,day:86,task:"Mock interview: RAG & system design",detail:"Practice: 'Design a RAG system for 10M enterprise documents.' Draw architecture. Time yourself 30min.",tag:"project"},
+  {phase:5,day:87,task:"Apply to 5 AI Engineer jobs",detail:"LinkedIn + Wellfound + Indeed. Target e-commerce companies first (Hybris advantage). Personalize each one.",tag:"project"},
+  {phase:5,day:88,task:"Apply to 5 more + DM 3 recruiters",detail:"Message AI recruiters on LinkedIn. Reference your GitHub. Short message, specific ask.",tag:"project"},
+  {phase:5,day:89,task:"Spring AI: build one project in Java",detail:"Rebuild your RAG chatbot using Spring AI + Java. Speaks directly to enterprise Java hiring managers.",tag:"project"},
+  {phase:5,day:90,task:"🏆 DAY 90 — YOU DID IT!",detail:"90 days of consistent learning. You are now an AI Engineer. Review everything you've built. You should be incredibly proud. Now go get that job. 🚀",tag:"project"},
 ];
 
-const PHASES = [
-  { id:1, icon:'🐍', title:'Phase 1: Python Foundations', range:'Days 1–21' },
-  { id:2, icon:'🤖', title:'Phase 2: LLM APIs', range:'Days 22–42' },
-  { id:3, icon:'📚', title:'Phase 3: RAG Systems', range:'Days 43–63' },
-  { id:4, icon:'🕵️', title:'Phase 4: AI Agents', range:'Days 64–77' },
-  { id:5, icon:'☁️', title:'Phase 5: Cloud & Job Prep', range:'Days 78–90' },
+const PHASES_META = [
+  {id:1,icon:'🐍',title:'Phase 1: Python Foundations',range:'Days 1–21'},
+  {id:2,icon:'🤖',title:'Phase 2: LLM APIs',range:'Days 22–42'},
+  {id:3,icon:'📚',title:'Phase 3: RAG Systems',range:'Days 43–63'},
+  {id:4,icon:'🕵️',title:'Phase 4: AI Agents',range:'Days 64–77'},
+  {id:5,icon:'☁️',title:'Phase 5: Cloud & Job Prep',range:'Days 78–90'},
 ];
 
-const TAG_MAP = {
-  python: ['Python', 'dt-python'],
-  llm: ['LLM APIs', 'dt-llm'],
-  rag: ['RAG', 'dt-rag'],
-  agents: ['Agents', 'dt-agents'],
-  cloud: ['Cloud', 'dt-cloud'],
-  project: ['Career', 'dt-project'],
-  rest: ['Rest Day', 'dt-rest'],
+const TAG_INFO = {
+  python:['Python','dt-python'], llm:['LLM APIs','dt-llm'], rag:['RAG','dt-rag'],
+  agents:['Agents','dt-agents'], cloud:['Cloud','dt-cloud'], project:['Career','dt-project'], rest:['Rest Day','dt-rest'],
 };
 
-// Storage helpers (localStorage)
 function getCompleted() {
-  try { return JSON.parse(localStorage.getItem('tracker_completed') || '{}'); } catch { return {}; }
+  try { return JSON.parse(localStorage.getItem('fp_completed') || '{}'); } catch { return {}; }
 }
 function saveCompleted(obj) {
-  try { localStorage.setItem('tracker_completed', JSON.stringify(obj)); } catch {}
+  try { localStorage.setItem('fp_completed', JSON.stringify(obj)); } catch {}
 }
 function getStartDate() {
   try {
-    let d = localStorage.getItem('tracker_start');
+    let d = localStorage.getItem('fp_start');
     if (!d) {
-      // Start date = tomorrow
       const tomorrow = new Date();
       tomorrow.setDate(tomorrow.getDate() + 1);
       d = tomorrow.toISOString().split('T')[0];
-      localStorage.setItem('tracker_start', d);
+      localStorage.setItem('fp_start', d);
     }
     return d;
   } catch { return new Date().toISOString().split('T')[0]; }
 }
-
 function getTodayDayNum() {
-  const start = new Date(getStartDate());
+  const start = new Date(getStartDate() + 'T00:00:00');
   const today = new Date();
   today.setHours(0,0,0,0);
-  start.setHours(0,0,0,0);
   const diff = Math.floor((today - start) / 86400000) + 1;
   return Math.max(1, Math.min(diff, 90));
 }
@@ -1233,23 +546,23 @@ function getTodayDayNum() {
 function renderTracker() {
   const completed = getCompleted();
   const todayDay = getTodayDayNum();
-  const doneCount = Object.values(completed).filter(Boolean).length;
+  const doneCount = CURRICULUM.filter(d => d.tag === 'rest' || !!completed[d.day]).length;
   const pct = Math.round((doneCount / 90) * 100);
 
-  // Update hero
+  // Hero update
   document.getElementById('t-current-day').textContent = todayDay;
   const todayItem = CURRICULUM.find(d => d.day === todayDay);
-  document.getElementById('t-current-label').textContent = todayItem ? todayItem.task : 'All 90 days complete!';
+  document.getElementById('t-current-label').textContent = todayItem ? todayItem.task : 'All 90 days complete! 🏆';
   document.getElementById('t-overall-bar').style.width = pct + '%';
   document.getElementById('t-pct').textContent = pct + '%';
   document.getElementById('t-done').textContent = doneCount;
   document.getElementById('t-left').textContent = Math.max(0, 90 - doneCount);
 
-  // Streak
+  // Streak calculation
   let streak = 0;
   for (let i = todayDay; i >= 1; i--) {
     const item = CURRICULUM[i-1];
-    if (item.tag === 'rest' || completed[i]) streak++;
+    if (item.tag === 'rest' || completed[item.day]) streak++;
     else break;
   }
   document.getElementById('t-streak').textContent = streak;
@@ -1258,45 +571,38 @@ function renderTracker() {
   const container = document.getElementById('tracker-phases');
   container.innerHTML = '';
 
-  PHASES.forEach(phase => {
+  PHASES_META.forEach(phase => {
     const days = CURRICULUM.filter(d => d.phase === phase.id);
     const phaseDone = days.filter(d => d.tag === 'rest' || completed[d.day]).length;
-    const phaseTotal = days.length;
-    const allDone = phaseDone === phaseTotal;
+    const allDone = phaseDone === days.length;
+    const isCurrentPhase = days.some(d => d.day === todayDay);
 
     const block = document.createElement('div');
-    block.className = 'phase-block';
-    // Auto-collapse completed phases
-    if (allDone && phase.id < 5) block.classList.add('collapsed');
+    block.className = 'phase-block' + (isCurrentPhase || (!allDone && phase.id <= PHASES_META.find(p => days.some(d => d.day === todayDay))?.id) ? ' open' : '');
+    // Auto-open current phase
+    if (isCurrentPhase) block.classList.add('open');
 
-    const pillClass = allDone ? 'phase-progress-pill done' : 'phase-progress-pill';
-    const pillText = allDone ? '✓ Done' : `${phaseDone}/${phaseTotal}`;
+    const pillClass = allDone ? 'phase-pill done' : 'phase-pill';
+    const pillText = allDone ? '✓ Done' : `${phaseDone}/${days.length}`;
 
     block.innerHTML = `
-      <div class="phase-header" onclick="togglePhase(this)">
+      <div class="phase-header" onclick="this.closest('.phase-block').classList.toggle('open')">
         <div class="phase-icon">${phase.icon}</div>
-        <div class="phase-info">
-          <div class="phase-title">${phase.title}</div>
-          <div class="phase-range">${phase.range}</div>
-        </div>
+        <div class="phase-info"><div class="phase-title">${phase.title}</div><div class="phase-range">${phase.range}</div></div>
         <div class="${pillClass}">${pillText}</div>
         <div class="phase-chevron">▼</div>
       </div>
-      <div class="phase-days" id="phase-days-${phase.id}"></div>
+      <div class="phase-days"></div>
     `;
-    container.appendChild(block);
 
     const daysContainer = block.querySelector('.phase-days');
     days.forEach(item => {
       const isDone = item.tag === 'rest' || !!completed[item.day];
       const isToday = item.day === todayDay;
-      const [tagLabel, tagClass] = TAG_MAP[item.tag] || ['', ''];
+      const [tagLabel, tagClass] = TAG_INFO[item.tag] || ['',''];
 
       const row = document.createElement('div');
       row.className = 'day-row' + (isDone ? ' completed' : '') + (isToday ? ' today' : '');
-      row.dataset.day = item.day;
-      row.onclick = () => toggleDay(item.day);
-
       row.innerHTML = `
         <div class="day-check">${isDone ? '✓' : ''}</div>
         <div class="day-content">
@@ -1306,55 +612,44 @@ function renderTracker() {
           ${tagLabel ? `<span class="day-tag ${tagClass}">${tagLabel}</span>` : ''}
         </div>
       `;
+      if (item.tag !== 'rest') {
+        row.onclick = () => toggleDay(item.day);
+      }
       daysContainer.appendChild(row);
     });
+
+    container.appendChild(block);
   });
 }
 
 function toggleDay(dayNum) {
   const completed = getCompleted();
-  const item = CURRICULUM[dayNum - 1];
-  if (item && item.tag === 'rest') return; // rest days auto-complete
   const wasDone = !!completed[dayNum];
-  completed[dayNum] = !wasDone;
+  if (!wasDone) completed[dayNum] = true;
+  else delete completed[dayNum];
   saveCompleted(completed);
 
   if (!wasDone) {
-    // Show confetti message briefly
     const msg = document.getElementById('confetti-msg');
     msg.style.display = 'block';
-    setTimeout(() => msg.style.display = 'none', 3000);
+    setTimeout(() => msg.style.display = 'none', 2500);
   }
   renderTracker();
 }
 
-function togglePhase(header) {
-  const block = header.closest('.phase-block');
-  block.classList.toggle('collapsed');
-}
-
 function confirmReset() {
-  if (confirm('Reset all your progress? This cannot be undone.')) {
-    try { localStorage.removeItem('tracker_completed'); localStorage.removeItem('tracker_start'); } catch {}
+  if (confirm('Reset all progress? This cannot be undone.')) {
+    try { localStorage.removeItem('fp_completed'); localStorage.removeItem('fp_start'); } catch {}
     renderTracker();
   }
 }
 
-// Render tracker when page loads or tab switches
-const _origShowPage = showPage;
-function showPage(id, ...args) {
-  _origShowPage(id, ...args);
-  if (id === 'tracker') renderTracker();
-}
-
-// Initial render if on tracker tab
-window.addEventListener('DOMContentLoaded', () => {
-  renderTracker();
-});
-
-// ── Hash routing ──
-const hashMap = { '#tech':'tech', '#sidehustles':'hustles', '#dog':'dog', '#plan':'plan', '#tracker':'tracker' };
+// Hash routing
+const hashMap = {'#tech':'tech','#sidehustles':'hustles','#dog':'dog','#plan':'plan','#tracker':'tracker'};
 if (hashMap[location.hash]) showPage(hashMap[location.hash]);
+
+// Init tracker on load
+window.addEventListener('DOMContentLoaded', renderTracker);
 </script>
 </body>
 </html>
