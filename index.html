@@ -392,6 +392,7 @@ function showPage(id) {
   document.getElementById('scroll-area').scrollTo({ top: 0, behavior: 'smooth' });
   if (id === 'tech') setTimeout(animateBars, 200);
   if (id === 'tracker') renderTracker();
+  if (id === 'dog') setTimeout(renderVideoIdeas, 50);
 }
 
 // ── Salary Bars ──
@@ -857,16 +858,6 @@ function renderVideoIdeas() {
     container.appendChild(card);
   });
 }
-
-// Render video ideas when dog tab is shown
-const _origShowPage2 = showPage;
-showPage = function(id) {
-  _origShowPage2(id);
-  if (id === 'dog') setTimeout(renderVideoIdeas, 50);
-};
-window.addEventListener('DOMContentLoaded', () => {
-  if (document.getElementById('page-dog').classList.contains('active')) renderVideoIdeas();
-});
 
 // Hash routing
 const hashMap = {'#tech':'tech','#sidehustles':'hustles','#dog':'dog','#plan':'plan','#tracker':'tracker'};
