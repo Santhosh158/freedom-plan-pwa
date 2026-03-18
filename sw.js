@@ -1,4 +1,4 @@
-const CACHE_NAME = 'freedom-plan-v3';
+const CACHE_NAME = 'freedom-plan-v2';
 const ASSETS = [
   './',
   './index.html',

@@ -28,14 +28,14 @@ body::before { content: ''; position: fixed; inset: 0; background-image: linear-
 .topbar-title { font-family: 'Syne', sans-serif; font-size: 17px; font-weight: 800; }
 .topbar-title span { color: var(--accent); }
 .topbar-badge { background: rgba(240,192,64,0.15); border: 1px solid rgba(240,192,64,0.3); border-radius: 99px; padding: 3px 10px; font-size: 11px; font-weight: 600; color: var(--accent); }
-.scroll-area { flex: 1; overflow-y: auto; overflow-x: hidden; -webkit-overflow-scrolling: touch; scroll-behavior: smooth; }
+.scroll-area { flex: 1; overflow-y: auto; overflow-x: hidden; -webkit-overflow-scrolling: touch; scroll-behavior: smooth; position: relative; }
 .scroll-area::-webkit-scrollbar { display: none; }
-.page { display: none; padding: 16px 16px 24px; }
-.page.active { display: block; animation: slideUp 0.25s ease; }
+.page { display: none; padding: 16px 16px calc(var(--nav-h) + var(--safe-bottom) + 20px); pointer-events: none; }
+.page.active { display: block; pointer-events: auto; animation: slideUp 0.25s ease; }
 @keyframes slideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
 /* BOTTOM NAV */
-.bottom-nav { flex-shrink: 0; height: calc(var(--nav-h) + var(--safe-bottom)); padding-bottom: var(--safe-bottom); background: rgba(13,13,20,0.97); backdrop-filter: blur(20px); border-top: 1px solid var(--border); display: flex; align-items: center; z-index: 999; }
+.bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; height: calc(var(--nav-h) + var(--safe-bottom)); padding-bottom: var(--safe-bottom); background: rgba(13,13,20,0.97); backdrop-filter: blur(20px); border-top: 1px solid var(--border); display: flex; align-items: center; z-index: 999; }
 .nav-btn { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; padding: 8px 4px; border: none; background: transparent; cursor: pointer; color: var(--muted); transition: color 0.2s; position: relative; }
 .nav-btn.active { color: var(--accent); }
 .nav-icon { font-size: 20px; line-height: 1; transition: transform 0.2s; }
@@ -167,9 +167,34 @@ body::before { content: ''; position: fixed; inset: 0; background-image: linear-
 .dt-cloud { background: rgba(96,200,160,0.12); color: var(--accent3); border: 1px solid rgba(96,200,160,0.2); }
 .dt-project { background: rgba(255,80,100,0.12); color: #ff8090; border: 1px solid rgba(255,80,100,0.2); }
 .dt-rest { background: rgba(136,136,170,0.1); color: var(--muted); border: 1px solid rgba(136,136,170,0.2); }
+.dt-hybris { background: rgba(0,160,220,0.12); color: #40b8e8; border: 1px solid rgba(0,160,220,0.2); }
 .confetti-msg { display: none; text-align: center; padding: 14px 16px; background: rgba(96,200,160,0.08); border: 1px solid rgba(96,200,160,0.3); border-radius: 14px; margin-bottom: 14px; font-size: 14px; color: var(--accent3); font-family: 'Syne', sans-serif; font-weight: 700; }
 .reset-btn { width: 100%; padding: 12px; background: transparent; border: 1px solid rgba(224,120,48,0.3); border-radius: 10px; color: var(--accent2); font-family: 'DM Sans', sans-serif; font-size: 13px; cursor: pointer; margin-top: 8px; }
 .reset-btn:active { background: rgba(224,120,48,0.08); }
+.link-card { background: var(--surface2); border-radius: 10px; padding: 10px 14px; margin-bottom: 8px; display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text); border: 1px solid transparent; transition: border-color 0.2s; }
+.link-card:active { border-color: rgba(240,192,64,0.3); }
+.link-icon { font-size: 18px; flex-shrink: 0; }
+.link-title { font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 700; margin-bottom: 1px; }
+.link-desc { font-size: 11px; color: var(--muted); }
+.link-arrow { margin-left: auto; color: var(--accent); font-size: 14px; flex-shrink: 0; }
+.screenplay-shot { display: flex; gap: 10px; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
+.screenplay-shot:last-child { border-bottom: none; }
+.shot-num { background: var(--accent); color: #0a0a0f; font-family: 'Syne', sans-serif; font-size: 10px; font-weight: 800; width: 24px; height: 24px; border-radius: 6px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
+.shot-cam { font-size: 10px; color: var(--accent2); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 2px; }
+.shot-text { background: rgba(240,192,64,0.08); border-left: 2px solid var(--accent); padding: 3px 8px; border-radius: 0 6px 6px 0; font-size: 11px; color: var(--accent); font-style: italic; margin-top: 4px; }
+.shot-action { font-size: 12px; color: var(--text); line-height: 1.5; }
+.video-card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; margin-bottom: 12px; overflow: hidden; }
+.video-card-header { padding: 14px 16px; cursor: pointer; display: flex; align-items: center; gap: 12px; }
+.video-card-header:active { background: rgba(255,255,255,0.02); }
+.video-card-emoji { font-size: 24px; flex-shrink: 0; }
+.video-card-info { flex: 1; }
+.video-card-title { font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 700; margin-bottom: 2px; }
+.video-card-meta { font-size: 11px; color: var(--muted); }
+.video-card-chevron { color: var(--accent); font-size: 14px; transition: transform 0.3s; flex-shrink: 0; }
+.video-card.open .video-card-chevron { transform: rotate(180deg); }
+.video-card-body { display: none; padding: 0 16px 16px; }
+.video-card.open .video-card-body { display: block; }
+.screenplay-title { font-family: 'Syne', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; }
 
 @media (max-width: 380px) {
   .stats-row { grid-template-columns: repeat(2, 1fr); }
@@ -245,10 +270,22 @@ body::before { content: ''; position: fixed; inset: 0; background-image: linear-
 
     <!-- ══ DOG PAGE ══ -->
     <div class="page" id="page-dog">
-      <div style="padding-top:6px"><div class="section-label">Content Strategy</div><div class="section-title">Reviving Your Dog Page 🐾</div><div class="section-desc">Not dead — just needs a niche and a story.</div></div>
-      <div class="card"><div class="card-title">🔍 The Problem Right Now</div><div class="card-body" style="margin-top:8px">Millions of generic dog pages exist. The algorithm rewards <em>specific stories</em> that make people feel something. You have a unique angle you haven't used yet.</div></div>
-      <div class="card"><div class="card-title">✨ Your Winning Angle</div><div class="card-body" style="margin-top:8px"><strong>"Dog life as an immigrant family adjusting to the US"</strong> — relatable, emotional, underrepresented. Posts like: "Things we had to learn about owning a dog here," "First time at a dog park," "Home-cooked meals my dog loves" go viral because they're specific and real.</div><div class="tags" style="margin-top:10px"><span class="tag tag-yellow">Immigrant Dog Life</span><span class="tag tag-orange">Relatable Culture</span><span class="tag tag-green">Underrepresented</span></div></div>
-      <div class="section-label" style="margin-top:18px">Income by Follower Count</div>
+      <div style="padding-top:6px"><div class="section-label">Content Strategy</div><div class="section-title">Dog Page 🐾 Playbook</div><div class="section-desc">Faceless videos. South Asian immigrant story. Real relatability.</div></div>
+
+      <div class="card"><div class="card-title">🎭 Why Faceless Works Perfectly</div><div class="card-body" style="margin-top:8px">Faceless dog videos are booming — the dog IS the star. You never appear on camera. Just your dog, your hands occasionally, text overlays, and music. Your South Asian home setting, food, and cultural moments become the unique background hook — visible naturally without showing your face.</div><div class="tags" style="margin-top:10px"><span class="tag tag-yellow">No Face Needed</span><span class="tag tag-orange">Dog is the Star</span><span class="tag tag-green">Cultural Hook</span></div></div>
+
+      <div class="section-label" style="margin-top:18px">📹 Faceless Filming Guide</div>
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:16px;margin-bottom:14px">
+        <div class="step-item" style="margin-bottom:12px"><div class="step-num" style="background:var(--accent2);min-width:28px;width:28px;height:28px;font-size:11px;flex-shrink:0">📱</div><div><div class="step-title">Camera angles</div><div class="step-body">Film from dog eye-level looking up. Film from behind your shoulder. Top-down shots of dog eating/playing. Close-ups of paws, tail, face reactions.</div></div></div>
+        <div class="step-item" style="margin-bottom:12px"><div class="step-num" style="background:var(--accent2);min-width:28px;width:28px;height:28px;font-size:11px;flex-shrink:0">✍️</div><div><div class="step-title">Text overlay style</div><div class="step-body">Bold white text, black outline. Short sentences, one line at a time. Use CapCut or Instagram built-in text. Keep each text on screen 1.5–2 seconds.</div></div></div>
+        <div class="step-item" style="margin-bottom:0"><div class="step-num" style="background:var(--accent2);min-width:28px;width:28px;height:28px;font-size:11px;flex-shrink:0">🎵</div><div><div class="step-title">Audio formula</div><div class="step-body">Trending audio (hooks algorithm) + text tells the story. No talking needed. Match cuts to beat drops for viral potential.</div></div></div>
+      </div>
+
+      <div class="section-label">🎬 Video Ideas + Screenplays</div>
+      <div class="section-desc" style="margin-bottom:10px">Tap any idea to see the full shot-by-shot screenplay.</div>
+      <div id="video-ideas"></div>
+
+      <div class="section-label" style="margin-top:20px">Income by Follower Count</div>
       <div style="background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:16px;margin-bottom:14px">
         <div class="progress-row"><div class="prog-label"><span>Under 5K</span><span>Free products + affiliate ($0–$100)</span></div><div class="prog-bar"><div class="prog-fill" style="width:12%;background:#555580"></div></div></div>
         <div class="progress-row"><div class="prog-label"><span>5K–20K</span><span>$100–$500/post + commissions</span></div><div class="prog-bar"><div class="prog-fill" style="width:35%;background:var(--accent2)"></div></div></div>
@@ -256,12 +293,12 @@ body::before { content: ''; position: fixed; inset: 0; background-image: linear-
         <div class="progress-row"><div class="prog-label"><span>100K+</span><span>$2,000–$10,000+/post</span></div><div class="prog-bar"><div class="prog-fill" style="width:90%;background:var(--accent3)"></div></div></div>
       </div>
       <div class="section-label">5 Actions This Week</div>
-      <div class="step-item"><div class="step-num">1</div><div><div class="step-title">Rewrite your bio with your niche</div><div class="step-body">Pick one clear angle and write it in your bio. This signals your identity to new visitors and the algorithm.</div></div></div>
-      <div class="step-item"><div class="step-num">2</div><div><div class="step-title">Post 3 Reels using your story</div><div class="step-body">Reels get 10–40x more reach than photos. 15–30s vertical clips. "Our family's reaction to our dog" always performs.</div></div></div>
-      <div class="step-item"><div class="step-num">3</div><div><div class="step-title">Set up Amazon Associates</div><div class="step-body">Free to join. Link dog products you use in your bio. Passive commissions from any audience size.</div></div></div>
-      <div class="step-item"><div class="step-num">4</div><div><div class="step-title">Batch captions with AI</div><div class="step-body">Generate 2 weeks of captions in one hour. You're a developer — automate your content workflow.</div></div></div>
-      <div class="step-item"><div class="step-num">5</div><div><div class="step-title">DM 5 small pet brands</div><div class="step-body">Small brands say yes at 1K–2K followers if your engagement is authentic. Short, specific pitch.</div></div></div>
-      <div class="card"><div class="card-title">🔗 Tech + Content Crossover</div><div class="card-body" style="margin-top:8px">Build a tool that generates dog Instagram captions, then post about it: "How I use AI to run my dog's page" goes viral in BOTH tech and pet communities. You bridge two massive audiences.</div></div>
+      <div class="step-item"><div class="step-num">1</div><div><div class="step-title">Rewrite your bio with your niche</div><div class="step-body">One clear angle. Signals your identity to new visitors and the algorithm.</div></div></div>
+      <div class="step-item"><div class="step-num">2</div><div><div class="step-title">Film your first faceless Reel</div><div class="step-body">Pick Screenplay #1 below. Film in under 20 minutes. Edit in CapCut. Post with trending audio.</div></div></div>
+      <div class="step-item"><div class="step-num">3</div><div><div class="step-title">Set up Amazon Associates</div><div class="step-body">Free to join. Link dog products in your bio. Passive commissions from any audience size.</div></div></div>
+      <div class="step-item"><div class="step-num">4</div><div><div class="step-title">Batch captions with AI</div><div class="step-body">Generate 2 weeks of captions in one hour using Claude. Automate your content workflow.</div></div></div>
+      <div class="step-item"><div class="step-num">5</div><div><div class="step-title">DM 5 small pet brands</div><div class="step-body">Small brands say yes at 1K–2K followers if engagement is authentic. Short specific pitch.</div></div></div>
+      <div class="card"><div class="card-title">🔗 Tech + Content Crossover</div><div class="card-body" style="margin-top:8px">Build a tool that generates dog Instagram captions, then post about it. Goes viral in BOTH tech and pet communities simultaneously.</div></div>
     </div>
 
     <!-- ══ 5-YR PLAN ══ -->
@@ -403,6 +440,23 @@ updateOnlineStatus();
 // ════════════════════════════════════
 // ── 90-DAY TRACKER ──
 // ════════════════════════════════════
+const CURRICULUM_HYBRIS = [
+  {phase:0,day:'H1',task:"Hybris Architecture Review",detail:"Review Hybris platform architecture: ServiceLayer, Facade Layer, DTO patterns, Spring DI. Draw the full request flow from storefront to persistence layer from memory.",tag:"hybris",links:[{t:"SAP Commerce Docs",u:"https://help.sap.com/docs/SAP_COMMERCE"},{t:"Hybris Architecture Overview (YouTube)",u:"https://www.youtube.com/results?search_query=hybris+sap+commerce+architecture+overview"}]},
+  {phase:0,day:'H2',task:"B2C Commerce flows",detail:"Review B2C: product catalog model, price rows, promotions engine, customer account flow, checkout steps. Build a mental map of a full B2C purchase journey end-to-end.",tag:"hybris",links:[{t:"SAP B2C Accelerator Docs",u:"https://help.sap.com/docs/SAP_COMMERCE/9d346683b0084da2938be8a285c0c27a/8ac27d4d866910148d18f3bf7ee7b0a2.html"},{t:"Hybris B2C Tutorial",u:"https://www.youtube.com/results?search_query=hybris+b2c+storefront+tutorial"}]},
+  {phase:0,day:'H3',task:"B2B Commerce flows",detail:"Review B2B-specific: B2B units/orgs, budget management, approval workflows, cost centers, purchase orders, quote management. How do B2B customers differ from B2C in Hybris?",tag:"hybris",links:[{t:"SAP B2B Commerce Docs",u:"https://help.sap.com/docs/SAP_COMMERCE/9d346683b0084da2938be8a285c0c27a/8ac27d4d866910148d18f3bf7ee7b0a2.html"},{t:"B2B vs B2C in SAP Commerce",u:"https://www.youtube.com/results?search_query=SAP+commerce+B2B+accelerator"}]},
+  {phase:0,day:'H4',task:"OCC REST APIs & Headless",detail:"Review Omni Commerce Connect (OCC) APIs — the backbone of headless Hybris. Endpoints for products, carts, checkout, users. This is what AI integrations connect to.",tag:"hybris",links:[{t:"OCC API Docs",u:"https://help.sap.com/docs/SAP_COMMERCE/9d346683b0084da2938be8a285c0c27a/4617f89e6e4d44198138fdc8e6c21022.html"},{t:"SAP Commerce OCC Tutorial",u:"https://www.youtube.com/results?search_query=SAP+commerce+OCC+API+tutorial"}]},
+  {phase:0,day:'H5',task:"ImpEx & Data Migration",detail:"Review ImpEx scripting for bulk data operations. This is how product catalogs are imported — a key interview topic. Write 3 sample ImpEx scripts for products, prices, and users.",tag:"hybris",links:[{t:"ImpEx Docs",u:"https://help.sap.com/docs/SAP_COMMERCE/d0224eca81e249cb821f2cdf45a82ace/8c69e0d86669101482bcac2ddf16cd58.html"},{t:"ImpEx Examples",u:"https://www.youtube.com/results?search_query=hybris+impex+examples+tutorial"}]},
+  {phase:0,day:'H6',task:"Solr Search & Faceted Navigation",detail:"Review Hybris Solr integration — indexing, facets, boosting rules, search profiles. How would you add an AI-powered reranker on top? This is a great interview talking point.",tag:"hybris",links:[{t:"Hybris Solr Config Docs",u:"https://help.sap.com/docs/SAP_COMMERCE/9d346683b0084da2938be8a285c0c27a/627a29d51d824d3898f2a7c97c4be9d1.html"},{t:"SAP Commerce Search Tutorial",u:"https://www.youtube.com/results?search_query=hybris+solr+search+configuration"}]},
+  {phase:0,day:'H7',task:"🎉 REST DAY",detail:"Review your Hybris notes. You are now the candidate who combines Hybris expertise + AI skills. That is genuinely rare and valuable.",tag:"rest"},
+  {phase:0,day:'H8',task:"Hybris Extensions & Modularity",detail:"Review custom extension creation, addon architecture, backoffice extensions. How do you structure clean modular Hybris code? Refresh on best practices.",tag:"hybris",links:[{t:"Extensions & AddOns",u:"https://help.sap.com/docs/SAP_COMMERCE/9d346683b0084da2938be8a285c0c27a/8bef6d376669101482bcac2ddf16cd58.html"},{t:"Hybris Extension Development",u:"https://www.youtube.com/results?search_query=hybris+extension+development+tutorial"}]},
+  {phase:0,day:'H9',task:"SAP Commerce Cloud (CCV2)",detail:"Review cloud-native SAP Commerce — containerized deployment, cloud portal, manifest.json config, media storage. Most new Hybris roles are CCV2-based.",tag:"hybris",links:[{t:"SAP Commerce Cloud Docs",u:"https://help.sap.com/docs/SAP_COMMERCE_CLOUD_PUBLIC_CLOUD"},{t:"CCV2 Overview",u:"https://www.youtube.com/results?search_query=SAP+commerce+cloud+CCV2+overview"}]},
+  {phase:0,day:'H10',task:"Integrations: Payment, ERP, CRM",detail:"Review Hybris integration patterns — payment providers (Adyen, Stripe via extensions), SAP ERP/S4HANA integration, CRM data sync. Knowing integration patterns sets you apart.",tag:"hybris",links:[{t:"SAP Commerce Integration Docs",u:"https://help.sap.com/docs/SAP_COMMERCE"},{t:"Hybris Third-Party Integrations",u:"https://www.youtube.com/results?search_query=hybris+payment+integration+tutorial"}]},
+  {phase:0,day:'H11',task:"AI on top of Hybris — your pitch",detail:"Write a 1-page document: 'How I would add AI features to a Hybris e-commerce platform.' Include: AI product recommendations (RAG over catalog), AI customer service bot (OCC + LLM), AI-powered search reranking. This is your unique interview story.",tag:"hybris",links:[{t:"SAP AI Business Services",u:"https://help.sap.com/docs/SAP_AI_SERVICES"},{t:"Spring AI Docs",u:"https://docs.spring.io/spring-ai/reference/"}]},
+  {phase:0,day:'H12',task:"Mock Interview: Hybris deep dive",detail:"Ask Claude: 'Give me 15 tough Hybris interview questions covering architecture, B2B, B2C, performance, and integrations.' Answer each one out loud. Record yourself. Review.",tag:"hybris",links:[{t:"Hybris Interview Questions (GeeksForGeeks)",u:"https://www.geeksforgeeks.org/sap-hybris-interview-questions/"},{t:"SAP Commerce Interview Prep",u:"https://www.youtube.com/results?search_query=SAP+hybris+interview+questions+2024"}]},
+  {phase:0,day:'H13',task:"Update LinkedIn with Hybris + AI angle",detail:"Update your LinkedIn headline: 'SAP Commerce / Hybris Developer transitioning to AI Engineering.' Write a featured post about your journey. Recruiters will find you.",tag:"hybris",links:[{t:"LinkedIn Profile Optimization",u:"https://www.linkedin.com/help/linkedin/answer/a554351"},{t:"How to position a career pivot on LinkedIn",u:"https://www.youtube.com/results?search_query=linkedin+career+pivot+profile+tips"}]},
+  {phase:0,day:'H14',task:"🎉 REST DAY — Hybris phase done!",detail:"You've refreshed your core Hybris skills and built the AI-on-Hybris story. You're now ready to start the Python learning sprint with your unique value proposition clear.",tag:"rest"},
+];
+
 const CURRICULUM = [
   // PHASE 1: Python Foundations (Days 1–21)
   {phase:1,day:1,task:"Install Python & VS Code",detail:"Download Python 3.11+, install VS Code, run your first print() statement. Set up your workspace.",tag:"python"},
@@ -506,6 +560,7 @@ const CURRICULUM = [
 ];
 
 const PHASES_META = [
+  {id:0,icon:'🏪',title:'Phase 0: Hybris B2B/B2C Brush-up',range:'Days -14 to 0 (Pre-start)'},
   {id:1,icon:'🐍',title:'Phase 1: Python Foundations',range:'Days 1–21'},
   {id:2,icon:'🤖',title:'Phase 2: LLM APIs',range:'Days 22–42'},
   {id:3,icon:'📚',title:'Phase 3: RAG Systems',range:'Days 43–63'},
@@ -515,7 +570,7 @@ const PHASES_META = [
 
 const TAG_INFO = {
   python:['Python','dt-python'], llm:['LLM APIs','dt-llm'], rag:['RAG','dt-rag'],
-  agents:['Agents','dt-agents'], cloud:['Cloud','dt-cloud'], project:['Career','dt-project'], rest:['Rest Day','dt-rest'],
+  agents:['Agents','dt-agents'], cloud:['Cloud','dt-cloud'], project:['Career','dt-project'], rest:['Rest Day','dt-rest'], hybris:['Hybris','dt-hybris'],
 };
 
 function getCompleted() {
@@ -545,12 +600,13 @@ function getTodayDayNum() {
 }
 
 function renderTracker() {
+  const allItems = [...CURRICULUM_HYBRIS, ...CURRICULUM];
   const completed = getCompleted();
   const todayDay = getTodayDayNum();
   const doneCount = CURRICULUM.filter(d => d.tag === 'rest' || !!completed[d.day]).length;
+  const hybrisDone = CURRICULUM_HYBRIS.filter(d => d.tag === 'rest' || !!completed['H'+d.day.toString().replace('H','')]).length;
   const pct = Math.round((doneCount / 90) * 100);
 
-  // Hero update
   document.getElementById('t-current-day').textContent = todayDay;
   const todayItem = CURRICULUM.find(d => d.day === todayDay);
   document.getElementById('t-current-label').textContent = todayItem ? todayItem.task : 'All 90 days complete! 🏆';
@@ -559,29 +615,27 @@ function renderTracker() {
   document.getElementById('t-done').textContent = doneCount;
   document.getElementById('t-left').textContent = Math.max(0, 90 - doneCount);
 
-  // Streak calculation
   let streak = 0;
   for (let i = todayDay; i >= 1; i--) {
     const item = CURRICULUM[i-1];
-    if (item.tag === 'rest' || completed[item.day]) streak++;
+    if (item && (item.tag === 'rest' || completed[item.day])) streak++;
     else break;
   }
   document.getElementById('t-streak').textContent = streak;
 
-  // Render phases
   const container = document.getElementById('tracker-phases');
   container.innerHTML = '';
 
   PHASES_META.forEach(phase => {
-    const days = CURRICULUM.filter(d => d.phase === phase.id);
-    const phaseDone = days.filter(d => d.tag === 'rest' || completed[d.day]).length;
+    const days = phase.id === 0 ? CURRICULUM_HYBRIS : CURRICULUM.filter(d => d.phase === phase.id);
+    const phaseDone = days.filter(d => d.tag === 'rest' || !!completed[d.day]).length;
     const allDone = phaseDone === days.length;
-    const isCurrentPhase = days.some(d => d.day === todayDay);
+    const isCurrentPhase = phase.id === 0 ? false : days.some(d => d.day === todayDay);
 
     const block = document.createElement('div');
-    block.className = 'phase-block' + (isCurrentPhase || (!allDone && phase.id <= PHASES_META.find(p => days.some(d => d.day === todayDay))?.id) ? ' open' : '');
-    // Auto-open current phase
-    if (isCurrentPhase) block.classList.add('open');
+    // Phase 0 starts open if not all done
+    if (isCurrentPhase || (phase.id === 0 && !allDone)) block.classList.add('phase-block', 'open');
+    else block.className = 'phase-block';
 
     const pillClass = allDone ? 'phase-pill done' : 'phase-pill';
     const pillText = allDone ? '✓ Done' : `${phaseDone}/${days.length}`;
@@ -601,20 +655,34 @@ function renderTracker() {
       const isDone = item.tag === 'rest' || !!completed[item.day];
       const isToday = item.day === todayDay;
       const [tagLabel, tagClass] = TAG_INFO[item.tag] || ['',''];
+      const links = item.links || [];
 
       const row = document.createElement('div');
       row.className = 'day-row' + (isDone ? ' completed' : '') + (isToday ? ' today' : '');
+
+      const linksHtml = links.length ? `<div style="margin-top:8px">${links.map(l =>
+        `<a href="${l.u}" target="_blank" rel="noopener" class="link-card" onclick="event.stopPropagation()">
+          <span class="link-icon">📖</span>
+          <div><div class="link-title">${l.t}</div></div>
+          <span class="link-arrow">↗</span>
+        </a>`
+      ).join('')}</div>` : '';
+
       row.innerHTML = `
         <div class="day-check">${isDone ? '✓' : ''}</div>
         <div class="day-content">
-          <div class="day-num-label">Day ${item.day}</div>
+          <div class="day-num-label">${typeof item.day === 'string' ? item.day : 'Day ' + item.day}</div>
           <div class="day-task">${item.task}</div>
           <div class="day-detail">${item.detail}</div>
           ${tagLabel ? `<span class="day-tag ${tagClass}">${tagLabel}</span>` : ''}
+          ${linksHtml}
         </div>
       `;
       if (item.tag !== 'rest') {
-        row.onclick = () => toggleDay(item.day);
+        row.addEventListener('click', (e) => {
+          if (e.target.closest('a')) return;
+          toggleDay(item.day);
+        });
       }
       daysContainer.appendChild(row);
     });
@@ -644,6 +712,161 @@ function confirmReset() {
     renderTracker();
   }
 }
+
+// ── VIDEO IDEAS (Dog Page) ──
+const VIDEO_IDEAS = [
+  {
+    emoji: '🍛',
+    title: 'First Time Trying Our Food',
+    hook: '"We gave our dog daal for the first time..."',
+    duration: '20–30 sec',
+    virality: 'Very High',
+    shots: [
+      {cam:'Close-up — bowl', action:'Camera shows a small bowl of plain cooked daal/rice on the kitchen floor. South Asian kitchen tiles visible in background.', text:'"We made extra daal today..."'},
+      {cam:'Dog POV — floor level', action:'Dog walks into frame sniffing toward the bowl curiously. Tail starts wagging.', text:'"...and someone noticed."'},
+      {cam:'Side angle — dog eating', action:'Dog takes a few careful sniffs, then starts eating enthusiastically.', text:'"First reaction: approved ✅"'},
+      {cam:'Wide — kitchen setting', action:'Show the full desi kitchen in background — pressure cooker, masala dabbas visible. Dog still eating.', text:'"Our culture. Our dog. Our chaos."'},
+      {cam:'Close-up — dog face after', action:'Dog looks up at camera with food on nose, happy expression.', text:'"He wants seconds. Same as everyone at our house. 😂"'},
+    ],
+    caption: 'He finally tried our food and honestly… he has good taste 🍛🐕 #dogmom #immigrantfamily #desidogs #doglife #southasiandog',
+    audio: 'Use trending "wholesome family" audio — soft music with a beat drop at the eating moment'
+  },
+  {
+    emoji: '🏡',
+    title: 'Dog Discovers Elders Are Scared of Him',
+    hook: '"My [parent/relative] has never lived with a dog before..."',
+    duration: '25–35 sec',
+    virality: 'Extremely High',
+    shots: [
+      {cam:'Doorway — wide', action:'Show front door from inside. Text sets the scene. Dog is sitting nearby looking curious.', text:'"When a family elder visits for the first time..."'},
+      {cam:'Dog face — close-up', action:'Dog perks up ears, tail wagging as doorbell rings.', text:'"He's so excited."'},
+      {cam:'Reaction shot — hands/feet only', action:'Show just the elder's feet stepping backward nervously as dog approaches. No face needed.', text:'"They are NOT."'},
+      {cam:'Dog POV — low angle', action:'Dog tries to sniff the elder's feet gently. Tail still wagging hard.', text:'"He just wants to say hi..."'},
+      {cam:'Wide — living room', action:'Dog retreats to couch, looks back confused. South Asian living room decor visible — a calendar, deity picture, etc.', text:'"...but some battles take time. 😅"'},
+      {cam:'Close-up — dog on couch', action:'Dog rests head on paw looking dramatic.', text:'"Day 1 of winning nana/nani over. 🙏"'},
+    ],
+    caption: 'Some cultural adjustments take longer than others 😭 Day 1 of making nani comfortable around him 🐾 #desidogs #immigrantfamily #dogmom #funny #relatable',
+    audio: 'Use dramatic "tension building" audio that cuts to cute music when dog looks confused — great for comedic timing'
+  },
+  {
+    emoji: '✈️',
+    title: 'What We Gave Up in Our Home Country vs What We Have Now',
+    hook: '"Back home, dogs mostly lived outside. Now look at us."',
+    duration: '20–30 sec',
+    virality: 'High — nostalgic + emotional',
+    shots: [
+      {cam:'Text card — static', action:'Simple text on screen, dog sleeping in background visible.', text:'"Back home, dogs lived in the yard."'},
+      {cam:'Wide — living room', action:'Pan slowly to show dog comfortably spread on the couch or bed.', text:'"Now he has a couch, toys, and a blanket."'},
+      {cam:'Close-up — dog sleeping', action:'Dog is completely relaxed, legs in air, totally comfortable.', text:'"He adapted faster than we did."'},
+      {cam:'Top-down — dog + hand', action:'A hand (yours) gently pets the dog. Shot from above, no face.', text:'"Somewhere between two countries..."'},
+      {cam:'Dog looking at camera', action:'Dog looks directly at camera with soft eyes.', text:'"...he became home. 🏡"'},
+    ],
+    caption: 'We moved countries looking for a better life. He just moved onto the couch. 🐾❤️ #immigrantdog #newlife #desidogs #dogmom #emotional',
+    audio: 'Use a soft emotional/nostalgic trending sound — the kind that has a slow piano or string intro'
+  },
+  {
+    emoji: '🛕',
+    title: 'Dog During Puja / Prayer Time',
+    hook: '"Every morning we do puja. Every morning he supervises."',
+    duration: '20–25 sec',
+    virality: 'Very High — niche but deeply relatable',
+    shots: [
+      {cam:'Wide — puja corner', action:'Show the home mandir/puja setup in background, diyas, flowers. Dog visible sitting nearby watching curiously.', text:'"Every morning. Same time."'},
+      {cam:'Dog face close-up', action:'Dog tilts head watching the ritual with genuine curiosity.', text:'"He watches like he understands something."'},
+      {cam:'Top-down — incense + dog nose', action:'Show incense smoke rising, dog nose sniffing the air at the edge of frame.', text:'"The incense smell confuses him every time."'},
+      {cam:'Dog sitting in doorway', action:'Dog sits at the boundary of the puja room looking in respectfully.', text:'"He never steps inside. Just watches."'},
+      {cam:'Close-up — dog eyes', action:'Soft close-up of dog's peaceful face.', text:'"Our family priest says he has a good soul. 🙏 We agree."'},
+    ],
+    caption: 'He attends every morning puja. Never misses. Never steps inside. Maximum respect. 🙏🐕 #desidogs #hindufamily #immigrantlife #dogmom #dogdad',
+    audio: 'Use a soft devotional or peaceful trending audio — or complete silence with just text for maximum emotion'
+  },
+  {
+    emoji: '🧹',
+    title: 'Dog vs. Our Amma/Mummy Cleaning Day',
+    hook: '"Our mom cleans like it's a spiritual event. The dog disagrees."',
+    duration: '25–30 sec',
+    virality: 'Very High — comedy gold',
+    shots: [
+      {cam:'Wide — hallway', action:'Show mop/broom in motion cleaning the floor. Dog watching from end of hallway.', text:'"Saturday morning cleaning. A sacred tradition."'},
+      {cam:'Dog face — suspicious', action:'Close-up of dog watching the mop with wide cautious eyes.', text:'"He has never trusted the mop."'},
+      {cam:'Chase shot — low angle', action:'Mop moves toward dog. Dog retreats dramatically. Just feet and mop visible.', text:'"Every. Single. Week."'},
+      {cam:'Dog hiding — under furniture', action:'Dog has retreated under bed/sofa, just nose and eyes visible.', text:'"Hiding until it's safe."'},
+      {cam:'Wide — clean living room', action:'Spotless floor. Dog slowly creeps back in, sniffing the clean floor.', text:'"Amma: 1. Dog: 0. As always."'},
+    ],
+    caption: 'Saturday cleaning is a non-negotiable in our house. The dog knows better than to argue. 😭🧹 #desidogs #immigrantmom #doglife #funny #southasian',
+    audio: 'Use trending "dramatic chase" or "mission impossible" style audio for maximum comedy effect'
+  },
+  {
+    emoji: '🌙',
+    title: 'Dog at 2am When Everyone's Asleep',
+    hook: '"What does he actually do when nobody's watching?"',
+    duration: '20–25 sec',
+    virality: 'High — mystery + cute combo',
+    shots: [
+      {cam:'Dark room — low light', action:'Dim nighttime lighting. Show clock or phone showing 2am. Dog silhouette visible.', text:'"2:17am."'},
+      {cam:'Dog sneaking — side view', action:'Dog carefully and slowly climbs onto the couch/forbidden chair that he's not supposed to be on.', text:'"He knows the rules."'},
+      {cam:'Dog settled — close-up', action:'Dog is now perfectly comfortable in the forbidden spot, looks directly at camera.', text:'"He also knows no one is watching."'},
+      {cam:'Wide — sleeping dog', action:'Dog fully relaxed, eyes closing.', text:'"Back home, dogs slept outside. Here... not so much."'},
+      {cam:'Zoom out — dark living room', action:'Wide shot of cozy living room, dog asleep on couch, home feeling warm and settled.', text:'"Two countries. One couch. Zero regrets. 🌙"'},
+    ],
+    caption: 'He maintains full dignity during the day. The nights tell a different story. 🌙😅 #desidogs #latenight #dogmom #naughtydog #immigrantlife',
+    audio: 'Use a sneaky/suspenseful trending audio that switches to cozy/sleepy vibes at the end'
+  },
+];
+
+function renderVideoIdeas() {
+  const container = document.getElementById('video-ideas');
+  if (!container) return;
+  container.innerHTML = '';
+
+  VIDEO_IDEAS.forEach((idea, idx) => {
+    const card = document.createElement('div');
+    card.className = 'video-card';
+    card.innerHTML = `
+      <div class="video-card-header" onclick="this.closest('.video-card').classList.toggle('open')">
+        <div class="video-card-emoji">${idea.emoji}</div>
+        <div class="video-card-info">
+          <div class="video-card-title">${idea.title}</div>
+          <div class="video-card-meta">⏱ ${idea.duration} &nbsp;·&nbsp; 🔥 ${idea.virality}</div>
+        </div>
+        <div class="video-card-chevron">▼</div>
+      </div>
+      <div class="video-card-body">
+        <div style="background:rgba(240,192,64,0.06);border-left:3px solid var(--accent);padding:10px 12px;border-radius:0 8px 8px 0;margin-bottom:14px;font-size:13px;color:var(--accent);font-style:italic">${idea.hook}</div>
+        <div class="screenplay-title">📽 Shot-by-Shot Screenplay</div>
+        ${idea.shots.map((s,i) => `
+          <div class="screenplay-shot">
+            <div class="shot-num">${i+1}</div>
+            <div style="flex:1">
+              <div class="shot-cam">${s.cam}</div>
+              <div class="shot-action">${s.action}</div>
+              ${s.text ? `<div class="shot-text">"${s.text}"</div>` : ''}
+            </div>
+          </div>
+        `).join('')}
+        <div style="margin-top:14px">
+          <div class="screenplay-title">📝 Caption to Copy</div>
+          <div style="background:var(--surface2);border-radius:10px;padding:12px;font-size:12px;color:#c0c0d8;line-height:1.6">${idea.caption}</div>
+        </div>
+        <div style="margin-top:12px">
+          <div class="screenplay-title">🎵 Audio Tip</div>
+          <div style="background:rgba(96,200,160,0.07);border:1px solid rgba(96,200,160,0.2);border-radius:10px;padding:10px 12px;font-size:12px;color:#90d8b8">${idea.audio}</div>
+        </div>
+      </div>
+    `;
+    container.appendChild(card);
+  });
+}
+
+// Render video ideas when dog tab is shown
+const _origShowPage2 = showPage;
+showPage = function(id) {
+  _origShowPage2(id);
+  if (id === 'dog') setTimeout(renderVideoIdeas, 50);
+};
+window.addEventListener('DOMContentLoaded', () => {
+  if (document.getElementById('page-dog').classList.contains('active')) renderVideoIdeas();
+});
 
 // Hash routing
 const hashMap = {'#tech':'tech','#sidehustles':'hustles','#dog':'dog','#plan':'plan','#tracker':'tracker'};
